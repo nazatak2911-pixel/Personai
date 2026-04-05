@@ -1,12 +1,95 @@
-import React from 'react';
 
-export default function Contact() {
-  return (
-    <div style={{ color: 'white', padding: '40px' }}>
-        <h1 style={{ color: '#40e0d0', fontSize: '3rem', marginBottom: '20px' }}>Contact Us</h1>
-        <p style={{ fontSize: '1.2rem', lineHeight: '1.6', maxWidth: '800px' }}>
-            We'd love to hear from you! Please reach out to us for any inquiries.
-        </p>
-    </div>
-  );
-}
+const Contact = () => {
+    return (
+        <div style={{
+            width: '100%',
+            height: '100%',
+            padding: '60px 40px',
+            overflowY: 'auto',
+            color: '#ffffff',
+            background: 'transparent',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '30px'
+        }}>
+            <h1 style={{
+                fontSize: '4rem',
+                fontWeight: '800',
+                color: '#40e0d0',
+                textAlign: 'left',
+                marginBottom: '10px',
+                textTransform: 'uppercase',
+                letterSpacing: '-1px'
+            }}>
+                Contact Us
+            </h1>
+
+            <div style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: '500px',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
+            }}>
+                {/* Background Image Setup */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: 'url(/tint-image.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    zIndex: 0
+                }} />
+                
+                {/* Glassmorphism Dark Overlay for Legibility */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(30,30,30,0.6) 100%)',
+                    zIndex: 1
+                }} />
+
+                {/* Small cyan box with rounded corners */}
+                <div style={{
+                    position: 'relative',
+                    zIndex: 2,
+                    background: 'rgba(64, 224, 208, 0.1)', /* very faint cyan background */
+                    border: '2px solid #40e0d0', /* Solid cyan border */
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    borderRadius: '20px',
+                    padding: '50px 60px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '20px',
+                    textAlign: 'center',
+                    boxShadow: '0 10px 40px rgba(64, 224, 208, 0.3)'
+                }}>
+                    <div style={{ fontSize: '1.6rem', fontWeight: '500', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                        <span style={{ color: '#d1d1d1', fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '2px' }}>Email</span>
+                        <span style={{ color: '#ffffff', letterSpacing: '0.5px' }}>nazatak2911@gmail.com</span>
+                    </div>
+
+                    <div style={{ height: '1px', background: 'rgba(64, 224, 208, 0.3)', width: '80%', margin: '10px auto' }} />
+
+                    <div style={{ fontSize: '1.6rem', fontWeight: '500', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                        <span style={{ color: '#d1d1d1', fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '2px' }}>Number</span>
+                        <span style={{ color: '#ffffff', letterSpacing: '0.5px' }}>+90 5527220443</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Contact;
