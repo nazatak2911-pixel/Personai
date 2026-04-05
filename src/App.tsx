@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import Faq from './pages/Faq';
 import Privacy from './pages/Privacy';
 import Internships from './pages/Internships';
+import MyCV from './pages/MyCV';
 import Demo from './pages/Demo';
 import PlaceholderPage from './pages/PlaceholderPage';
 
@@ -25,7 +26,7 @@ function App() {
 
             {/* Other routes that can point to a generic placeholder for now */}
             <Route path="network" element={<PlaceholderPage title="Build Network" />} />
-            <Route path="cv" element={<PlaceholderPage title="My CV" />} />
+            <Route path="cv" element={<MyCV />} />
             <Route path="simulations" element={<PlaceholderPage title="Job Simulations" />} />
             <Route path="internships" element={<Internships />} />
             
