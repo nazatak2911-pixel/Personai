@@ -1,6 +1,6 @@
 import { useLanguage } from '../context/LanguageContext';
 
-const Faq = () => {
+const PersonaiFeature = () => {
     const { t } = useLanguage();
     
     return (
@@ -24,7 +24,7 @@ const Faq = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                How to Use
+                PERSONAI
             </h1>
 
             <div style={{
@@ -45,7 +45,7 @@ const Faq = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundImage: 'url(/how-image.jpeg)',
+                    backgroundImage: 'url(/person-image.jpeg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     zIndex: 0
@@ -83,18 +83,44 @@ const Faq = () => {
                     marginTop: '-40px'
                 }}>
                     <p style={{
-                        fontSize: '1.4rem',
+                        fontSize: '1.6rem',
                         lineHeight: '1.8',
                         color: '#f0f0f0',
                         fontWeight: '400',
                         letterSpacing: '0.5px'
                     }}>
-                        {t.howToUseDesc}
+                        {t.personaiDesc}
                     </p>
+
+                    {/* Try Now Button */}
+                    <button style={{
+                        marginTop: '5px',
+                        padding: '12px 36px',
+                        background: '#555555',
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '50px',
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.5)',
+                        transition: 'all 0.3s ease'
+                    }}
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.background = '#666666';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.background = '#555555';
+                        e.currentTarget.style.transform = 'none';
+                    }}
+                    >
+                        Try Now
+                    </button>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Faq;
+export default PersonaiFeature;

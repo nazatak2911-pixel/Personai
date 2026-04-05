@@ -12,8 +12,8 @@ import Internships from './pages/Internships';
 import MyCV from './pages/MyCV';
 import BuildNetwork from './pages/BuildNetwork';
 import JobSimulations from './pages/JobSimulations';
+import PersonaiFeature from './pages/PersonaiFeature';
 import Demo from './pages/Demo';
-import PlaceholderPage from './pages/PlaceholderPage';
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
             {/* Newly added feature routes */}
             <Route path="demo" element={<Demo />} />
             <Route path="privacy-policy" element={<Privacy />} />
-            <Route path="personi" element={<PlaceholderPage title="PERSONAI" />} />
+            <Route path="personi" element={<PersonaiFeature />} />
           </Route>
         </Routes>
       </BrowserRouter>
