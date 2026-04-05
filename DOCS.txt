@@ -1,0 +1,29 @@
+==============================================
+PERSONA AI - React & TypeScript Documentation
+==============================================
+
+1. PREREQUISITES
+----------------
+To run this project, you MUST install Node.js. 
+If you don't have it, download and install it from:
+https://nodejs.org/
+
+2. HOW TO RUN THE WEBSITE
+-------------------------
+Just double-click the "run.bat" file in this folder.
+- It will automatically check for Node.js.
+- It will install all necessary packages (npm install).
+- It will start the server and automatically open the website in your browser.
+
+3. ACCESSING MANUALLY
+---------------------
+If the browser doesn't open automatically, the command prompt will show a local web address. 
+Typically, this is:
+http://localhost:5173
+
+4. WHAT CHANGED?
+----------------
+- The static HTML/CSS/JS files were migrated to React and TypeScript.
+- The original design and layout is 100% preserved.
+- The old static files are backed up in the "legacy/" folder.
+- The entry file is now src/main.tsx, the main component is src/App.tsx, and styles are in src/index.css.

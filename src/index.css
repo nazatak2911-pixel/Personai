@@ -1,0 +1,432 @@
+/* Base Reset & Variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+:root {
+    --bg-color: #2e2e2e; /* Koyu Gri */
+    --text-color: #ffffff;
+    --accent-color: #40e0d0;
+    --accent-glow: rgba(64, 224, 208, 0.4);
+    --glass-bg: var(--bg-color);
+    --glass-border: rgba(255, 255, 255, 0.05); /* very subtle so it seamlessly blends */
+    --nav-height: 70px;
+    --sidebar-width: 300px;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Typography Selection */
+::selection {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+}
+
+/* Top Navigation Bar */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    z-index: 100;
+}
+
+/* Brand + Language group on the left */
+.nav-left-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-left {
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    /* Expanding hit area slightly for easier triggering */
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #ffffff; /* Tamamen beyaz */
+    transition: text-shadow 0.3s ease;
+}
+
+.nav-left:hover .brand-name {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Glow rengini beyaza çektim */
+}
+
+/* Logo Demo Badge */
+.demo-badge {
+    position: absolute;
+    bottom: -6px;
+    right: -30px;
+    font-size: 0.85rem;
+    color: var(--text-color);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+.nav-right {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    color: #cecece;
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+.signup-btn {
+    background: var(--accent-color);
+    padding: 10px 24px;
+    border-radius: 50px;
+    border: 1px solid transparent;
+    color: var(--bg-color); /* Arkaplanın grisi eklendi */
+    font-weight: 600;
+}
+
+.signup-btn:hover {
+    background: transparent;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-glow);
+    color: var(--accent-color); /* Hover durumunda kaybolmaması için yazıyı turkuaz yapıyoruz */
+}
+
+/* Application Container */
+.app-container {
+    flex-grow: 1;
+    display: flex;
+    margin-top: var(--nav-height);
+    position: relative;
+    height: calc(100vh - var(--nav-height));
+}
+
+/* Invisible Trigger Area for Left Sidebar Hover */
+.sidebar-trigger-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 100%;
+    z-index: 90;
+}
+
+/* Left Sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--nav-height);
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--nav-height));
+    background: var(--bg-color); /* sayfa ile aynı renk */
+    backdrop-filter: none;
+    border-right: 1px solid var(--glass-border);
+    transform: translateX(-100%);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 80;
+    padding: 40px 0;
+    box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-menu li {
+    width: 100%;
+}
+
+.sidebar-menu a {
+    display: block;
+    padding: 15px 40px;
+    color: #ffffff; /* Tamamen beyaz */
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-right: 3px solid transparent;
+}
+
+.sidebar-menu a:hover {
+    background: rgba(255,255,255,0.03);
+    color: var(--text-color);
+    border-right-color: var(--accent-color);
+    padding-left: 50px;
+}
+
+/* Main Content Area & Big Text */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    width: 100%;
+    padding-left: 0; /* Base state */
+}
+
+/* When sidebar opens, smoothly shift main content */
+.main-content.shifted {
+    transform: translateX(calc(var(--sidebar-width) / 2));
+}
+
+/* Big Vertical Text */
+.vertical-text-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Resmi sağa atmak için */
+    height: 90%;
+    width: 100%; /* Tamamen sola dayamak için genişliği fulle */
+    padding: 20px 20px 20px 0px; /* Sola boşluksuz */
+    gap: 50px;
+}
+
+.hero-image-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Sağ tarafa yanaşık */
+    align-items: center;
+    width: 100%;
+    max-width: 650px; /* Kutucuk biraz büyük tutuldu */
+    position: relative; /* Butonu ortalayabilmek için */
+}
+
+.hero-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.5; /* Yarı saydamlaştırma (sadece resim saydam olacak) */
+}
+
+/* Yeni Merkezi Buton */
+.logo-overlay-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #555555; /* Gri tonu */
+    color: #ffffff;
+    padding: 12px 32px; /* Sign up butonu gibi */
+    border-radius: 50px; /* Yuvarlak kenarlar */
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Hafif derinlik */
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.logo-overlay-btn:hover {
+    background: #666666;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.vertical-slogan {
+    font-size: 8rem; /* Puntoyu büyüt */
+    font-weight: 800;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    text-align: left;
+    line-height: 0.85; /* Kelimeleri birbirine yaklaştır (satır aralığını kıs) */
+    color: #40e0d0; /* Turkuaz rengi */
+    transform: scale(1.5, 1.4); /* (Genişlik, Yükseklik) -> Yanlara doğru daha geniş */
+    transform-origin: left center;
+    /* filter: drop-shadow(0px 0px 20px rgba(64, 224, 208, 0.4)); Removed to disable glow */
+}
+
+/* Custom Text Colors */
+.turquoise-text {
+    color: #40e0d0;
+}
+
+.white-text {
+    color: #ffffff;
+}
+
+/* Responsive constraints */
+@media (max-width: 768px) {
+    .main-content.shifted {
+        transform: translateX(calc(var(--sidebar-width) / 1.5));
+    }
+    .vertical-slogan {
+        font-size: 3rem;
+        letter-spacing: 8px;
+    }
+    .nav-left {
+        padding-left: 10px; /* Reduced for mobile */
+    }
+    .top-nav {
+        padding: 0 20px;
+    }
+    .sidebar-trigger-area {
+        display: none; /* Disable edge hover trigger on mobile */
+    }
+}
+
+/* ===== Language Switcher ===== */
+.lang-switcher {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.lang-trigger {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    font-family: 'Outfit', sans-serif;
+}
+
+.lang-trigger:hover,
+.lang-trigger.active {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.lang-trigger.active {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.lang-current-label {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.lang-chevron {
+    color: inherit;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+}
+
+.lang-chevron.open {
+    transform: rotate(180deg);
+}
+
+/* Dropdown */
+.lang-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 170px;
+    background: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 6px;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    animation: langDropIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes langDropIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+    text-align: left;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.lang-option:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+}
+
+.lang-option.selected {
+    background: rgba(64, 224, 208, 0.1);
+    color: var(--accent-color);
+}
+
+.lang-flag {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.lang-label {
+    flex: 1;
+}
+
+.lang-check {
+    color: var(--accent-color);
+    flex-shrink: 0;
+}
+
+/* Mobile: keep dropdown readable */
+@media (max-width: 768px) {
+    .lang-dropdown {
+        left: auto;
+        right: 0;
+    }
+}
