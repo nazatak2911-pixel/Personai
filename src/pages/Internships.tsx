@@ -13,7 +13,7 @@ const Internships = () => {
             gap: '30px'
         }}>
             <h1 style={{
-                fontSize: '4rem', /* Scaled for extra long titles if needed, otherwise it drops down nicely */
+                fontSize: '4rem',
                 fontWeight: '800',
                 color: '#40e0d0',
                 textAlign: 'left',
@@ -27,8 +27,8 @@ const Internships = () => {
             <div style={{
                 position: 'relative',
                 width: '100%',
-                minHeight: '500px',
-                borderRadius: '24px', /* Rounded corners applied here, cuts the child background image */
+                minHeight: '550px', // Increased minimum height to accommodate the button layout breathing room
+                borderRadius: '24px',
                 overflow: 'hidden',
                 display: 'flex',
                 alignItems: 'center',
@@ -64,18 +64,20 @@ const Internships = () => {
                 <div style={{
                     position: 'relative',
                     zIndex: 2,
-                    background: 'rgba(30, 30, 30, 0.3)',
+                    background: 'rgba(30, 30, 30, 0.4)',
                     border: '1px solid rgba(64, 224, 208, 0.2)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
                     borderRadius: '16px',
                     padding: '40px 50px',
-                    maxWidth: '85%"',
+                    maxWidth: '85%', /* Fixed typo from previous version */
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '20px',
+                    alignItems: 'center', /* Center horizontally the contents */
+                    gap: '25px',
                     textAlign: 'center',
-                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.4)'
+                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.4)',
+                    marginTop: '-40px' /* Moved the box a little bit up */
                 }}>
                     <p style={{
                         fontSize: '1.6rem',
@@ -86,6 +88,32 @@ const Internships = () => {
                     }}>
                         One of the most key points in choosing your ideal line of job is attending internships which do an efficient job at introducing lines of work to young people. Our program allows our users to see and search internship postings that we have gathered from trusted companies, schools or businesses.
                     </p>
+                    
+                    {/* Try Now Button */}
+                    <button style={{
+                        marginTop: '5px',
+                        padding: '12px 36px',
+                        background: '#555555',
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '50px', /* Matches sign-up rounded pill shape */
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.5)',
+                        transition: 'all 0.3s ease'
+                    }}
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.background = '#666666';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.background = '#555555';
+                        e.currentTarget.style.transform = 'none';
+                    }}
+                    >
+                        Try Now
+                    </button>
                 </div>
             </div>
         </div>
