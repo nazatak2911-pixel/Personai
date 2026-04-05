@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import Faq from './pages/Faq';
 import Privacy from './pages/Privacy';
 import Internships from './pages/Internships';
+import Demo from './pages/Demo';
 import PlaceholderPage from './pages/PlaceholderPage';
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
             <Route path="internships" element={<Internships />} />
             
             {/* Newly added feature routes */}
-            <Route path="demo" element={<PlaceholderPage title="Demo" />} />
+            <Route path="demo" element={<Demo />} />
             <Route path="privacy-policy" element={<Privacy />} />
             <Route path="personi" element={<PlaceholderPage title="PERSONAI" />} />
           </Route>
