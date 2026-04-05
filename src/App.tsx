@@ -8,6 +8,7 @@ import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
 import Faq from './pages/Faq';
 import Privacy from './pages/Privacy';
+import Internships from './pages/Internships';
 import PlaceholderPage from './pages/PlaceholderPage';
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
             <Route path="network" element={<PlaceholderPage title="Build Network" />} />
             <Route path="cv" element={<PlaceholderPage title="My CV" />} />
             <Route path="simulations" element={<PlaceholderPage title="Job Simulations" />} />
-            <Route path="internships" element={<PlaceholderPage title="Internship Opportunities" />} />
+            <Route path="internships" element={<Internships />} />
             
             {/* Newly added feature routes */}
             <Route path="demo" element={<PlaceholderPage title="Demo" />} />
