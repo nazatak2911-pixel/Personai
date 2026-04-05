@@ -1,5 +1,7 @@
+import { useLanguage } from '../context/LanguageContext';
 
 const Privacy = () => {
+    const { t } = useLanguage();
     return (
         <div style={{
             width: '100%',
@@ -21,14 +23,26 @@ const Privacy = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                Privacy Policy
+                {t.privacyPolicy}
             </h1>
 
             <div style={{ maxWidth: '900px', display: 'flex', flexDirection: 'column', gap: '40px' }}>
+                {/* Summary intro using translated content */}
+                <section style={{
+                    background: 'rgba(64, 224, 208, 0.05)',
+                    padding: '30px',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(64, 224, 208, 0.15)'
+                }}>
+                    <p style={{ lineHeight: '1.8', fontSize: '1.15rem', opacity: '0.9' }}>
+                        {t.privacyPolicyContent}
+                    </p>
+                </section>
+
                 <section>
                     <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>1. Introduction</h2>
                     <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>
-                        This Privacy Policy explains how our artificial intelligence application (“the Application”, “we”, “our”, or “us”) collects, uses, stores, and protects information when used by individuals under the age of 18 (“minors”, “children”, or “users”). We are committed to protecting the privacy, safety, and rights of minors and ensuring that all data is handled ethically, securely, and responsibly.
+                        This Privacy Policy explains how our artificial intelligence application ("the Application", "we", "our", or "us") collects, uses, stores, and protects information when used by individuals under the age of 18 ("minors", "children", or "users"). We are committed to protecting the privacy, safety, and rights of minors and ensuring that all data is handled ethically, securely, and responsibly.
                     </p>
                     <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9', marginTop: '10px' }}>
                         By using the Application, users and their parents or legal guardians acknowledge and agree to the practices described in this Privacy Policy.
@@ -81,9 +95,7 @@ const Privacy = () => {
 
                 <section>
                     <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>4. Data Anonymization</h2>
-                    <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>
-                        All stored data is anonymized whenever possible. This means:
-                    </p>
+                    <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>All stored data is anonymized whenever possible. This means:</p>
                     <ul style={{ listStyle: 'none', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <li>• Names are removed or replaced with random identifiers.</li>
                         <li>• IP addresses are truncated or anonymized.</li>
@@ -95,9 +107,7 @@ const Privacy = () => {
 
                 <section>
                     <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>5. How We Use the Data</h2>
-                    <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>
-                        We use collected data only for the following purposes:
-                    </p>
+                    <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>We use collected data only for the following purposes:</p>
                     <ul style={{ listStyle: 'none', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <li>• Improving AI responses</li>
                         <li>• Improving safety systems</li>
@@ -111,9 +121,7 @@ const Privacy = () => {
 
                 <section>
                     <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>6. Data Storage and Security</h2>
-                    <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>
-                        We take data security very seriously. Data is protected using:
-                    </p>
+                    <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>We take data security very seriously. Data is protected using:</p>
                     <ul style={{ listStyle: 'none', padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <li>• Encryption in transit and at rest</li>
                         <li>• Secure servers</li>
@@ -160,7 +168,7 @@ const Privacy = () => {
                 </section>
 
                 <section>
-                    <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>11. Children’s Privacy Protection Principles</h2>
+                    <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>11. Children's Privacy Protection Principles</h2>
                     <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>
                         Our system is built on ethical principles including data minimization, anonymity by default, and safety over data collection.
                     </p>
@@ -174,19 +182,19 @@ const Privacy = () => {
                 </section>
 
                 <section>
-                    <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>13. Contact Information</h2>
+                    <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>13. {t.contact}</h2>
                     <p style={{ lineHeight: '1.6', fontSize: '1.1rem', opacity: '0.9' }}>
-                        If you have any questions, please contact us at [Insert Email].
+                        If you have any questions, please contact us at nazatak2911@gmail.com.
                     </p>
                 </section>
 
-                <section style={{ 
-                    background: 'rgba(64, 224, 208, 0.05)', 
-                    padding: '30px', 
+                <section style={{
+                    background: 'rgba(64, 224, 208, 0.05)',
+                    padding: '30px',
                     borderRadius: '20px',
                     border: '1px solid rgba(64, 224, 208, 0.1)'
                 }}>
-                    <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>14. Summary (Plain Language)</h2>
+                    <h2 style={{ color: '#40e0d0', fontSize: '1.8rem', marginBottom: '15px' }}>14. Summary</h2>
                     <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         <li>• We collect very little data.</li>
                         <li>• We anonymize stored data.</li>

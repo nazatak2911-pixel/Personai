@@ -1,5 +1,7 @@
+import { useLanguage } from '../context/LanguageContext';
 
 const MyCV = () => {
+    const { t } = useLanguage();
     return (
         <div style={{
             width: '100%',
@@ -21,7 +23,7 @@ const MyCV = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                My CV
+                {t.myCV}
             </h1>
 
             <div style={{
@@ -35,32 +37,23 @@ const MyCV = () => {
                 justifyContent: 'center',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
             }}>
-                {/* Background Image Setup */}
                 <div style={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
+                    top: 0, left: 0,
+                    width: '100%', height: '100%',
                     backgroundImage: 'url(/cv-image.jpeg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     zIndex: 0
                 }} />
-                
-                {/* Dark & Cyan Gradient Overlay for the Cyan Tint */}
                 <div style={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
+                    top: 0, left: 0,
+                    width: '100%', height: '100%',
                     background: 'linear-gradient(135deg, rgba(64, 224, 208, 0.4) 0%, rgba(10, 30, 30, 0.9) 100%)',
                     zIndex: 1,
                     mixBlendMode: 'normal'
                 }} />
-
-                {/* Sub Box / Text Overlay Content */}
                 <div style={{
                     position: 'relative',
                     zIndex: 2,
@@ -86,10 +79,8 @@ const MyCV = () => {
                         fontWeight: '400',
                         letterSpacing: '0.5px'
                     }}>
-                        Personai helps you create the perfect CV for your ideal future by using other peoples inspiring stories and suggesting/explaining what you need added in and what will be useful
+                        {t.myCVDesc}
                     </p>
-                    
-                    {/* Try Now Button */}
                     <button style={{
                         marginTop: '5px',
                         padding: '12px 36px',
@@ -112,7 +103,7 @@ const MyCV = () => {
                         e.currentTarget.style.transform = 'none';
                     }}
                     >
-                        Try Now
+                        {t.tryNow}
                     </button>
                 </div>
             </div>

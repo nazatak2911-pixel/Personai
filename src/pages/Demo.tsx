@@ -1,5 +1,7 @@
+import { useLanguage } from '../context/LanguageContext';
 
 const Demo = () => {
+    const { t } = useLanguage();
     return (
         <div style={{
             width: '100%',
@@ -21,7 +23,7 @@ const Demo = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                Demo
+                {t.demo}
             </h1>
 
             <div style={{
@@ -35,32 +37,24 @@ const Demo = () => {
                 justifyContent: 'center',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
             }}>
-                {/* Background Image Setup */}
                 <div style={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
+                    top: 0, left: 0,
+                    width: '100%', height: '100%',
                     backgroundImage: 'url(/demo-image.jpeg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     zIndex: 0
                 }} />
-                
-                {/* Dark & Cyan Gradient Overlay for the Cyan Tint */}
                 <div style={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
+                    top: 0, left: 0,
+                    width: '100%', height: '100%',
                     background: 'linear-gradient(135deg, rgba(64, 224, 208, 0.4) 0%, rgba(10, 30, 30, 0.9) 100%)',
                     zIndex: 1,
                     mixBlendMode: 'normal'
                 }} />
 
-                {/* Sub Box / Text Overlay Content */}
                 <div style={{
                     position: 'relative',
                     zIndex: 2,
@@ -82,7 +76,7 @@ const Demo = () => {
                         fontWeight: '400',
                         letterSpacing: '0.5px'
                     }}>
-                        Our website is currently being innovated and developed. Unfortunately due to the fact that this isn’t our final version some features may not be able to function properly and some features are not available at the moment. The features which are not available at the moment are:
+                        {t.demoDesc}
                     </p>
                     <ul style={{
                         width: '100%',
@@ -96,21 +90,21 @@ const Demo = () => {
                         flexDirection: 'column',
                         gap: '8px'
                     }}>
-                        <li>VR adjustment for job simulations</li>
-                        <li>Graphic demonstrations for job simulations</li>
-                        <li>Actual internship postings</li>
+                        <li>{t.demoList1}</li>
+                        <li>{t.demoList2}</li>
+                        <li>{t.demoList3}</li>
                     </ul>
                     <p style={{
                         width: '100%',
                         fontSize: '1.2rem',
                         lineHeight: '1.6',
-                        color: '#b0b0b0', /* Slightly dimmer for the parenthetical note */
+                        color: '#b0b0b0',
                         fontWeight: '400',
                         letterSpacing: '0.5px',
                         fontStyle: 'italic',
                         marginTop: '10px'
                     }}>
-                        (Build my network may not function properly since there are no users submitting their stories except for our team members)
+                        {t.demoNote}
                     </p>
                 </div>
             </div>

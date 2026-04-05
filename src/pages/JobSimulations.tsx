@@ -24,7 +24,7 @@ const JobSimulations = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                Job Simulations
+                {t.jobSimulations}
             </h1>
 
             <div style={{
@@ -115,7 +115,7 @@ const JobSimulations = () => {
                         e.currentTarget.style.transform = 'none';
                     }}
                     >
-                        Try Now
+                        {t.tryNow}
                     </button>
                 </div>
             </div>

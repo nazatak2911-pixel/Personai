@@ -24,7 +24,7 @@ const BuildNetwork = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                Build My Network
+                {t.buildNetwork}
             </h1>
 
             <div style={{
@@ -115,7 +115,7 @@ const BuildNetwork = () => {
                         e.currentTarget.style.transform = 'none';
                     }}
                     >
-                        Try Now
+                        {t.tryNow}
                     </button>
                 </div>
             </div>
