@@ -23,6 +23,8 @@ export interface Translations {
   starts: string;
   today: string;
   aboutUsBtn: string;
+  jobSimDesc?: string;
+  networkDesc?: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -44,6 +46,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Starts',
     today: 'Today',
     aboutUsBtn: 'About Us',
+    jobSimDesc: 'For our job simulation feature, which grants you the experience of the prefered job, It challenges you in AI generated scenarios for you to improve yourself via the internet. You can use your computer for this experience or you could use VR glasses for a more realistic experience.',
+    networkDesc: 'With displaying inspiring peoples stories, Personai provides the opportunity of being able to interact with those people',
   },
   tr: {
     logIn: 'Giriş Yap',
@@ -63,6 +67,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Yer',
     today: 'Burası',
     aboutUsBtn: 'Hakkımızda',
+    jobSimDesc: 'Tercih ettiğiniz işin deneyimini sunan iş simülasyonu özelliğimiz, internet üzerinden kendinizi geliştirmeniz için yapay zeka tarafından oluşturulan senaryolarda size meydan okur. Bu deneyim için bilgisayarınızı kullanabilir veya daha gerçekçi bir deneyim için VR gözlükleri kullanabilirsiniz.',
+    networkDesc: 'İlham verici insanların hikayelerini sergileyerek, Personai bu insanlarla etkileşim kurma fırsatı sunar.',
   },
   it: {
     logIn: 'Accedi',
@@ -82,6 +88,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Inizia',
     today: 'Oggi',
     aboutUsBtn: 'Chi Siamo',
+    jobSimDesc: 'Per la nostra funzione di simulazione del lavoro, che ti garantisce l\'esperienza del lavoro preferito, ti sfida in scenari generati dall\'intelligenza artificiale per farti migliorare tramite Internet. Puoi usare il tuo computer per questa esperienza o potresti usare occhiali VR per un\'esperienza più realistica.',
+    networkDesc: 'Mostrando storie di persone ispiratrici, Personai offre l\'opportunità di poter interagire con quelle persone.',
   },
   de: {
     logIn: 'Anmelden',
@@ -101,6 +109,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Beginnt',
     today: 'Heute',
     aboutUsBtn: 'Über uns',
+    jobSimDesc: 'Unsere Job-Simulationsfunktion, die Ihnen die Erfahrung Ihres bevorzugten Jobs vermittelt, fordert Sie in von KI generierten Szenarien heraus, um sich über das Internet zu verbessern. Sie können für diese Erfahrung Ihren Computer verwenden oder für eine realistischere Erfahrung eine VR-Brille.',
+    networkDesc: 'Durch die Anzeige inspirierender Geschichten von Menschen bietet Personai die Möglichkeit, mit diesen Menschen in Kontakt zu treten.',
   },
   es: {
     logIn: 'Iniciar Sesión',
@@ -120,6 +130,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Empieza',
     today: 'Hoy',
     aboutUsBtn: 'Sobre Nosotros',
+    jobSimDesc: 'Para nuestra función de simulación de trabajo, que le otorga la experiencia del trabajo preferido, lo desafía en escenarios generados por IA para que mejore a través de Internet. Puede usar su computadora para esta experiencia o podría usar gafas de realidad virtual para una experiencia más realista.',
+    networkDesc: 'Al mostrar historias inspiradoras de personas, Personai brinda la oportunidad de poder interactuar con esas personas.',
   },
   uz: {
     logIn: 'Kirish',
@@ -139,6 +151,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Aynan',
     today: 'Bugun',
     aboutUsBtn: 'Biz haqimizda',
+    jobSimDesc: 'Sizga o\'zingiz yoqtirgan ish tajribasini taqdim etuvchi ish simulyatsiyasi xususiyatimiz uchun u sizni internet orqali o\'zingizni takomillashtirish uchun sun\'iy intellekt tomonidan yaratilgan ssenariylarda sinab ko\'radi. Ushbu tajriba uchun kompyuteringizdan yoki yanada real tajriba uchun VR ko\'zoynaklaridan foydalanishingiz mumkin.',
+    networkDesc: 'Ilhomlantiruvchi odamlarning hikoyalarini namoyish etish orqali Personai ushbu odamlar bilan muloqot qilish imkoniyatini taqdim etadi.',
   },
   fr: {
     logIn: 'Connexion',
@@ -158,6 +172,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Commence',
     today: "Aujourd'hui",
     aboutUsBtn: 'À propos de nous',
+    jobSimDesc: 'Pour notre fonctionnalité de simulation d\'emploi, qui vous donne l\'expérience du travail préféré, elle vous met au défi dans des scénarios générés par l\'IA pour que vous vous amélioriez via Internet. Vous pouvez utiliser votre ordinateur pour cette expérience ou utiliser des lunettes VR pour une expérience plus réaliste.',
+    networkDesc: 'En affichant les histoires inspirantes des personnes, Personai offre l\'opportunité de pouvoir interagir avec ces personnes.',
   },
   bg: {
     logIn: 'Вход',
@@ -177,6 +193,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Точно',
     today: 'Днес',
     aboutUsBtn: 'За нас',
+    jobSimDesc: 'За нашата функция за симулация на работа, която ви дава опита от предпочитаната работа, тя ви предизвиква в генерирани от AI сценарии, за да се усъвършенствате чрез интернет. Можете да използвате компютъра си за това изживяване или бихте могли да използвате VR очила за по-реалистично изживяване.',
+    networkDesc: 'Показвайки вдъхновяващи истории на хора, Personai предоставя възможността да можете да взаимодействате с тези хора.',
   },
   ru: {
     logIn: 'Войти',
@@ -196,6 +214,8 @@ export const translations: Record<Language, Translations> = {
     starts: 'Прямо',
     today: 'Сегодня',
     aboutUsBtn: 'О нас',
+    jobSimDesc: 'Наша функция симуляции работы, которая предоставляет вам опыт предпочтительной работы, бросает вам вызов в сценариях, созданных ИИ, чтобы вы могли улучшить себя через интернет. Для этого опыта вы можете использовать свой компьютер, или можете использовать VR-очки для более реалистичного опыта.',
+    networkDesc: 'Показывая вдохновляющие истории людей, Personai предоставляет возможность общаться с этими людьми.',
   },
 };
 

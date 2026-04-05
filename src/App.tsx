@@ -10,6 +10,8 @@ import Faq from './pages/Faq';
 import Privacy from './pages/Privacy';
 import Internships from './pages/Internships';
 import MyCV from './pages/MyCV';
+import BuildNetwork from './pages/BuildNetwork';
+import JobSimulations from './pages/JobSimulations';
 import Demo from './pages/Demo';
 import PlaceholderPage from './pages/PlaceholderPage';
 
@@ -25,9 +27,9 @@ function App() {
             <Route path="faq" element={<Faq />} />
 
             {/* Other routes that can point to a generic placeholder for now */}
-            <Route path="network" element={<PlaceholderPage title="Build Network" />} />
+            <Route path="network" element={<BuildNetwork />} />
             <Route path="cv" element={<MyCV />} />
-            <Route path="simulations" element={<PlaceholderPage title="Job Simulations" />} />
+            <Route path="simulations" element={<JobSimulations />} />
             <Route path="internships" element={<Internships />} />
             
             {/* Newly added feature routes */}

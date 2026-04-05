@@ -1,5 +1,8 @@
+import { useLanguage } from '../context/LanguageContext';
 
-const MyCV = () => {
+const BuildNetwork = () => {
+    const { t } = useLanguage();
+    
     return (
         <div style={{
             width: '100%',
@@ -21,7 +24,7 @@ const MyCV = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                My CV
+                Build My Network
             </h1>
 
             <div style={{
@@ -42,7 +45,7 @@ const MyCV = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundImage: 'url(/cv-image.jpeg)',
+                    backgroundImage: 'url(/network-image.jpeg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     zIndex: 0
@@ -86,7 +89,7 @@ const MyCV = () => {
                         fontWeight: '400',
                         letterSpacing: '0.5px'
                     }}>
-                        Personai helps you create the perfect CV for your ideal future by using other peoples inspiring stories and suggesting/explaining what you need added in and what will be useful
+                        {t.networkDesc}
                     </p>
                     
                     {/* Try Now Button */}
@@ -120,4 +123,4 @@ const MyCV = () => {
     );
 };
 
-export default MyCV;
+export default BuildNetwork;
