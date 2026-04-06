@@ -153,6 +153,23 @@ const MyNetwork = () => {
         localStorage.setItem('network_stories', JSON.stringify(newStories));
     };
 
+    const deleteStory = (e: React.MouseEvent, id: string) => {
+        e.stopPropagation();
+        if (window.confirm('Are you sure you want to delete this story?')) {
+            const updatedStories = stories.filter(s => s.id !== id);
+            
+            const stored = localStorage.getItem('network_stories');
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                const newStored = parsed.filter((s: NetworkStory) => s.id !== id);
+                localStorage.setItem('network_stories', JSON.stringify(newStored));
+            }
+            
+            setStories(updatedStories);
+            if (activeStory?.id === id) setActiveStory(null);
+        }
+    };
+
     const saveRequests = (newRequests: ContactRequest[]) => {
         setRequests(newRequests);
         localStorage.setItem('network_requests', JSON.stringify(newRequests));
@@ -368,6 +385,21 @@ const MyNetwork = () => {
                             onMouseOver={e => { e.currentTarget.style.borderColor = '#40e0d0'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                             onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'none'; }}
                         >
+                            {user && user.email === story.authorEmail && !story.id.startsWith('global-') && (
+                                <button
+                                    onClick={(e) => deleteStory(e, story.id)}
+                                    style={{
+                                        position: 'absolute', top: '10px', right: '10px',
+                                        background: 'rgba(255,100,100,0.1)', border: '1px solid rgba(255,100,100,0.3)', color: '#ff6b6b',
+                                        borderRadius: '50%', width: '32px', height: '32px',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        cursor: 'pointer', zIndex: 10, fontSize: '0.9rem'
+                                    }}
+                                    title="Delete Story"
+                                >
+                                    🗑️
+                                </button>
+                            )}
                             <div style={{
                                 width: '72px', height: '72px', borderRadius: '50%', border: '2px solid #40e0d0', flexShrink: 0,
                                 background: story.avatarBase64 ? `url(${story.avatarBase64}) center/cover` : (story.gender === 'Female' ? 'linear-gradient(135deg,#a78bfa,#c084fc)' : 'linear-gradient(135deg,#60a5fa,#3b82f6)')
