@@ -96,7 +96,7 @@ const BuildNetwork = () => {
                     
                     {/* Try Now Button */}
                     <button 
-                        onClick={() => navigate('/personi')}
+                        onClick={() => navigate('/auth-selection')}
                         style={{
                         marginTop: '5px',
                         padding: '12px 36px',

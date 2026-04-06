@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function RootLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isLanding = location.pathname === '/';
   const { t } = useLanguage();
+  const { user, isLoggedIn, logout } = useAuth();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -60,10 +63,27 @@ export default function RootLayout() {
           <LanguageSwitcher />
         </div>
 
-        {/* Right: Auth buttons */}
+        {/* Right: Auth buttons / User Profile */}
         <div className="nav-right">
-          <button className="nav-btn login-btn">{t.logIn}</button>
-          <button className="nav-btn signup-btn">{t.signUp}</button>
+          {isLoggedIn ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <span style={{ color: '#ffffff', fontWeight: '500', fontSize: '0.9rem' }}>
+                Welcome, <span style={{ color: '#40e0d0' }}>{user?.name}</span>
+              </span>
+              <button 
+                className="nav-btn login-btn" 
+                onClick={logout}
+                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <button className="nav-btn login-btn" onClick={() => navigate('/login')}>{t.logIn}</button>
+              <button className="nav-btn signup-btn" onClick={() => navigate('/signup')}>{t.signUp}</button>
+            </>
+          )}
         </div>
       </nav>
 

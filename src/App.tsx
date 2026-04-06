@@ -16,34 +16,41 @@ import PersonaiFeature from './pages/PersonaiFeature';
 import AuthSelection from './pages/AuthSelection';
 import ChatPage from './pages/ChatPage';
 import Demo from './pages/Demo';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <LanguageProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<AboutUs />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="faq" element={<Faq />} />
+    <AuthProvider>
+      <LanguageProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<Home />} />
+              <Route path="about" element={<AboutUs />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="faq" element={<Faq />} />
 
-            {/* Other routes that can point to a generic placeholder for now */}
-            <Route path="network" element={<BuildNetwork />} />
-            <Route path="cv" element={<MyCV />} />
-            <Route path="simulations" element={<JobSimulations />} />
-            <Route path="internships" element={<Internships />} />
-            
-            {/* Newly added feature routes */}
-            <Route path="demo" element={<Demo />} />
-            <Route path="privacy-policy" element={<Privacy />} />
-            <Route path="personi" element={<PersonaiFeature />} />
-            <Route path="auth-selection" element={<AuthSelection />} />
-            <Route path="chat" element={<ChatPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </LanguageProvider>
+              {/* Other routes that can point to a generic placeholder for now */}
+              <Route path="network" element={<BuildNetwork />} />
+              <Route path="cv" element={<MyCV />} />
+              <Route path="simulations" element={<JobSimulations />} />
+              <Route path="internships" element={<Internships />} />
+              
+              {/* Newly added feature routes */}
+              <Route path="demo" element={<Demo />} />
+              <Route path="privacy-policy" element={<Privacy />} />
+              <Route path="personi" element={<PersonaiFeature />} />
+              <Route path="auth-selection" element={<AuthSelection />} />
+              <Route path="chat" element={<ChatPage />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </LanguageProvider>
+    </AuthProvider>
   );
 }
 

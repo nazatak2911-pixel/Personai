@@ -9,14 +9,14 @@ const AuthSelection = () => {
         {
             title: t.logIn,
             desc: "Access your personalized career journey.",
-            path: "/",
+            path: "/login",
             icon: "🔑",
             color: "#40e0d0"
         },
         {
             title: t.signUp,
             desc: "Create an account to save your progress.",
-            path: "/",
+            path: "/signup",
             icon: "✨",
             color: "#ffffff"
         },

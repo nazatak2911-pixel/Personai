@@ -47,7 +47,7 @@ const PersonaiFeature = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundImage: 'url(/personai-image.jpeg)',
+                    backgroundImage: 'url(/person-image.jpeg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     zIndex: 0
