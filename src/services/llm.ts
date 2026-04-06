@@ -37,8 +37,11 @@ async function callOpenRouter(
   messages: ChatMessage[],
   modelIndex = 0
 ): Promise<string> {
-  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-  if (!apiKey) throw new Error('NO_OPENROUTER_KEY');
+  const rawApiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+  if (!rawApiKey) throw new Error('NO_OPENROUTER_KEY');
+  
+  // Clean the key (remove standard AND smart quotes and extra whitespace)
+  const apiKey = rawApiKey.trim().replace(/^[“"']|["'”]$/g, '');
 
   if (modelIndex >= OPENROUTER_MODELS.length) {
     throw new Error('ALL_OPENROUTER_MODELS_EXHAUSTED');
@@ -51,7 +54,6 @@ async function callOpenRouter(
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': window.location.origin,
       'X-Title': 'Personna AI',
     },
     body: JSON.stringify({
@@ -63,14 +65,14 @@ async function callOpenRouter(
   });
 
   if (response.status === 429 || response.status === 503) {
-    // Rate limited or unavailable — try next model
-    console.warn(`OpenRouter model ${model} unavailable, trying next...`);
+    console.warn(`OpenRouter model ${model} unavailable (Status ${response.status}), trying next...`);
     return callOpenRouter(messages, modelIndex + 1);
   }
 
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`OpenRouter error: ${response.status} ${err}`);
+    console.error(`OpenRouter Error Detail: Status ${response.status}`, err);
+    throw new Error(`OPENROUTER_FAIL_${response.status}`);
   }
 
   const data = await response.json();
@@ -80,8 +82,11 @@ async function callOpenRouter(
 }
 
 async function callGemini(messages: ChatMessage[]): Promise<string> {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  if (!apiKey) throw new Error('NO_GEMINI_KEY');
+  const rawApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!rawApiKey) throw new Error('NO_GEMINI_KEY');
+  
+  // Clean the key (remove standard AND smart quotes and extra whitespace)
+  const apiKey = rawApiKey.trim().replace(/^[“"']|["'”]$/g, '');
 
   // Convert messages to Gemini format
   const geminiContents = messages.map((m) => ({
@@ -89,7 +94,6 @@ async function callGemini(messages: ChatMessage[]): Promise<string> {
     parts: [{ text: m.role === 'system' ? `[System Instructions]: ${m.content}` : m.content }],
   }));
 
-  // Prepend system prompt as first user message if no system role support
   const contents = [
     { role: 'user', parts: [{ text: `[System Instructions]: ${SYSTEM_PROMPT}` }] },
     { role: 'model', parts: [{ text: 'Understood. I am PERSONAI, your AI career mentor. How can I help you today?' }] },
@@ -117,7 +121,8 @@ async function callGemini(messages: ChatMessage[]): Promise<string> {
 
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`Gemini error: ${response.status} ${err}`);
+    console.error(`Gemini Error Detail: Status ${response.status}`, err);
+    throw new Error(`GEMINI_FAIL_${response.status}`);
   }
 
   const data = await response.json();
@@ -127,16 +132,14 @@ async function callGemini(messages: ChatMessage[]): Promise<string> {
 }
 
 export async function sendMessage(messages: ChatMessage[]): Promise<string> {
-  // Try OpenRouter first (multiple free models), then Gemini as final fallback
   const errors: string[] = [];
 
   try {
     return await callOpenRouter(messages);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    if (msg !== 'NO_OPENROUTER_KEY') {
-      errors.push(`OpenRouter: ${msg}`);
-      console.error('OpenRouter failed:', msg);
+    if (!msg.includes('NO_OPENROUTER_KEY')) {
+      errors.push(msg);
     }
   }
 
@@ -144,19 +147,15 @@ export async function sendMessage(messages: ChatMessage[]): Promise<string> {
     return await callGemini(messages);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    if (msg !== 'NO_GEMINI_KEY') {
-      errors.push(`Gemini: ${msg}`);
-      console.error('Gemini failed:', msg);
+    if (!msg.includes('NO_GEMINI_KEY')) {
+      errors.push(msg);
     }
   }
 
-  // Both failed — check if it's a key issue
-  const hasOpenRouter = !!import.meta.env.VITE_OPENROUTER_API_KEY;
-  const hasGemini = !!import.meta.env.VITE_GEMINI_API_KEY;
-
-  if (!hasOpenRouter && !hasGemini) {
-    return "I'm not configured yet — no API keys have been set up. If you're the site owner, please add VITE_OPENROUTER_API_KEY or VITE_GEMINI_API_KEY to your environment variables. If you're a visitor, please check back soon!";
+  // Debugging message
+  if (errors.length > 0) {
+    return `I'm having trouble connecting. Error details: ${errors.join(' | ')}. Please check your API keys or restart the dev server.`;
   }
 
-  return "I'm having trouble connecting right now due to high demand on the AI servers. Please try again in a moment! Both our primary and backup AI systems are currently at capacity. We apologize for the inconvenience.";
+  return "I'm not configured yet. Please add your API keys to the .env file and restart the development server.";
 }
