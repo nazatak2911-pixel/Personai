@@ -21,8 +21,9 @@ import MyHomePage from './pages/MyHomePage';
 import OnboardingSurvey from './pages/OnboardingSurvey';
 import Demo from './pages/Demo';
 import MyNetwork from './pages/MyNetwork';
+import MyCVDashboard from './pages/MyCVDashboard';
+import AdminPanel from './pages/AdminPanel';
 import { 
-  MyCV as MyCVPlaceholder, 
   MySimulations, 
   MyInternships 
 } from './pages/MyFeatureContainers';
@@ -62,11 +63,12 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<Signup />} />
               <Route path="onboarding-survey" element={<OnboardingSurvey />} />
+              <Route path="admin" element={<AdminPanel />} />
               
               {/* Authenticated "My" environment routes */}
               <Route path="myhomepage" element={<MyHomePage />} />
               <Route path="mynetwork" element={<MyNetwork />} />
-              <Route path="mycv" element={<MyCVPlaceholder />} />
+              <Route path="mycv" element={<MyCVDashboard />} />
               <Route path="mysimulations" element={<MySimulations />} />
               <Route path="myinternships" element={<MyInternships />} />
               <Route path="mypersonai" element={<ChatPage />} />

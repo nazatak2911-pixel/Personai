@@ -77,12 +77,50 @@ export async function sendMessage(messages: ChatMessage[]): Promise<string> {
     try {
       return await callOpenRouter(messages);
     } catch (e: any) {
-      return `❌ Bağlantı Kesildi!
-      
-      📍 Anahtar Okundu mu?: ${hasOR || hasGM ? 'EVET ✅' : 'HAYIR ❌'}
-      📍 Hata Kodları: ${ge.message} | ${e.message}
-      
-      Çözüm önerisi: Lütfen terminali DURDURUP "node node_modules\\vite\\bin\\vite.js" komutuyla BAŞTAN BAŞLAT! (Vite bazen ayarları hafızasında eski haliyle tutuyor). ✨🚀`;
+      return `❌ Bağlantı Kesildi!\n      \n      📍 Anahtar Okundu mu?: ${hasOR || hasGM ? 'EVET ✅' : 'HAYIR ❌'}\n      📍 Hata Kodları: ${ge.message} | ${e.message}\n      \n      Çözüm önerisi: Lütfen terminali DURDURUP "node node_modules\\\\vite\\\\bin\\\\vite.js" komutuyla BAŞTAN BAŞLAT! (Vite bazen ayarları hafızasında eski haliyle tutuyor). ✨🚀`;
     }
   }
 }
+
+// Content moderation — returns safe:true or safe:false with a reason
+export async function moderateContent(text: string): Promise<{ safe: boolean; reason?: string }> {
+  const prompt = `You are a strict content moderation AI. Analyze the following user-submitted text for: sexual content, harassment, hate speech, violence, offensive language, or spam.
+
+Text to analyze:
+"${text}"
+
+Respond with ONLY a JSON object like:
+{"safe": true} 
+or
+{"safe": false, "reason": "Brief reason (max 15 words)"}
+
+No other text, just the JSON.`;
+
+  try {
+    const messages: ChatMessage[] = [{ role: 'user', content: prompt }];
+    const result = await sendMessage(messages);
+    const clean = result.trim().replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    return parsed;
+  } catch {
+    // If moderation fails, allow by default to not block legitimate users
+    return { safe: true };
+  }
+}
+
+// AI CV Enhancement
+export async function enhanceCVWithAI(currentCV: string, request: string, targetPosition: string): Promise<string> {
+  const prompt = `You are an expert CV writer. The user has a CV and wants to enhance it with AI.
+
+Current CV summary/content:
+${currentCV || '(No CV yet — this is a new CV)'}
+
+User's request: "${request}"
+Target position: "${targetPosition}"
+
+Write a professional, polished enhancement/addition for their CV based on their request. Format it as formal CV content (1-3 paragraphs max). Do not add fake credentials or experiences — work with what they provide. Respond only with the enhanced CV text, no meta-commentary.`;
+
+  const messages: ChatMessage[] = [{ role: 'user', content: prompt }];
+  return await sendMessage(messages);
+}
+

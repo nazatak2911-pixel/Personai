@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { moderateContent } from '../services/llm';
 
 export interface NetworkStory {
     id: string;
@@ -69,6 +70,14 @@ const MyNetwork = () => {
         localStorage.setItem('network_requests', JSON.stringify(newRequests));
     };
 
+    const flagAccount = (email: string, name: string, reason: string, content: string) => {
+        const flags = JSON.parse(localStorage.getItem('personai_flags') || '[]');
+        const existing = flags.findIndex((f: any) => f.email === email);
+        const newFlag = { email, name, reason, content, timestamp: Date.now() };
+        if (existing >= 0) flags[existing] = newFlag; else flags.push(newFlag);
+        localStorage.setItem('personai_flags', JSON.stringify(flags));
+    };
+
     const filteredStories = stories.filter(s => {
         if (searchQuery && !s.authorName.toLowerCase().includes(searchQuery.toLowerCase()) && !s.story.toLowerCase().includes(searchQuery.toLowerCase())) return false;
         if (filterCareer && !s.career.toLowerCase().includes(filterCareer.toLowerCase())) return false;
@@ -89,10 +98,19 @@ const MyNetwork = () => {
         }
     };
 
-    const handleShareStory = () => {
+    const handleShareStory = async () => {
         const wordCount = formState.story.trim().split(/\s+/).filter(Boolean).length;
         if (wordCount > 500) return alert('Story maximum 500 words!');
         if (!user) return alert('Must be logged in.');
+
+        // AI Moderation check
+        const textToCheck = `${formState.career} ${formState.traits} ${formState.story}`;
+        const modResult = await moderateContent(textToCheck);
+        if (!modResult.safe) {
+            flagAccount(user.email, user.name, modResult.reason || 'Inappropriate content detected', formState.story);
+            alert(`❌ Content blocked: ${modResult.reason || 'Inappropriate content detected.'}\n\nYour account has been flagged for review.`);
+            return;
+        }
 
         const newStory: NetworkStory = {
             id: Date.now().toString(),

@@ -6,7 +6,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function RootLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [dashboardSidebarOpen, setDashboardSidebarOpen] = useState(true);
+  const [dashboardSidebarOpen, setDashboardSidebarOpen] = useState(true); // Open by default when logged in
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
