@@ -62,14 +62,14 @@ const MyHomePage = () => {
                         background: '#40e0d0', color: '#000', padding: '12px 30px', 
                         borderRadius: '50px', fontSize: '1rem', fontWeight: '600', border: 'none', cursor: 'pointer'
                     }}>
-                        Log In
+                        {t.logIn}
                     </button>
                     <button onClick={() => navigate('/signup')} style={{
                         background: 'transparent', color: '#fff', padding: '12px 30px', 
                         borderRadius: '50px', fontSize: '1rem', fontWeight: '600', 
                         border: '1px solid rgba(255,255,255,0.3)', cursor: 'pointer'
                     }}>
-                        Sign Up
+                        {t.signUp}
                     </button>
                 </div>
             </div>
