@@ -25,6 +25,7 @@ async function callOpenRouter(messages: ChatMessage[], modelIndex = 0): Promise<
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
+      'X-Title': 'Personna AI',
     },
     body: JSON.stringify({
       model: OPENROUTER_MODELS[modelIndex],
@@ -34,7 +35,8 @@ async function callOpenRouter(messages: ChatMessage[], modelIndex = 0): Promise<
 
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`OPENROUTER_${response.status}_${err.substring(0, 20)}`);
+    // Show more of the error for debugging
+    throw new Error(`OPENROUTER_${response.status}_${err}`);
   }
 
   const data = await response.json();
