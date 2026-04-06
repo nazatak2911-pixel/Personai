@@ -35,46 +35,11 @@ const MyHomePage = () => {
     };
 
     const features = [
-        {
-            title: "PERSONAI",
-            desc: t.personaiDesc,
-            path: "/mypersonai",
-            icon: "🤖",
-            color: "#40e0d0",
-            image: "/person-image.jpeg"
-        },
-        {
-            title: t.buildNetwork,
-            desc: t.networkDesc,
-            path: "/mynetwork",
-            icon: "🌐",
-            color: "#ffffff",
-            image: "/network-image.jpeg"
-        },
-        {
-            title: t.myCV,
-            desc: t.myCVDesc,
-            path: "/mycv",
-            icon: "📄",
-            color: "#40e0d0",
-            image: "/cv-image.jpeg"
-        },
-        {
-            title: t.jobSimulations,
-            desc: t.jobSimDesc,
-            path: "/mysimulations",
-            icon: "⚡",
-            color: "#ffffff",
-            image: "/job-image.jpeg"
-        },
-        {
-            title: t.internshipOpportunities,
-            desc: t.internshipsDesc,
-            path: "/myinternships",
-            icon: "🎓",
-            color: "#40e0d0",
-            image: "/intern.jpg"
-        }
+        { title: "PERSONAI", desc: t.personaiDesc, path: "/mypersonai", icon: "🤖", color: "#40e0d0", image: "/person-image.jpeg" },
+        { title: t.buildNetwork, desc: t.networkDesc, path: "/mynetwork", icon: "🌐", color: "#ffffff", image: "/network-image.jpeg" },
+        { title: t.myCV, desc: t.myCVDesc, path: "/mycv", icon: "📄", color: "#40e0d0", image: "/cv-image.jpeg" },
+        { title: t.jobSimulations, desc: t.jobSimDesc, path: "/mysimulations", icon: "⚡", color: "#ffffff", image: "/job-image.jpeg" },
+        { title: t.internshipOpportunities, desc: t.internshipsDesc, path: "/myinternships", icon: "🎓", color: "#40e0d0", image: "/intern.jpg" }
     ];
 
     // UNATHENTICATED STATE
@@ -83,7 +48,8 @@ const MyHomePage = () => {
             <div style={{
                 maxWidth: '1200px', margin: '0 auto', width: '100%', height: '100%',
                 padding: '40px', display: 'flex', flexDirection: 'column', 
-                alignItems: 'center', justifyContent: 'center', color: '#ffffff'
+                alignItems: 'center', justifyContent: 'center', color: '#ffffff',
+                overflow: 'hidden'
             }}>
                 <h1 style={{ fontSize: '3rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '10px' }}>
                     Welcome Trainee
@@ -110,97 +76,65 @@ const MyHomePage = () => {
         );
     }
 
+    // CHART FALLBACK FOR OLDER USERS
+    const scores = user.affinityScores || { Analytical: 70, Creative: 60, Social: 80, Leadership: 50, Technical: 65 };
+
     // AUTHENTICATED STATE
     return (
         <div style={{
-            maxWidth: '1200px',
+            maxWidth: '1300px',
             margin: '0 auto',
             width: '100%',
-            height: '100%',
-            padding: '40px',
-            overflowY: 'auto',
+            height: '100%', // Bound strictly to screen
+            padding: '30px',
+            overflow: 'hidden', // Page strictly no-scroll
             background: 'transparent',
             color: '#ffffff',
             display: 'flex',
             flexDirection: 'column',
-            gap: '40px'
+            gap: '30px' // Tighter gap
         }}>
-            
-            {/* Top Header Row with dynamic WELCOME [NAME] */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                    <h1 style={{
-                        fontSize: 'clamp(2rem, 4vw, 2.5rem)',
-                        fontWeight: '800',
-                        color: '#40e0d0',
-                        textTransform: 'uppercase',
-                        letterSpacing: '-1px',
-                        margin: 0
-                    }}>
-                        WELCOME, <span style={{ color: '#ffffff' }}>{user.name}</span>
-                    </h1>
-                    <button 
-                        onClick={handleChangeName}
-                        style={{
-                            background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.5)',
-                            fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline', marginTop: '5px'
-                        }}
-                    >
-                        Change Name
-                    </button>
-                </div>
-            </div>
-
-            {/* AI Analysis Results (Text Box Left, Chart Right) */}
+            {/* Top Analysis + Welcome + Chart Container */}
             {user.surveyResults && (
                 <div style={{ 
                     display: 'grid', 
-                    gridTemplateColumns: 'minmax(0, 1.3fr) minmax(300px, 1fr)', 
+                    gridTemplateColumns: 'minmax(0, 1.4fr) minmax(320px, 1fr)', 
                     gap: '40px',
-                    alignItems: 'start',
-                    width: '100%'
+                    width: '100%',
+                    flex: 1, // Take all available space
+                    minHeight: 0 // Crucial for Firefox flexbox scroll
                 }}>
                     
-                    {/* LEFT SIDE: The Box containing only text */}
+                    {/* LEFT COLUMN: Scrollable Dark Box */}
                     <div style={{
-                        background: 'rgba(30, 30, 30, 0.6)',
-                        borderRadius: '24px',
+                        background: 'rgba(30,30,30,0.6)',
+                        borderRadius: '32px',
                         padding: '40px',
-                        border: '1px solid rgba(64, 224, 208, 0.3)',
+                        border: '1px solid rgba(64,224,208,0.3)',
                         boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
                         position: 'relative',
-                        overflow: 'hidden',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '20px'
+                        height: '100%', // Stretch to fill Grid Row
+                        overflow: 'hidden' // So internal children can scroll
                     }}>
                         <div style={{
-                            position: 'absolute', top: '-100px', right: '-100px',
-                            width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(64, 224, 208, 0.1) 0%, transparent 70%)',
+                            position: 'absolute', top: '-100px', right: '-100px', width: '300px', height: '300px', 
+                            background: 'radial-gradient(circle, rgba(64,224,208,0.1) 0%, transparent 70%)',
                             zIndex: 0, pointerEvents: 'none'
                         }}/>
 
-                        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '15px' }}>
+                        {/* Box Header */}
+                        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexShrink: 0 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                 <span style={{ fontSize: '2.5rem' }}>🧠</span>
                                 <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#fff', textTransform: 'uppercase', letterSpacing: '-0.5px', margin: 0 }}>
                                     Your AI Profile
                                 </h2>
                             </div>
-                            <button
-                                onClick={() => navigate('/onboarding-survey')}
-                                style={{
-                                    background: 'transparent', border: '1px solid #40e0d0', color: '#40e0d0',
-                                    padding: '8px 16px', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '600',
-                                    cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '5px'
-                                }}
-                                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(64,224,208,0.1)'; }}
-                                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
-                            >
-                                ↻ Retake Test
-                            </button>
                         </div>
 
+                        {/* SCROLLING TEXT CONTENT DEFINITIVELY */}
                         <div style={{
                             position: 'relative', zIndex: 1,
                             fontSize: '0.95rem',
@@ -208,38 +142,66 @@ const MyHomePage = () => {
                             color: 'rgba(255,255,255,0.85)',
                             whiteSpace: 'pre-wrap',
                             letterSpacing: '0.3px',
-                            maxHeight: '400px',
-                            overflowY: 'auto',
+                            overflowY: 'auto', // Independent scrolling
+                            flex: 1, // Fills Box completely
                             paddingRight: '15px'
                         }}>
                             {renderMarkdown(user.surveyResults)}
                         </div>
                     </div>
 
-                    {/* RIGHT SIDE: Subtly Floating Chart */}
-                    {user.affinityScores && (
+
+                    {/* RIGHT COLUMN: Welcome Header + Floating Chart Fixed */}
+                    <div style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        height: '100%', 
+                        justifyContent: 'space-between',
+                        paddingTop: '10px'
+                    }}>
+                        
+                        {/* Welcome Right Aligned */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', width: '100%', marginBottom: '20px' }}>
+                            <h1 style={{
+                                fontSize: 'clamp(2rem, 3.5vw, 2.5rem)', fontWeight: '800', color: '#40e0d0',
+                                textTransform: 'uppercase', letterSpacing: '-1px', margin: 0, textAlign: 'right'
+                            }}>
+                                WELCOME, <span style={{ color: '#ffffff' }}>{user.name}</span>
+                            </h1>
+                            <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+                                <button onClick={handleChangeName} style={{
+                                    background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.5)',
+                                    fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline'
+                                }}>
+                                    Change Name
+                                </button>
+                                <button onClick={() => navigate('/onboarding-survey')} style={{
+                                    background: 'transparent', border: '1px solid #40e0d0', color: '#40e0d0',
+                                    padding: '4px 12px', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '600',
+                                    cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center'
+                                }}>
+                                    ↻ Retake
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Chart Subtly Floating Right */}
                         <div style={{ 
-                            padding: '30px', 
-                            background: 'rgba(0,0,0,0.2)', 
-                            borderRadius: '24px', 
-                            border: '1px solid rgba(255,255,255,0.05)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center'
+                            padding: '30px', background: 'rgba(0,0,0,0.2)', borderRadius: '24px', 
+                            border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column'
                         }}>
                             <h3 style={{ fontSize: '1.2rem', color: '#40e0d0', marginBottom: '25px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>
                                 Inclination Summary
                             </h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
-                                {Object.entries(user.affinityScores).map(([trait, score]) => (
+                                {Object.entries(scores).map(([trait, score]) => (
                                     <div key={trait} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                         <div style={{ width: '90px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', fontWeight: '500', textTransform: 'uppercase' }}>
                                             {trait}
                                         </div>
                                         <div style={{ flex: 1, background: 'rgba(255,255,255,0.1)', height: '14px', borderRadius: '7px', overflow: 'hidden' }}>
                                             <div style={{ 
-                                                width: `${Math.max(5, score)}%`, height: '100%', 
-                                                background: 'linear-gradient(90deg, #2a9d8f, #40e0d0)',
+                                                width: `${Math.max(5, score)}%`, height: '100%', background: 'linear-gradient(90deg, #2a9d8f, #40e0d0)',
                                                 borderRadius: '7px', transition: 'width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
                                             }} />
                                         </div>
@@ -250,47 +212,35 @@ const MyHomePage = () => {
                                 ))}
                             </div>
                         </div>
-                    )}
+
+                    </div>
                 </div>
             )}
 
-            {/* Bottom Section: Squeezed Features Grid (Pushed to bottom) */}
-            <div style={{ marginTop: 'auto' }}>
-                <div style={{ height: '30px' }} /> {/* A small buffer if content gets close */}
-                <h3 style={{ 
-                    fontSize: '1.4rem', color: '#40e0d0', fontWeight: '600', 
-                    marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' 
-                }}>
+            {/* Bottom Section: Squeezed Features Grid (Fixed low flex-shrink) */}
+            <div style={{ 
+                flexShrink: 0, // Prevents the grid from being smushed by the top stretching
+                marginBottom: '10px'
+            }}>
+                <h3 style={{ fontSize: '1.4rem', color: '#40e0d0', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
                     Explore Modules
                 </h3>
                 <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(5, 1fr)',
-                    gap: '15px',
-                    width: '100%'
+                    display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '15px', width: '100%'
                 }}>
                     {features.map((feat, index) => (
                         <div 
                             key={index}
                             onClick={() => navigate(feat.path)}
                             style={{
-                                position: 'relative',
-                                height: '160px',
-                                borderRadius: '16px',
-                                overflow: 'hidden',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'flex-end',
-                                padding: '20px',
-                                transition: 'all 0.3s ease',
-                                boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
-                                border: '1px solid rgba(255,255,255,0.1)'
+                                position: 'relative', height: '140px', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer',
+                                display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '15px',
+                                transition: 'all 0.3s ease', boxShadow: '0 5px 15px rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)'
                             }}
                             onMouseOver={(e) => {
                                 e.currentTarget.style.transform = 'translateY(-3px)';
-                                e.currentTarget.style.boxShadow = '0 10px 25px rgba(64, 224, 208, 0.15)';
-                                e.currentTarget.style.borderColor = 'rgba(64, 224, 208, 0.3)';
+                                e.currentTarget.style.boxShadow = '0 10px 25px rgba(64,224,208,0.15)';
+                                e.currentTarget.style.borderColor = 'rgba(64,224,208,0.3)';
                             }}
                             onMouseOut={(e) => {
                                 e.currentTarget.style.transform = 'none';
@@ -298,7 +248,6 @@ const MyHomePage = () => {
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
                             }}
                         >
-                            {/* Background Image Overlay */}
                             <div style={{
                                 position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                                 backgroundImage: `url(${feat.image})`, backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0
@@ -307,12 +256,10 @@ const MyHomePage = () => {
                                 position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                                 background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 60%, transparent 100%)', zIndex: 1
                             }} />
-
-                            {/* Content */}
                             <div style={{ position: 'relative', zIndex: 2 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                                     <span style={{ fontSize: '1.2rem' }}>{feat.icon}</span>
-                                    <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: feat.color, margin: 0, textTransform: 'uppercase' }}>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: '700', color: feat.color, margin: 0, textTransform: 'uppercase' }}>
                                         {feat.title}
                                     </h3>
                                 </div>
