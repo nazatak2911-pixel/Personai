@@ -139,14 +139,45 @@ const MyHomePage = () => {
                             </button>
                         </div>
                         <div style={{
-                            fontSize: '1.1rem',
-                            lineHeight: '1.8',
+                            fontSize: '0.95rem',
+                            lineHeight: '1.6',
                             color: 'rgba(255,255,255,0.85)',
                             whiteSpace: 'pre-wrap',
-                            letterSpacing: '0.3px'
+                            letterSpacing: '0.3px',
+                            maxHeight: '300px',
+                            overflowY: 'auto',
+                            paddingRight: '15px'
                         }}>
                             {user?.surveyResults ? renderMarkdown(user.surveyResults) : "Analyzing your profile..."}
                         </div>
+
+                        {/* Custom CSS Bar Chart for Career Affinity */}
+                        {user?.affinityScores && (
+                            <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                                <h3 style={{ fontSize: '1.1rem', color: '#40e0d0', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                    Inclination Analysis
+                                </h3>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {Object.entries(user.affinityScores).map(([trait, score]) => (
+                                        <div key={trait} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                            <div style={{ width: '90px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', fontWeight: '500', textTransform: 'uppercase' }}>
+                                                {trait}
+                                            </div>
+                                            <div style={{ flex: 1, background: 'rgba(255,255,255,0.1)', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>
+                                                <div style={{ 
+                                                    width: `${Math.max(5, score)}%`, height: '100%', 
+                                                    background: 'linear-gradient(90deg, #2a9d8f, #40e0d0)',
+                                                    borderRadius: '6px', transition: 'width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                                                }} />
+                                            </div>
+                                            <div style={{ width: '40px', fontSize: '0.9rem', color: '#40e0d0', fontWeight: 'bold', textAlign: 'right' }}>
+                                                {Math.round(score)}%
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

@@ -92,6 +92,32 @@ export default function OnboardingSurvey() {
     if (!isStep3Valid) return;
     setIsSubmitting(true);
 
+    // Calculate quantitative affinity scores
+    // Mapping keys: Analytical, Creative, Social, Leadership, Technical
+    const affinityScores = { Analytical: 0, Creative: 0, Social: 0, Leadership: 0, Technical: 0 };
+    
+    // Likert influence (1-5 scaled to 0-20 per question)
+    affinityScores.Analytical += likertAnswers[0] * 4;
+    affinityScores.Social += likertAnswers[1] * 4;
+    affinityScores.Creative += likertAnswers[2] * 4;
+    affinityScores.Leadership += likertAnswers[3] * 4;
+    affinityScores.Technical += likertAnswers[4] * 4;
+
+    // MC influence (Adds flat 15 points per matching category)
+    mcAnswers.forEach(ans => {
+        if (ans.startsWith('A')) affinityScores.Analytical += 15;
+        if (ans.startsWith('B')) affinityScores.Creative += 15;
+        if (ans.startsWith('C')) affinityScores.Social += 15;
+        if (ans.startsWith('D')) affinityScores.Leadership += 15;
+        if (ans.startsWith('E')) affinityScores.Technical += 15;
+    });
+
+    // Normalize slightly to max 100 for absolute perfection display
+    Object.keys(affinityScores).forEach(key => {
+        const k = key as keyof typeof affinityScores;
+        affinityScores[k] = Math.min(100, affinityScores[k] + 25); // Boost flat +25 base to avoid 0s and cap at 100
+    });
+
     // Build the prompt
     let prompt = `You are an expert career counselor AI for PERSONAI. You are analyzing a new user's onboarding survey to generate a highly personalized "Career Profile Summary".
 The user is answering a 3-part test. Read their answers carefully and produce a comprehensive, motivating, and highly professional 3-4 paragraph analysis of their strengths, potential career paths, and a welcoming message. Use Markdown formatting (bolding, bullet points for career paths).
@@ -117,7 +143,7 @@ Here are their answers:
 
     try {
       const response = await sendMessage([{ role: 'user', content: prompt }]);
-      completeSurvey(response);
+      completeSurvey(response, affinityScores);
       navigate('/myhomepage');
     } catch (e) {
       console.error(e);

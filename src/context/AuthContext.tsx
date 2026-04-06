@@ -5,6 +5,7 @@ interface User {
   email: string;
   hasCompletedSurvey?: boolean;
   surveyResults?: string | null;
+  affinityScores?: Record<string, number> | null;
 }
 
 interface AuthContextType {
@@ -13,7 +14,7 @@ interface AuthContextType {
   login: (email: string, name?: string) => void;
   signup: (name: string, email: string) => void;
   logout: () => void;
-  completeSurvey: (results: string) => void;
+  completeSurvey: (results: string, affinityScores: Record<string, number>) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // For local dummy auth, we'll just sign them in with whatever name is in storage or the provided one
     // We check if a user with this email has existing survey progress (for demo we just assume false unless stored)
     const existing = localStorage.getItem('persona_user');
-    let newUser: User = { name: name || 'Demo User', email, hasCompletedSurvey: false, surveyResults: null };
+    let newUser: User = { name: name || 'Demo User', email, hasCompletedSurvey: false, surveyResults: null, affinityScores: null };
     if (existing) {
         const parsed = JSON.parse(existing);
         if (parsed.email === email) {
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signup = (name: string, email: string) => {
-    const newUser: User = { name, email, hasCompletedSurvey: false, surveyResults: null };
+    const newUser: User = { name, email, hasCompletedSurvey: false, surveyResults: null, affinityScores: null };
     setUser(newUser);
     localStorage.setItem('persona_user', JSON.stringify(newUser));
   };
@@ -61,9 +62,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem('persona_user');
   };
 
-  const completeSurvey = (results: string) => {
+  const completeSurvey = (results: string, affinityScores: Record<string, number>) => {
     if (user) {
-        const updatedUser = { ...user, hasCompletedSurvey: true, surveyResults: results };
+        const updatedUser = { ...user, hasCompletedSurvey: true, surveyResults: results, affinityScores };
         setUser(updatedUser);
         localStorage.setItem('persona_user', JSON.stringify(updatedUser));
     }
