@@ -6,6 +6,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function RootLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [dashboardSidebarOpen, setDashboardSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function RootLayout() {
   const { user, isLoggedIn, logout } = useAuth();
   
   const isDashboard = location.pathname.startsWith('/my');
-  const effectiveSidebarOpen = isDashboard ? true : isSidebarOpen;
+  const effectiveSidebarOpen = isDashboard ? dashboardSidebarOpen : isSidebarOpen;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -33,8 +34,10 @@ export default function RootLayout() {
   };
 
   const toggleSidebar = (e: React.MouseEvent) => {
-    if (isMobile) {
-      e.preventDefault();
+    e.preventDefault();
+    if (isDashboard && !isMobile) {
+      setDashboardSidebarOpen(!dashboardSidebarOpen);
+    } else if (isMobile) {
       setIsSidebarOpen(!isSidebarOpen);
     }
   };
@@ -100,7 +103,7 @@ export default function RootLayout() {
         )}
 
         <aside
-          className={`sidebar ${effectiveSidebarOpen ? 'open' : ''} ${isDashboard ? 'permanent' : ''}`}
+          className={`sidebar ${effectiveSidebarOpen ? 'open' : ''} ${isDashboard && dashboardSidebarOpen ? 'permanent' : ''}`}
           id="sidebar"
           onMouseLeave={closeSidebar}
           onClick={(e) => e.stopPropagation()}

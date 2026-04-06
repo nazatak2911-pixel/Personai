@@ -20,8 +20,8 @@ import Signup from './pages/Signup';
 import MyHomePage from './pages/MyHomePage';
 import OnboardingSurvey from './pages/OnboardingSurvey';
 import Demo from './pages/Demo';
+import MyNetwork from './pages/MyNetwork';
 import { 
-  MyNetwork, 
   MyCV as MyCVPlaceholder, 
   MySimulations, 
   MyInternships 
