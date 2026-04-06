@@ -108,6 +108,9 @@ const MyInternships = () => {
 
     return (
         <div style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '40px', color: '#fff', position: 'relative' }}>
+            <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9rem', marginBottom: '10px', fontStyle: 'italic' }}>
+                Note: These are not real postings; this is a demonstration of how the website will look and function.
+            </p>
             <h1 style={{ fontSize: '3rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '30px' }}>
                 {t.internshipOpportunities}
             </h1>
