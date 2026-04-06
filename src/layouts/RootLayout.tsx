@@ -37,10 +37,12 @@ export default function RootLayout() {
 
   const toggleSidebar = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (isDashboard && !isMobile) {
-      setDashboardSidebarOpen(!dashboardSidebarOpen);
-    } else if (isMobile) {
+    if (isMobile) {
       setIsSidebarOpen(!isSidebarOpen);
+      setDashboardSidebarOpen(!isSidebarOpen);
+    } else {
+      setDashboardSidebarOpen(!dashboardSidebarOpen);
+      setIsSidebarOpen(!dashboardSidebarOpen);
     }
   };
 
