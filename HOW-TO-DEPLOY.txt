@@ -1,0 +1,60 @@
+PERSONNA AI - HOW TO DEPLOY TO VERCEL
+=====================================
+
+This guide explains how to deploy your project to Vercel, even if you are not a programmer.
+
+PREREQUISITES:
+--------------
+1. A GitHub account with your project uploaded.
+2. An OpenRouter API Key (Get one at: https://openrouter.ai/keys)
+3. (Optional) A Google Gemini API Key (Get one at: https://aistudio.google.com/app/apikey)
+
+STEPS TO DEPLOY:
+----------------
+
+1. SIGN UP ON VERCEL:
+   - Go to https://vercel.com/signup
+   - Choose "Continue with GitHub".
+   - Follow the prompts to authorize Vercel to access your GitHub account.
+
+2. IMPORT YOUR PROJECT:
+   - Once logged in, you will be on your Dashboard.
+   - Click the "Add New..." button and select "Project".
+   - You should see a list of your GitHub repositories. Find "PersonnaAI" (or whatever you named your repo) and click "Import".
+
+3. CONFIGURE PROJECT:
+   - You will see a "Configure Project" screen.
+   - Under "Framework Preset", it should automatically detect "Vite".
+   - Under "Root Directory", keep it as `./`.
+   
+4. ADD ENVIRONMENT VARIABLES (CRITICAL):
+   - This part is where you add your AI API keys.
+   - Click on the "Environment Variables" section to expand it.
+   - Use the following names and paste your keys:
+     * Name: VITE_OPENROUTER_API_KEY
+     * Value: (Paste your OpenRouter Key here)
+     * Click "Add".
+     
+     * Name: VITE_GEMINI_API_KEY
+     * Value: (Paste your Gemini Key here)
+     * Click "Add".
+
+5. DEPLOY:
+   - Click the "Deploy" button.
+   - Vercel will now start building your website. This takes about 1-2 minutes.
+   - Once finished, you will see a preview of your site and a "Congratulations!" message.
+
+6. ACCESS YOUR SITE:
+   - Click the preview image to open your live website in a new tab.
+   - Vercel provides a random URL, but you can change it in the project settings.
+
+UPDATING YOUR SITE:
+-------------------
+In the future, whenever you push new changes to your GitHub repository, Vercel will automatically detect the changes and redeploy your site. You don't need to do anything else!
+
+TROUBLESHOOTING:
+----------------
+- If the AI Chat doesn't respond, double-check that your API Keys in Vercel are correct and have enough credits (Free tier keys should work fine).
+- If you see a "404 Not Found" when refreshing a page other than the home page, ensure your project has a `vercel.json` file in the main folder (I have already created one for you).
+
+Congratulations on launching Personna AI!

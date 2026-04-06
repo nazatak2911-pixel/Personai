@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 const JobSimulations = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
     
     return (
         <div style={{
@@ -93,7 +95,9 @@ const JobSimulations = () => {
                     </p>
                     
                     {/* Try Now Button */}
-                    <button style={{
+                    <button
+                        onClick={() => navigate('/personi')}
+                        style={{
                         marginTop: '5px',
                         padding: '12px 36px',
                         background: '#555555',

@@ -21,7 +21,8 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     overflow-x: hidden;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -283,22 +284,71 @@ body {
 }
 
 /* Responsive constraints */
-@media (max-width: 768px) {
-    .main-content.shifted {
-        transform: translateX(calc(var(--sidebar-width) / 1.5));
+@media (max-width: 1024px) {
+    .vertical-slogan {
+        font-size: 6rem;
     }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --sidebar-width: 260px;
+    }
+    
+    .top-nav {
+        padding: 0 15px;
+    }
+
+    .main-content.shifted {
+        transform: translateX(var(--sidebar-width));
+    }
+
+    .vertical-text-wrapper {
+        flex-direction: column-reverse;
+        justify-content: center;
+        padding: 40px 20px;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .vertical-slogan {
+        font-size: 4rem;
+        letter-spacing: -1px;
+        transform: none;
+        text-align: center;
+        width: 100%;
+    }
+
+    .hero-image-container {
+        justify-content: center;
+        max-width: 300px;
+    }
+
+    .sidebar-trigger-area {
+        display: none;
+    }
+
+    .nav-right {
+        gap: 10px;
+    }
+
+    .signup-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .login-btn {
+        display: none; /* Hide login on very small screens to save space */
+    }
+}
+
+@media (max-width: 480px) {
     .vertical-slogan {
         font-size: 3rem;
-        letter-spacing: 8px;
     }
-    .nav-left {
-        padding-left: 10px; /* Reduced for mobile */
-    }
-    .top-nav {
-        padding: 0 20px;
-    }
-    .sidebar-trigger-area {
-        display: none; /* Disable edge hover trigger on mobile */
+    
+    .brand-name {
+        font-size: 1.2rem;
     }
 }
 

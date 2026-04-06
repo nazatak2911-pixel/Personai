@@ -1,7 +1,9 @@
 import { useLanguage } from '../context/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 
 const MyCV = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
     return (
         <div style={{
             width: '100%',
@@ -81,7 +83,9 @@ const MyCV = () => {
                     }}>
                         {t.myCVDesc}
                     </p>
-                    <button style={{
+                    <button 
+                        onClick={() => navigate('/personi')}
+                        style={{
                         marginTop: '5px',
                         padding: '12px 36px',
                         background: '#555555',
@@ -103,7 +107,7 @@ const MyCV = () => {
                         e.currentTarget.style.transform = 'none';
                     }}
                     >
-                        {t.tryNow}
+                        Try Now
                     </button>
                 </div>
             </div>
