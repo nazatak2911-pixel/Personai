@@ -1,5 +1,16 @@
 {
-  "rewrite": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/api/openrouter",
+      "destination": "https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "source": "/api/gemini",
+      "destination": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
