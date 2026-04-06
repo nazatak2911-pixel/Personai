@@ -5,17 +5,17 @@ import { useAuth } from '../context/AuthContext';
 
 const MyHomePage = () => {
     const { t } = useLanguage();
-    const { user } = useAuth();
+    const { user, updateName } = useAuth();
     const navigate = useNavigate();
 
-    // Redirect to onboarding if they haven't taken the survey
+    // Only redirect if logged in but strongly confirmed they haven't completed the survey
     useEffect(() => {
-        if (user && !user.hasCompletedSurvey) {
+        if (user && user.hasCompletedSurvey === false) {
             navigate('/onboarding-survey');
         }
     }, [user, navigate]);
 
-    // Simple custom markdown renderer (handles bold and newlines)
+    // Custom markdown renderer
     const renderMarkdown = (text: string) => {
         const parts = text.split(/(\*\*.*?\*\*)/g);
         return parts.map((part, index) => {
@@ -24,6 +24,14 @@ const MyHomePage = () => {
             }
             return <span key={index}>{part}</span>;
         });
+    };
+
+    const handleChangeName = () => {
+        if (!user) return;
+        const newName = window.prompt("Enter your new name:", user.name);
+        if (newName && newName.trim().length > 0) {
+            updateName(newName.trim());
+        }
     };
 
     const features = [
@@ -69,6 +77,40 @@ const MyHomePage = () => {
         }
     ];
 
+    // UNATHENTICATED STATE
+    if (!user) {
+        return (
+            <div style={{
+                maxWidth: '1200px', margin: '0 auto', width: '100%', height: '100%',
+                padding: '40px', display: 'flex', flexDirection: 'column', 
+                alignItems: 'center', justifyContent: 'center', color: '#ffffff'
+            }}>
+                <h1 style={{ fontSize: '3rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '10px' }}>
+                    Welcome Trainee
+                </h1>
+                <h2 style={{ fontSize: '1.5rem', color: 'rgba(255,255,255,0.7)', fontWeight: '400', marginBottom: '30px' }}>
+                    You are not signed in.
+                </h2>
+                <div style={{ display: 'flex', gap: '20px' }}>
+                    <button onClick={() => navigate('/login')} style={{
+                        background: '#40e0d0', color: '#000', padding: '12px 30px', 
+                        borderRadius: '50px', fontSize: '1rem', fontWeight: '600', border: 'none', cursor: 'pointer'
+                    }}>
+                        Log In
+                    </button>
+                    <button onClick={() => navigate('/signup')} style={{
+                        background: 'transparent', color: '#fff', padding: '12px 30px', 
+                        borderRadius: '50px', fontSize: '1rem', fontWeight: '600', 
+                        border: '1px solid rgba(255,255,255,0.3)', cursor: 'pointer'
+                    }}>
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    // AUTHENTICATED STATE
     return (
         <div style={{
             maxWidth: '1200px',
@@ -84,8 +126,33 @@ const MyHomePage = () => {
             gap: '40px'
         }}>
             
-            {/* Top Section: AI Analysis Results */}
-            {(!user || user.surveyResults) && (
+            {/* Top Header Row with dynamic WELCOME [NAME] */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                    <h1 style={{
+                        fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+                        fontWeight: '800',
+                        color: '#40e0d0',
+                        textTransform: 'uppercase',
+                        letterSpacing: '-1px',
+                        margin: 0
+                    }}>
+                        WELCOME, <span style={{ color: '#ffffff' }}>{user.name}</span>
+                    </h1>
+                    <button 
+                        onClick={handleChangeName}
+                        style={{
+                            background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.5)',
+                            fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline', marginTop: '5px'
+                        }}
+                    >
+                        Change Name
+                    </button>
+                </div>
+            </div>
+
+            {/* AI Analysis Results (Text + Chart split layout) */}
+            {user.surveyResults && (
                 <div style={{
                     background: 'rgba(30, 30, 30, 0.6)',
                     borderRadius: '24px',
@@ -93,81 +160,87 @@ const MyHomePage = () => {
                     border: '1px solid rgba(64, 224, 208, 0.3)',
                     boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
                     position: 'relative',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '30px'
                 }}>
                     <div style={{
                         position: 'absolute', top: '-100px', right: '-100px',
                         width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(64, 224, 208, 0.1) 0%, transparent 70%)',
                         zIndex: 0, pointerEvents: 'none'
                     }}/>
-                    <div style={{ position: 'relative', zIndex: 1 }}>
-                        <div style={{ 
-                            display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                            marginBottom: '20px', flexWrap: 'wrap', gap: '15px' 
-                        }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                <span style={{ fontSize: '2.5rem' }}>🧠</span>
-                                <h2 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#fff', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
-                                    Your AI Career Profile
-                                </h2>
-                            </div>
-                            <button
-                                onClick={() => navigate('/onboarding-survey')}
-                                style={{
-                                    background: 'transparent',
-                                    border: '1px solid #40e0d0',
-                                    color: '#40e0d0',
-                                    padding: '10px 20px',
-                                    borderRadius: '50px',
-                                    fontSize: '0.9rem',
-                                    fontWeight: '600',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s',
-                                    fontFamily: 'Outfit, sans-serif',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '5px'
-                                }}
-                                onMouseOver={(e) => {
-                                    e.currentTarget.style.background = 'rgba(64,224,208,0.1)';
-                                }}
-                                onMouseOut={(e) => {
-                                    e.currentTarget.style.background = 'transparent';
-                                }}
-                            >
-                                ↻ Retake Test
-                            </button>
+
+                    {/* Shared Top Actions of the Block */}
+                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '15px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <span style={{ fontSize: '2.5rem' }}>🧠</span>
+                            <h2 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#fff', textTransform: 'uppercase', letterSpacing: '-0.5px', margin: 0 }}>
+                                Your AI Career Profile
+                            </h2>
                         </div>
+                        <button
+                            onClick={() => navigate('/onboarding-survey')}
+                            style={{
+                                background: 'transparent',
+                                border: '1px solid #40e0d0',
+                                color: '#40e0d0',
+                                padding: '10px 20px',
+                                borderRadius: '50px',
+                                fontSize: '0.9rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                fontFamily: 'Outfit, sans-serif',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '5px'
+                            }}
+                            onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(64,224,208,0.1)'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                        >
+                            ↻ Retake Test
+                        </button>
+                    </div>
+
+                    {/* 2-Column Split: Markdown Left, Chart Right */}
+                    <div style={{ 
+                        position: 'relative', zIndex: 1, 
+                        display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(300px, 1fr)', gap: '40px',
+                        alignItems: 'start' 
+                    }}>
+                        {/* LEFT COLUMN: Markdown Text */}
                         <div style={{
                             fontSize: '0.95rem',
                             lineHeight: '1.6',
                             color: 'rgba(255,255,255,0.85)',
                             whiteSpace: 'pre-wrap',
                             letterSpacing: '0.3px',
-                            maxHeight: '300px',
+                            maxHeight: '400px',
                             overflowY: 'auto',
-                            paddingRight: '15px'
+                            paddingRight: '15px',
+                            borderRight: '1px solid rgba(255,255,255,0.1)'
                         }}>
-                            {user?.surveyResults ? renderMarkdown(user.surveyResults) : "Analyzing your profile..."}
+                            {user.surveyResults ? renderMarkdown(user.surveyResults) : "Analyzing your profile..."}
                         </div>
 
-                        {/* Custom CSS Bar Chart for Career Affinity */}
-                        {user?.affinityScores && (
-                            <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                                <h3 style={{ fontSize: '1.1rem', color: '#40e0d0', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                                    Inclination Analysis
+                        {/* RIGHT COLUMN: Custom CSS Bar Chart for Career Affinity */}
+                        {user.affinityScores && (
+                            <div style={{ paddingLeft: '10px' }}>
+                                <h3 style={{ fontSize: '1.1rem', color: '#40e0d0', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                    Inclination Summary
                                 </h3>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                     {Object.entries(user.affinityScores).map(([trait, score]) => (
                                         <div key={trait} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                             <div style={{ width: '90px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', fontWeight: '500', textTransform: 'uppercase' }}>
                                                 {trait}
                                             </div>
-                                            <div style={{ flex: 1, background: 'rgba(255,255,255,0.1)', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>
+                                            <div style={{ flex: 1, background: 'rgba(255,255,255,0.1)', height: '14px', borderRadius: '7px', overflow: 'hidden' }}>
                                                 <div style={{ 
                                                     width: `${Math.max(5, score)}%`, height: '100%', 
                                                     background: 'linear-gradient(90deg, #2a9d8f, #40e0d0)',
-                                                    borderRadius: '6px', transition: 'width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                                                    borderRadius: '7px', transition: 'width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
                                                 }} />
                                             </div>
                                             <div style={{ width: '40px', fontSize: '0.9rem', color: '#40e0d0', fontWeight: 'bold', textAlign: 'right' }}>

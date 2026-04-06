@@ -13,6 +13,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   login: (email: string, name?: string) => void;
   signup: (name: string, email: string) => void;
+  updateName: (newName: string) => void;
   logout: () => void;
   completeSurvey: (results: string, affinityScores: Record<string, number>) => void;
 }
@@ -22,6 +23,7 @@ const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   login: () => {},
   signup: () => {},
+  updateName: () => {},
   logout: () => {},
   completeSurvey: () => {},
 });
@@ -57,6 +59,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('persona_user', JSON.stringify(newUser));
   };
 
+  const updateName = (newName: string) => {
+    if (user) {
+        const updatedUser = { ...user, name: newName };
+        setUser(updatedUser);
+        localStorage.setItem('persona_user', JSON.stringify(updatedUser));
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('persona_user');
@@ -71,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, signup, logout, completeSurvey }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, signup, updateName, logout, completeSurvey }}>
       {children}
     </AuthContext.Provider>
   );
