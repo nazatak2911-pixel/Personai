@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { evaluateSimulationResponse } from '../services/llm';
 
@@ -15,10 +15,10 @@ interface SimulationCase {
 const MyJobSimulations = () => {
   const { t } = useLanguage();
 
-  const CASES: SimulationCase[] = [
+  const ALL_CASES: SimulationCase[] = [
     {
-      id: 'doctor',
-      role: t.jobSimulations + ' - Doctor',
+      id: 'doctor_1',
+      role: t.jobSimulations + ' - Doctor (V1)',
       situation: t.doctorHistory,
       character: 'Patient (Mr. Henderson)',
       visualLabel: 'fMRI Scan Results',
@@ -26,8 +26,17 @@ const MyJobSimulations = () => {
       icon: '🩺'
     },
     {
-      id: 'architect',
-      role: t.jobSimulations + ' - Architect',
+      id: 'doctor_2',
+      role: t.jobSimulations + ' - Doctor (V2)',
+      situation: t.doctorHistoryV2,
+      character: 'Patient (Mrs. Gable)',
+      visualLabel: 'Chest X-Ray / CT',
+      initialMessage: t.doctorInitialV2,
+      icon: '🩺'
+    },
+    {
+      id: 'architect_1',
+      role: t.jobSimulations + ' - Architect (V1)',
       situation: t.architectBrief,
       character: 'Client (Sarah)',
       visualLabel: 'Site Topography & Wind Map',
@@ -35,8 +44,17 @@ const MyJobSimulations = () => {
       icon: '🏗️'
     },
     {
-      id: 'developer',
-      role: t.jobSimulations + ' - Software Engineer',
+      id: 'architect_2',
+      role: t.jobSimulations + ' - Architect (V2)',
+      situation: t.architectBriefV2,
+      character: 'Client (Warehouse Project)',
+      visualLabel: 'Structural Load Map',
+      initialMessage: t.architectInitialV2,
+      icon: '🏗️'
+    },
+    {
+      id: 'developer_1',
+      role: t.jobSimulations + ' - Software Engineer (V1)',
       situation: t.developerReport,
       character: 'CTO (Mark)',
       visualLabel: 'System Monitor (Grafana)',
@@ -44,25 +62,56 @@ const MyJobSimulations = () => {
       icon: '💻'
     },
     {
-      id: 'lawyer',
-      role: t.jobSimulations + ' - Lawyer',
+      id: 'developer_2',
+      role: t.jobSimulations + ' - Software Engineer (V2)',
+      situation: t.developerReportV2,
+      character: 'DevOps Lead',
+      visualLabel: 'CloudWatch / Redis Metrics',
+      initialMessage: t.developerInitialV2,
+      icon: '💻'
+    },
+    {
+      id: 'lawyer_1',
+      role: t.jobSimulations + ' - Lawyer (V1)',
       situation: t.lawyerDetails,
       character: 'Client (James)',
       visualLabel: 'Witness Deposition Document',
       initialMessage: "They gave me a plea deal, but I'm innocent. If I take it, my career is over. If we go to trial and lose, I'm looking at 10 years. What do we do?",
       icon: '⚖️'
+    },
+    {
+      id: 'lawyer_2',
+      role: t.jobSimulations + ' - Lawyer (V2)',
+      situation: t.lawyerDetailsV2,
+      character: 'Client (Alex)',
+      visualLabel: 'Corporate IP Contract',
+      initialMessage: t.lawyerInitialV2,
+      icon: '⚖️'
     }
   ];
 
+  const [shuffledCases, setShuffledCases] = useState<SimulationCase[]>([]);
   const [selectedCase, setSelectedCase] = useState<SimulationCase | null>(null);
   const [userAction, setUserAction] = useState('');
   const [evaluation, setEvaluation] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const shuffle = [...ALL_CASES].sort(() => Math.random() - 0.5);
+    setShuffledCases(shuffle);
+  }, [t]); // Reshuffle when language changes to keep it fresh
+
   const startSimulation = (c: SimulationCase) => {
     setSelectedCase(c);
     setEvaluation(null);
     setUserAction('');
+  };
+
+  const handleNextCase = () => {
+    if (!selectedCase) return;
+    const currentIndex = shuffledCases.findIndex(c => c.id === selectedCase.id);
+    const nextIndex = (currentIndex + 1) % shuffledCases.length;
+    startSimulation(shuffledCases[nextIndex]);
   };
 
   const handleVRClick = () => {
@@ -116,7 +165,7 @@ const MyJobSimulations = () => {
         </p>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-          {CASES.map(c => (
+          {(shuffledCases.length > 0 ? shuffledCases : ALL_CASES).map(c => (
             <div 
               key={c.id} 
               onClick={() => startSimulation(c)}
@@ -125,7 +174,9 @@ const MyJobSimulations = () => {
               onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.transform = 'none'; }}
             >
               <div style={{ fontSize: '3rem' }}>{c.icon}</div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#40e0d0', margin: 0 }}>{c.role.split(' - ')[1]}</h2>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#40e0d0', margin: 0, textAlign: 'center' }}>
+                {c.role.split(' - ')[1]}
+              </h2>
               <button style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '10px 24px', borderRadius: '50px', fontWeight: '700', cursor: 'pointer', marginTop: '10px' }}>
                 {t.tryNow}
               </button>
@@ -135,6 +186,7 @@ const MyJobSimulations = () => {
       </div>
     );
   }
+
 
 
   return (
@@ -233,12 +285,20 @@ const MyJobSimulations = () => {
                <div style={{ color: '#eee', lineHeight: '1.6', fontSize: '0.95rem', whiteSpace: 'pre-wrap' }}>
                  {evaluation}
                </div>
-               <button 
-                onClick={() => { setEvaluation(null); setUserAction(''); }}
-                style={{ marginTop: '20px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem' }}
-               >
-                 Try Different Response
-               </button>
+               <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                 <button 
+                  onClick={() => { setEvaluation(null); setUserAction(''); }}
+                  style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem' }}
+                 >
+                   Try Different Response
+                 </button>
+                 <button 
+                  onClick={handleNextCase}
+                  style={{ background: '#40e0d0', border: 'none', color: '#000', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '800' }}
+                 >
+                   Next Case ➔
+                 </button>
+               </div>
              </div>
            )}
         </div>

@@ -44,9 +44,17 @@ export interface Translations {
   privacyPolicyContent: string;
   simDisclaimer: string;
   doctorHistory: string;
+  doctorHistoryV2: string;
+  doctorInitialV2: string;
   architectBrief: string;
+  architectBriefV2: string;
+  architectInitialV2: string;
   developerReport: string;
+  developerReportV2: string;
+  developerInitialV2: string;
   lawyerDetails: string;
+  lawyerDetailsV2: string;
+  lawyerInitialV2: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -87,10 +95,18 @@ export const translations: Record<Language, Translations> = {
     "placeholderDesc": "This page is currently under construction. Please check back later!",
     "privacyPolicyContent": "This Privacy Policy explains how our artificial intelligence application collects, uses, stores, and protects information when used by minors. We are committed to protecting the privacy, safety, and rights of children and ensuring all data is handled ethically.",
     "simDisclaimer": "These are currently available simulations. Our team is working on adding more professional fields and interactive scenarios soon.",
-    "doctorHistory": "Detailed History: Mr. Henderson has a history of mild hypertension. No recent travel. Digital artist (high screen time). Peripheral vision loss is sporadic but increasing.",
-    "architectBrief": "Detailed Brief: Site on a 45-degree slope. Local laws require 40% renewable energy. Client insists on glass but is worried about heating costs.",
-    "developerReport": "Incident Report: Database latency spiked at 02:00 AM. Error logs show 'Too many connections'. New deployment happened 15 minutes prior.",
-    "lawyerDetails": "Case Details: Plea deal is 2 years. Witness claims to have seen James at the scene, but initial statement was uncertain due to darkness."
+    "doctorHistory": "Case: Mr. Henderson (45). Vitals: BP 145/95, HR 82. History: Chronic migraines for 12 years. Smoker (5/day). Social: Digital artist working 10+ hours/day. Lab: Recent CBC normal, Cholesterol elevated (240 mg/dL). Symptoms: Tunnel vision onset during high-stress periods, increasing in frequency.",
+    "doctorHistoryV2": "Case: Mrs. Gable (62). Vitals: BP 130/80, O2 Sat 93% (Ambient), Temp 37.1C. History: Hypertension, Asthma, heavy smoker (30 pack-years). Weight: 5kg loss in 20 days. Clinical: Dull percussion note at right lower lung lobe. Dry cough becomes productive at night.",
+    "doctorInitialV2": "Doctor, this cough is like a rattle in my chest and I've shrunk! My clothes don't fit anymore. I'm exhausted just walking to the kitchen.",
+    "architectBrief": "Project: Cliffside Villa. Site: 45-degree granite slope, Zone 4 wind loads (250km/h peaks). Regulations: 40% renewable quota, no concrete foundation permitted on the cliff-edge buffer. Budget: $4.2M. Client Goal: Full glass facade, minimalist zero-energy impact.",
+    "architectBriefV2": "Project: Warehouse 7 (1920s Loft Conversion). Specs: 12,000 sq ft, unreinforced masonry. Timber floor joists show 15% moisture decay. Client: Tech CEO. Goal: Double-height atrium with removal of 4 central load-bearing columns. Budget: $1.8M.",
+    "architectInitialV2": "I want these columns gone for a wide-open tech office feel. The engineer says the roof might sag. Use carbon fiber or whatever it takes, just get me that space!",
+    "developerReport": "Incident #892: DB performance degradation. Latency: 450ms (baseline 20ms). Connections: 2,500/3,000. Logs: SHOW PROCESSLIST indicates 'Copying to tmp table' on search queries. Event: Release v2.4.1 deployed 15 mins prior (includes search UI update).",
+    "developerReportV2": "Incident #901: API 502/504 errors. Origin: Checkout-Microservice. Cache: Redis memory 15.8GB/16GB. Eviction Policy: volatile-lru. Logs: Critical slowdown in session lookup. Metrics: Kubernetes pod restarts increasing.",
+    "developerInitialV2": "Checkout is 100% down. It's a Redis memory overflow. We can't scale the cluster instantly. Should we purge session data or disable the caching layer entirely?",
+    "lawyerDetails": "Case: People v. James. Charge: Securities Fraud. Plea: 18 months, no jail time (probation). Evidence: Primary witness (ex-partner) claims James signed the documents. Problem: Forensic report on signature is 'Inconclusive'. Context: Witness has a pending immunity deal.",
+    "lawyerDetailsV2": "Case: TechCorp v. Alex. Charge: Theft of Intellectual Property. Evidence: TechCorp IP files found in 'private_projects' folder on personal PC. Defense: Alex claims he authored the algorithms before joining TechCorp. Contract: Standard 'Assignment of Inventions' signed 2 years ago.",
+    "lawyerInitialV2": "TechCorp is suing for $2M. They say they own my brain! That algorithm was my thesis project. If I lose, I'm bankrupt. What's our leverage?"
   },
   "tr": {
     "logIn": "Giriş Yap",
@@ -127,12 +143,20 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "E-posta",
     "numberHeader": "Numara",
     "placeholderDesc": "Bu sayfa şu anda yapım aşamasındadır. Lütfen daha sonra tekrar kontrol edin!",
-    "privacyPolicyContent": "Bu Gizlilik Politikası, reşit olmayan kişiler tarafından kullanıldığında yapay zeka uygulamamızın bilgileri nasıl topladığını, kullandığını, sakladığını ve koruduğunu açıklar. Çocukların gizliliğini, güvenliğini ve haklarını korumaya ve tüm verilerin etik olarak ele alınmasını sağlamaya kararlıyız.",
-    "simDisclaimer": "Bunlar şu an kullanılabilir simülasyonlardır. Ekibimiz yakında daha fazla profesyonel alan ve interaktif senaryolar eklemek için çalışıyor.",
-    "doctorHistory": "Detaylı Geçmiş: Bay Henderson'ın hafif hipertansiyon öyküsü var. Yakın zamanda seyahat etmemiş. Dijital sanatçı. Yan görüş kaybı düzensiz ama artıyor.",
-    "architectBrief": "Detaylı Özet: Saha 45 derecelik bir eğimde. Yerel yasalar %40 yenilenebilir enerji gerektiriyor. Müşteri cam ısrarı yapıyor ama ısıtma maliyetlerinden korkuyor.",
-    "developerReport": "Olay Raporu: Veritabanı gecikmesi saat 02:00'de pik yaptı. Hata günlükleri 'Çok fazla bağlantı' gösteriyor. Pikten 15 dakika önce yeni dağıtım yapıldı.",
-    "lawyerDetails": "Vaka Detayları: Savcılık anlaşması 2 yıl. Tanık, James'i olay yerinde gördüğünü iddia ediyor ancak ilk ifadesi karanlık nedeniyle belirsizdi."
+    "privacyPolicyContent": "Bu Gizlilik Politikası, reşit olmayan kişiler tarafından kullanıldığında yapay zeka uygulamamızın bilgileri nasıl topladyıp kullandığını detaylandırır.",
+    "simDisclaimer": "Bunlar şu an aktif olan vakalardır. Yakında daha fazla profesyonel alan ve vaka eklenecektir.",
+    "doctorHistory": "Vaka: Bay Henderson (45). Yaşamsal: Tansiyon 145/95, Nabız 82. Geçmiş: 12 yıldır kronik migren. 5 sigara/gün. Sosyal: Günde 10+ saat ekran karşısında çalışan dijital sanatçı. Semptomlar: Stresli dönemlerde artan tünel görüşü.",
+    "doctorHistoryV2": "Vaka: Bayan Gable (62). Yaşamsal: Tansiyon 130/80, O2 Sat %93. Kilo: 20 günde 5 kg kayıp. Geçmiş: Hipertansiyon, Astım, 30 yıllık sigara. Klinik: Sağ alt akciğer lobunda matite. Gece artan produtif öksürük.",
+    "doctorInitialV2": "Doktor, göğsümde sanki bir çıngırak var ve elbiselerim bollaşmaya başladı. Mutfağa gidene kadar bile nefesim kesiliyor.",
+    "architectBrief": "Proje: Sahil Villası. Arazi: 45 derece granit eğim, Bölge 4 rüzgar yükü (250km/s pik). Kurallar: %40 yenilenebilir enerji kotası, uçurum kenarında beton temele izin yok. Bütçe: 4.2M$. Hedef: Tam cam cephe.",
+    "architectBriefV2": "Proje: Ambar 7 (1920'ler Loft Tadilatı). Detaylar: 12.000m², takviyesiz duvarlar. Ahşap zemin kirişlerinde %15 çürüme tespit edildi. Hedef: 4 ana taşıyıcı kolonu kaldırarak 2 katlı atriyum açmak. Bütçe: 1.8M$.",
+    "architectInitialV2": "Bu kolonların gitmesini istiyorum, ofisin ferah olmasını istiyorum! Mühendis tavan sarkar diyor. Karbon fiber mi kullanırsınız ne yaparsınız bilmem ama o alanı bana açın!",
+    "developerReport": "Olay #892: DB performans kaybı. Gecikme: 450ms. Bağlantılar: 2.500/3.000. Günlükler: Arama sorgularında 'Copying to tmp table' uyarısı. Etkinlik: 15 dk önce Search UI güncellemesi içeren v2.4.1 dağıtıldı.",
+    "developerReportV2": "Olay #901: API 502/504 hataları. Kaynak: Ödeme Mikroservisi. Önbellek: Redis belleği 15.8GB/16GB. Durum: Oturum sorgularında kritik yavaşlama. Pod yeniden başlatmaları artıyor.",
+    "developerInitialV2": "Ödeme ekranı tamamen çöktü! Redis bellek taşması var. Kümeyi anında ölçekleyemiyoruz. Oturum verilerini temizlesek mi yoksa önbelleği tamamen kapatsak mı?",
+    "lawyerDetails": "Vaka: Kamu - James. Suçlama: Menkul Kıymet Dolandırıcılığı. Teklif: 18 ay denetimli serbestlik. Kanıt: Eski ortağın 'imzalar James'in' iddiası. Sorun: Adli imza raporu 'Sonuçsuz'. Tanık dokunulmazlık anlaşması bekliyor.",
+    "lawyerDetailsV2": "Vaka: TechCorp - Alex. Suçlama: Fikri Mülkiyet Hırsızlığı. Kanıt: Şirket dosyaları Alex'in kişisel PC'sinde bulundu. Savunma: Alex algoritmaları şirket öncesi yazdığını iddia ediyor. Sözleşme: 2 yıl önceki standart madde.",
+    "lawyerInitialV2": "TechCorp 2M$ istiyor! Beynimin sahibi olduklarını söylüyorlar. O algoritma benim tezimdi. Kaybedersem iflas ederim. Kozumuz nedir?"
   },
   "it": {
     "logIn": "Accedi",
@@ -171,10 +195,18 @@ export const translations: Record<Language, Translations> = {
     "placeholderDesc": "Questa pagina è attualmente in costruzione. Torna a controllare più tardi!",
     "privacyPolicyContent": "La presente Informativa sulla privacy spiega in che modo la nostra applicazione di intelligenza artificiale raccoglie, utilizza e protegge le informazioni per i minori.",
     "simDisclaimer": "Queste sono le simulazioni attualmente disponibili. Il nostro team sta lavorando per aggiungere presto altri campi professionali.",
-    "doctorHistory": "Storia dettagliata: Il signor Henderson ha una storia di lieve ipertensione. Nessun viaggio recente. Perdita della visione periferica sporadica.",
+    "doctorHistory": "Paziente: Sig. Henderson (45). Anamnesi: Lieve ipertensione, glaucoma familiare. Professione: Artista Digitale. Sintomi: Emicranie ricorrenti.",
+    "doctorHistoryV2": "Paziente: Sig.ra Gable (62). Anamnesi: Fumatore (20 anni), BPCO. Sintomi: Tosse cronica, perdita di peso di 5 kg in 2 settimane.",
+    "doctorInitialV2": "Dottore, non riesco a smettere di tossire e ho perso molto peso. Sento il petto pesante e ho paura.",
     "architectBrief": "Brief dettagliato: Sito su un pendio di 45 gradi. Il cliente insiste sul vetro ma è preoccupato per i costi di riscaldamento.",
-    "developerReport": "Rapporto sull'incidente: La latenza del database è aumentata alle 02:00. I log mostrano 'Troppe connessioni'.",
-    "lawyerDetails": "Dettagli del caso: Il patteggiamento è di 2 anni. Il testimone afferma di aver visto James, ma la dichiarazione iniziale era incerta."
+    "architectBriefV2": "Brief dettagliato: Ristrutturazione magazzino anni '20. Struttura in mattoni e legno. Obiettivo: Loft di lusso senza nuove colonne.",
+    "architectInitialV2": "Voglio un loft di lusso qui. L'ingegnere dice che il legno non reggerà se togliamo le pareti. Come facciamo?",
+    "developerReport": "Rapporto incidente: Latenza DB picco alle 02:00. Log mostrano 'Troppe connessioni'. Nuovo deployment 15 min prima.",
+    "developerReportV2": "Rapporto incidente: Errori 502 su Checkout API. Cache hit rate sceso al 5%. Redis sotto pressione.",
+    "developerInitialV2": "Gli utenti non possono comprare nulla! Il checkout è giù. Sembra un problema di cache ma Redis è quasi pieno.",
+    "lawyerDetails": "Dettagli caso: Patteggiamento 2 anni. Testimone incerto a causa dell'oscurità.",
+    "lawyerDetailsV2": "Dettagli caso: Spionaggio aziendale. File criptati trovati sul laptop personale dell'ex dipendente.",
+    "lawyerInitialV2": "Mi accusano di rubare segreti, ma erano progetti personali del fine settimana! Possiamo vincere?"
   },
   "de": {
     "logIn": "Anmelden",
@@ -213,10 +245,18 @@ export const translations: Record<Language, Translations> = {
     "placeholderDesc": "Diese Seite befindet sich im Aufbau. Bitte schauen Sie später wieder vorbei!",
     "privacyPolicyContent": "Diese Datenschutzrichtlinie erklärt, wie unsere KI-Anwendung Informationen von Minderjährigen sammelt, nutzt und schützt.",
     "simDisclaimer": "Dies sind aktuell verfügbare Simulationen. Unser Team arbeitet daran, bald weitere Berufsfelder hinzuzufügen.",
-    "doctorHistory": "Detaillierte Anamnese: Herr Henderson leidet an leichtem Bluthochdruck. Kein Reiseverlauf. Sporadischer Verlust des peripheren Sehens.",
-    "architectBrief": "Detailliertes Briefing: Grundstück mit 45 Grad Neigung. Kunde besteht auf Glas, sorgt sich aber um Heizkosten.",
-    "developerReport": "Vorfallbericht: Datenbank-Latenz stieg um 02:00 Uhr an. Logs zeigen 'Zu viele Verbindungen'.",
-    "lawyerDetails": "Falldetails: Das Plädoyer-Angebot beträgt 2 Jahre. Zeuge behauptet, James gesehen zu haben, war aber anfangs unsicher."
+    "doctorHistory": "Patient: Herr Henderson (45). Anamnese: Bluthochdruck. Beruf: Digitaler Künstler. Symptome: Migräne, Sehverlust.",
+    "doctorHistoryV2": "Patient: Frau Gable (62). Anamnese: Raucher (20 Jahre), COPD. Symptome: Husten, 5kg Gewichtsverlust.",
+    "doctorInitialV2": "Herr Doktor, ich kann nicht aufhören zu husten und habe so viel Gewicht verloren. Meine Brust fühlt sich schwer an.",
+    "architectBrief": "Detailliertes Briefing: 45 Grad Hanglage. Kunde will Glas, sorgt sich aber um Heizkosten.",
+    "architectBriefV2": "Detailliertes Briefing: Lagerhaus-Renovierung aus den 1920ern. Ziel: Luxus-Lofts ohne neue Säulen.",
+    "architectInitialV2": "Ich möchte hier ein offenes Luxus-Loft. Der Ingenieur sagt, es geht nicht ohne Wände. Wie schaffen wir das?",
+    "developerReport": "Vorfallbericht: DB-Latenz Spitzen um 02:00. Logs zeigen 'Zu viele Verbindungen'.",
+    "developerReportV2": "Vorfallbericht: 502 Fehler bei Checkout API. Cache-Rate sank auf 5%. Redis-Druck.",
+    "developerInitialV2": "Niemand kann etwas kaufen! Der Checkout ist down. Redis ist fast voll. Sollen wir leeren oder skalieren?",
+    "lawyerDetails": "Falldetails: 2 Jahre Plädoyer. Zeuge unsicher wegen Dunkelheit.",
+    "lawyerDetailsV2": "Falldetails: Industriespionage. Verschlüsselte Dateien auf privatem Laptop gefunden.",
+    "lawyerInitialV2": "Sie beschuldigen mich des Diebstahls, aber das waren private Wochenendprojekte! Können wir gewinnen?"
   },
   "es": {
     "logIn": "Iniciar Sesión",
@@ -255,10 +295,18 @@ export const translations: Record<Language, Translations> = {
     "placeholderDesc": "Esta página está actualmente en construcción. ¡Por favor, vuelva más tarde!",
     "privacyPolicyContent": "Esta Política de privacidad explica cómo nuestra aplicación de IA recopila y protege la información de los menores.",
     "simDisclaimer": "Estas son simulaciones disponibles actualmente. Nuestro equipo está trabajando para añadir más campos profesionales pronto.",
-    "doctorHistory": "Historia detallada: El Sr. Henderson tiene antecedentes de hipertensión leve. Pérdida de visión periférica esporádica pero creciente.",
-    "architectBrief": "Breve detallado: Sitio en una pendiente de 45 grados. El cliente insiste en el vidrio pero le preocupan los costes de calefacción.",
-    "developerReport": "Informe de incidentes: La latencia de la base de datos aumentó a las 02:00 AM. Los registros muestran 'Demasiadas conexiones'.",
-    "lawyerDetails": "Detalles del caso: El acuerdo de culpabilidad es de 2 años. El testigo afirma haber visto a James, pero la declaración inicial era incierta."
+    "doctorHistory": "Paciente: Sr. Henderson (45). Historia: Hipertensión leve. Profesión: Artista Digital. Síntomas: Migrañas recurrentes.",
+    "doctorHistoryV2": "Paciente: Sra. Gable (62). Historia: Fumadora (20 años). Síntomas: Tos crónica, pérdida de peso de 5 kg.",
+    "doctorInitialV2": "Doctor, no puedo dejar de toser y he perdido mucho peso sin intentarlo. Me siento mal.",
+    "architectBrief": "Breve detallado: Pendiente de 45 grados. El cliente insiste en vidrio pero le preocupan los costes.",
+    "architectBriefV2": "Breve detallado: Renovación de almacén de 1920. Objetivo: Lofts de lujo sin nuevas columnas estructurales.",
+    "architectInitialV2": "Quiero un loft de lujo abierto. El ingeniero dice que la madera no aguantará. ¿Cómo lo hacemos seguro?",
+    "developerReport": "Informe: Latencia de BD aumentó a las 02:00 AM. 'Demasiadas conexiones'.",
+    "developerReportV2": "Informe: Errores 502 en Checkout API. Redis bajo presión de memoria.",
+    "developerInitialV2": "¡Nadie puede comprar! El checkout no funciona. Redis está casi lleno. ¿Escalamos?",
+    "lawyerDetails": "Detalles: Acuerdo de 2 años. Testigo incierto por la oscuridad.",
+    "lawyerDetailsV2": "Detalles: Espionaje corporativo. Archivos IP encontrados en laptop personal.",
+    "lawyerInitialV2": "¿Me acusan de robo? ¡Eran proyectos personales de fin de semana! ¿Podemos ganar?"
   },
   "uz": {
     "logIn": "Kirish",
@@ -297,10 +345,18 @@ export const translations: Record<Language, Translations> = {
     "placeholderDesc": "Ushbu sahifa hozirda qurilmoqda. Iltimos, keyinroq qayta tekshiring!",
     "privacyPolicyContent": "Ushbu maxfiylik siyosati bizning ilovamiz ma'lumotlarni qanday to'plashi va himoya qilishini tushuntiradi.",
     "simDisclaimer": "Bular hozirda mavjud simulyatsiyalar. Bizning jamoamiz yaqinda yangi sohalarni qo'shish ustida ishlamoqda.",
-    "doctorHistory": "Batafsil tarix: Janob Hendersonda engil gipertoniya bor. Periferik ko'rish qobiliyatini yo'qotish ortib bormoqda.",
-    "architectBrief": "Batafsil ma'lumot: Joy 45 darajali nishabda. Mijoz oynali devorlarni xohlaydi, lekin isitish xarajatlaridan xavotirda.",
-    "developerReport": "Hodisa hisoboti: Ma'lumotlar bazasi kechikishi soat 02:00 da oshdi. Tizimda 'Ulanishlar juda ko'p' xatosi.",
-    "lawyerDetails": "Ish tafsilotlari: Kelishuv 2 yil. Guvoh Jeymsni ko'rganini aytmoqda, lekin avvalgi ko'rsatmasi noaniq edi."
+    "doctorHistory": "Bemor: Janob Henderson (45). Tarix: Gipertoniya. Kasbi: Raqamli rassom. Semptomlar: Migren.",
+    "doctorHistoryV2": "Bemor: Gable xonim (62). Tarix: Chekuvchi (20 yil). Semptomlar: Surunkali yo'tal, 5 kg vazn yo'qotish.",
+    "doctorInitialV2": "Doktor, yo'talim to'xtamayapti va juda ko'p vazn yo'qotdim. Ko'kragimda og'irlik bor.",
+    "architectBrief": "Batafsil: 45 darajali nishab. Mijoz oynali devorlarni xohlaydi, lekin isitish xarajatlaridan xavotirda.",
+    "architectBriefV2": "Batafsil: 1920-yillardagi omborni ta'mirlash. Maqsad: Yangi ustunlarsiz luks loftlar yaratish.",
+    "architectInitialV2": "Men bu yerda ochiq luks loft xohlayman. Muhandis ustunlarsiz iloji yo'q demoqda. Nima qilamiz?",
+    "developerReport": "Hisobot: DB kechikishi 02:00 da oshdi. 'Ulanishlar juda ko'p'.",
+    "developerReportV2": "Hisobot: Checkout API 502 xatolari. Redis xotirasi to'lib bormoqda.",
+    "developerInitialV2": "Foydalanuvchilar sotib ololmayapti! Checkout ishlamayapti. Redisni tozalaylikmi?",
+    "lawyerDetails": "Tafsilotlar: 2 yil kelishuv. Guvoh qorong'ulik tufayli aniq ko'rmagan.",
+    "lawyerDetailsV2": "Tafsilotlar: Korporativ josuslik. Shaxsiy noutbukda maxfiy fayllar topildi.",
+    "lawyerInitialV2": "Meni o'g'rilikda ayblashmoqda, lekin bular shaxsiy loyihalarim edi! Yuta olamizmi?"
   },
   "fr": {
     "logIn": "Connexion",
@@ -339,10 +395,18 @@ export const translations: Record<Language, Translations> = {
     "placeholderDesc": "Cette page est en cours de construction. Revenez plus tard !",
     "privacyPolicyContent": "Cette politique de confidentialité explique comment notre application IA collecte et protège les informations des mineurs.",
     "simDisclaimer": "Ce sont les simulations actuellement disponibles. Notre équipe travaille pour ajouter d'autres domaines bientôt.",
-    "doctorHistory": "Histoire détaillée : M. Henderson a des antécédents d'hypertension légère. Perte de vision périphérique sporadique.",
-    "architectBrief": "Brief détaillé : Terrain sur une pente de 45 degrés. Le client insiste sur le verre mais s'inquiète des coûts de chauffage.",
-    "developerReport": "Rapport d'incident : La latence de la base de datos a bondi à 02h00. Les journaux indiquent 'Trop de connexions'.",
-    "lawyerDetails": "Détails de l'affaire : Le plaidoyer est de 2 ans. Le témoin prétend avoir vu James, mais la déclaration initiale était incertaine."
+    "doctorHistory": "Patient : M. Henderson (45). Histoire : Hypertension. Profession : Artiste numérique. Symptômes : Migraines.",
+    "doctorHistoryV2": "Patient : Mme Gable (62). Histoire : Fumeuse (20 ans). Symptômes : Toux chronique, perte de poids de 5 kg.",
+    "doctorInitialV2": "Docteur, je n'arrête pas de tousser et j'ai perdu beaucoup de poids. Ma poitrine est lourde.",
+    "architectBrief": "Brief détaillé : Pente de 45 degrés. Le client veut du verre mais s'inquiète des coûts.",
+    "architectBriefV2": "Brief détaillé : Rénovation d'entrepôt de 1920. Objectif : Lofts de luxe sans nouvelles colonnes.",
+    "architectInitialV2": "Je veux un loft de luxe ici. L'ingénieur dit que c'est impossible sans murs. Comment faire ?",
+    "developerReport": "Rapport : Latence DB pic à 02h00. 'Trop de connexions'.",
+    "developerReportV2": "Rapport : Erreurs 502 sur l'API Checkout. Redis sous pression mémoire.",
+    "developerInitialV2": "Rien ne fonctionne ! Le checkout est HS. Redis est presque plein. On vide le cache ?",
+    "lawyerDetails": "Détails : Accord de 2 ans. Témoin incertain à cause de l'obscurité.",
+    "lawyerDetailsV2": "Détails : Espionnage industriel. Fichiers IP trouvés sur laptop personnel.",
+    "lawyerInitialV2": "On m'accuse de vol, mais c'étaient des projets personnels ! Peut-on gagner ?"
   },
   "bg": {
     "logIn": "Вход",
@@ -380,11 +444,19 @@ export const translations: Record<Language, Translations> = {
     "numberHeader": "Номер",
     "placeholderDesc": "Тази страница в момента се изгражда. Моля, проверете отново по-късно!",
     "privacyPolicyContent": "Тази Политика обяснява как нашето AI приложение събира и защитава информацията.",
-    "simDisclaimer": "Това са наличните в момента симулации. Нашият екип работи по добавянето на още професионални области скоро.",
-    "doctorHistory": "Подробна история: Г-н Хендерсън има история на лека хипертония. Загубата на периферно зрение се засилва.",
-    "architectBrief": "Подробен брифинг: Обект на 45-градусов наклон. Клиентът настоява за стъкло, но се притеснява от разходите за отопление.",
-    "developerReport": "Доклад за инцидент: Закъснението на базата данни скочи в 02:00 ч. Логовете показват 'Твърде много връзки'.",
-    "lawyerDetails": "Подробности за случая: Сделката е 2 години. Свидетелят твърди, че е видял Джеймс, но първоначалното изявление беше несигурно."
+    "simDisclaimer": "Това са наличните в момента симулации. Нашият екип работи по добавянето на още области скоро.",
+    "doctorHistory": "Пациент: Г-н Хендерсън (45). История: Хипертония. Професия: Дигитален художник. Симптоми: Мигрена.",
+    "doctorHistoryV2": "Пациент: Г-жа Гейбъл (62). История: Пушач (20 г.). Симптоми: Хронична кашлица, загуба на 5 кг.",
+    "doctorInitialV2": "Докторе, не мога да спра да кашлям и отслабнах много. Гърдите ми са тежки.",
+    "architectBrief": "Брифинг: 45-градусов наклон. Клиентът иска стъкло, но се притеснява от разходите.",
+    "architectBriefV2": "Брифинг: Реновация на склад от 1920-те. Цел: Луксозни лофтове без нови колони.",
+    "architectInitialV2": "Искам отворен луксозен лофт тук. Инженерът казва, че е невъзможно. Как да го направим?",
+    "developerReport": "Доклад: DB латентност пик в 02:00. 'Твърде много връзки'.",
+    "developerReportV2": "Доклад: 502 грешки в Checkout API. Redis е под напрежение.",
+    "developerInitialV2": "Потребителите не могат да купуват! Checkout не работи. Redis е почти пълен. Да го изчистим ли?",
+    "lawyerDetails": "Детайли: 2 години сделка. Свидетел е несигурен поради тъмнината.",
+    "lawyerDetailsV2": "Детайли: Корпоративен шпионаж. IP файлове, намерени на личен лаптоп.",
+    "lawyerInitialV2": "Обвиняват ме в кражба, но това бяха лични проекти! Можем ли да спечелим?"
   },
   "ru": {
     "logIn": "Войти",
@@ -422,11 +494,19 @@ export const translations: Record<Language, Translations> = {
     "numberHeader": "Номер",
     "placeholderDesc": "Эта страница находится в разработке. Пожалуйста, зайдите позже!",
     "privacyPolicyContent": "Эта политика объясняет, как наше ИИ-приложение собирает и защищает информацию несовершеннолетних.",
-    "simDisclaimer": "Это доступные на данный момент симуляции. Наша команда работает над добавлением новых областей в ближайшее время.",
-    "doctorHistory": "Подробная история: У мистера Хендерсона легкая гипертония. Потеря периферического зрения носит спорадический характер.",
-    "architectBrief": "Подробный бриф: Участок на склоне 45 градусов. Клиент настаивает на стекле, но обеспокоен затратами на отопление.",
-    "developerReport": "Отчет об инциденте: Задержка БД подскочила в 02:00. Логи показывают 'Слишком много соединений'.",
-    "lawyerDetails": "Детали дела: Сделка о признании вины составляет 2 года. Свидетель утверждает, что видел Джеймса, но первые показания были сбивчивыми."
+    "simDisclaimer": "Это доступные на данный момент симуляции. Скоро добавим новые области.",
+    "doctorHistory": "Пациент: Мистер Хендерсон (45). История: Гипертония. Профессия: Художник. Симптомы: Мигрень.",
+    "doctorHistoryV2": "Пациент: Г-жа Гейбл (62). История: Курильщик (20 лет). Симптомы: Кашель, потеря 5 кг веса.",
+    "doctorInitialV2": "Доктор, я не могу перестать кашлять и сильно похудел. В груди тяжесть, мне страшно.",
+    "architectBrief": "Бриф: Склон 45 градусов. Клиент настаивает на стекле, но боится счетов за отопление.",
+    "architectBriefV2": "Бриф: Реновация склада 1920-х. Цель: Люксовые лофты без новых колонн.",
+    "architectInitialV2": "Я хочу открытый лофт. Инженер говорит, что дерево не выдержит. Как сделать это безопасно?",
+    "developerReport": "Отчет: Задержка БД в 02:00. 'Слишком много соединений'.",
+    "developerReportV2": "Отчет: Ошибки 502 в Checkout API. Redis переполнен.",
+    "developerInitialV2": "Пользователи не могут ничего купить! Checkout лежит. Redis почти полон. Масштабируем?",
+    "lawyerDetails": "Детали: Сделка 2 года. Свидетель не уверен из-за темноты.",
+    "lawyerDetailsV2": "Детали: Корпоративный шпионаж. IP-файлы на личном ноутбуке.",
+    "lawyerInitialV2": "Меня обвиняют в краже, но это были личные проекты! Сможем ли мы победить?"
   }
 };
 
