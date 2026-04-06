@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -6,6 +7,24 @@ const MyHomePage = () => {
     const { t } = useLanguage();
     const { user } = useAuth();
     const navigate = useNavigate();
+
+    // Redirect to onboarding if they haven't taken the survey
+    useEffect(() => {
+        if (user && user.hasCompletedSurvey === false) {
+            navigate('/onboarding-survey');
+        }
+    }, [user, navigate]);
+
+    // Simple custom markdown renderer (handles bold and newlines)
+    const renderMarkdown = (text: string) => {
+        const parts = text.split(/(\*\*.*?\*\*)/g);
+        return parts.map((part, index) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return <strong key={index} style={{ color: '#40e0d0' }}>{part.slice(2, -2)}</strong>;
+            }
+            return <span key={index}>{part}</span>;
+        });
+    };
 
     const features = [
         {
@@ -59,120 +78,113 @@ const MyHomePage = () => {
             padding: '40px',
             overflowY: 'auto',
             background: 'transparent',
-            color: '#ffffff'
+            color: '#ffffff',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '40px'
         }}>
-            <div style={{ marginBottom: '40px' }}>
-                <h1 style={{
-                    fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                    fontWeight: '800',
-                    color: '#40e0d0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '-1px',
-                    marginBottom: '10px'
+            
+            {/* Top Section: AI Analysis Results */}
+            {user?.surveyResults && (
+                <div style={{
+                    background: 'rgba(30, 30, 30, 0.6)',
+                    borderRadius: '24px',
+                    padding: '40px',
+                    border: '1px solid rgba(64, 224, 208, 0.3)',
+                    boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}>
-                    WELCOME BACK, <span style={{ color: '#ffffff' }}>{user?.name || 'TRAINEE'}</span>
-                </h1>
-                <p style={{
-                    fontSize: '1.2rem',
-                    color: 'rgba(255,255,255,0.6)',
-                    fontWeight: '300'
-                }}>
-                    Select a module to continue your career journey.
-                </p>
-            </div>
-
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                gap: '25px',
-                width: '100%'
-            }}>
-                {features.map((feat, index) => (
-                    <div 
-                        key={index}
-                        onClick={() => navigate(feat.path)}
-                        style={{
-                            position: 'relative',
-                            height: '240px',
-                            borderRadius: '24px',
-                            overflow: 'hidden',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-end',
-                            padding: '25px',
-                            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                            border: '1px solid rgba(255,255,255,0.1)'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.transform = 'scale(1.02) translateY(-5px)';
-                            e.currentTarget.style.boxShadow = '0 20px 40px rgba(64, 224, 208, 0.15)';
-                            e.currentTarget.style.borderColor = 'rgba(64, 224, 208, 0.3)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.transform = 'none';
-                            e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
-                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
-                        }}
-                    >
-                        {/* Background Image Overlay */}
+                    <div style={{
+                        position: 'absolute', top: '-100px', right: '-100px',
+                        width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(64, 224, 208, 0.1) 0%, transparent 70%)',
+                        zIndex: 0, pointerEvents: 'none'
+                    }}/>
+                    <div style={{ position: 'relative', zIndex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+                            <span style={{ fontSize: '2.5rem' }}>🧠</span>
+                            <h2 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#fff', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
+                                Your AI Career Profile
+                            </h2>
+                        </div>
                         <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            backgroundImage: `url(${feat.image})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            zIndex: 0
-                        }} />
-                        <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
-                            zIndex: 1
-                        }} />
-
-                        {/* Content */}
-                        <div style={{ position: 'relative', zIndex: 2 }}>
-                            <div style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '10px',
-                                marginBottom: '8px'
-                            }}>
-                                <span style={{ fontSize: '1.5rem' }}>{feat.icon}</span>
-                                <h3 style={{
-                                    fontSize: '1.4rem',
-                                    fontWeight: '700',
-                                    color: feat.color,
-                                    margin: 0,
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '1px'
-                                }}>
-                                    {feat.title}
-                                </h3>
-                            </div>
-                            <p style={{
-                                fontSize: '0.9rem',
-                                color: 'rgba(255,255,255,0.7)',
-                                lineHeight: '1.4',
-                                display: '-webkit-box',
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                                margin: 0
-                            }}>
-                                {feat.desc}
-                            </p>
+                            fontSize: '1.1rem',
+                            lineHeight: '1.8',
+                            color: 'rgba(255,255,255,0.85)',
+                            whiteSpace: 'pre-wrap',
+                            letterSpacing: '0.3px'
+                        }}>
+                            {renderMarkdown(user.surveyResults)}
                         </div>
                     </div>
-                ))}
+                </div>
+            )}
+
+            {/* Bottom Section: Squeezed Features Grid */}
+            <div>
+                <h3 style={{ 
+                    fontSize: '1.4rem', color: '#40e0d0', fontWeight: '600', 
+                    marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' 
+                }}>
+                    Explore Modules
+                </h3>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+                    gap: '20px',
+                    width: '100%'
+                }}>
+                    {features.map((feat, index) => (
+                        <div 
+                            key={index}
+                            onClick={() => navigate(feat.path)}
+                            style={{
+                                position: 'relative',
+                                height: '160px',
+                                borderRadius: '16px',
+                                overflow: 'hidden',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-end',
+                                padding: '20px',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
+                                border: '1px solid rgba(255,255,255,0.1)'
+                            }}
+                            onMouseOver={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-3px)';
+                                e.currentTarget.style.boxShadow = '0 10px 25px rgba(64, 224, 208, 0.15)';
+                                e.currentTarget.style.borderColor = 'rgba(64, 224, 208, 0.3)';
+                            }}
+                            onMouseOut={(e) => {
+                                e.currentTarget.style.transform = 'none';
+                                e.currentTarget.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                            }}
+                        >
+                            {/* Background Image Overlay */}
+                            <div style={{
+                                position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                                backgroundImage: `url(${feat.image})`, backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0
+                            }} />
+                            <div style={{
+                                position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                                background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 60%, transparent 100%)', zIndex: 1
+                            }} />
+
+                            {/* Content */}
+                            <div style={{ position: 'relative', zIndex: 2 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                                    <span style={{ fontSize: '1.2rem' }}>{feat.icon}</span>
+                                    <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: feat.color, margin: 0, textTransform: 'uppercase' }}>
+                                        {feat.title}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

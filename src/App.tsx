@@ -18,6 +18,7 @@ import ChatPage from './pages/ChatPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import MyHomePage from './pages/MyHomePage';
+import OnboardingSurvey from './pages/OnboardingSurvey';
 import Demo from './pages/Demo';
 import { 
   MyNetwork, 
@@ -61,6 +62,7 @@ function App() {
               <Route path="chat" element={<ChatPage />} />
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<Signup />} />
+              <Route path="onboarding-survey" element={<OnboardingSurvey />} />
               
               {/* Authenticated "My" environment routes */}
               <Route path="myhomepage" element={<MyHomePage />} />
