@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 
 const Login = () => {
-    const { login } = useAuth();
+    const { login, loginError } = useAuth();
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -12,9 +12,10 @@ const Login = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulating logic
-        login(email);
-        navigate('/myhomepage');
+        const success = login(email, password);
+        if (success) {
+            navigate('/myhomepage');
+        }
     };
 
     return (
@@ -112,6 +113,11 @@ const Login = () => {
                     }}>
                         {t.logIn}
                     </button>
+                    {loginError && (
+                        <div style={{ color: '#ff6b6b', fontSize: '0.9rem', textAlign: 'center', padding: '8px 15px', background: 'rgba(255,107,107,0.1)', borderRadius: '12px' }}>
+                            {loginError}
+                        </div>
+                    )}
                 </form>
 
                 <div style={{ marginTop: '30px', color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>

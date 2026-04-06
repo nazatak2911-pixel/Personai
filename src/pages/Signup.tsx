@@ -10,12 +10,16 @@ const Signup = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulating logic
-        signup(name, email);
-        navigate('/myhomepage');
+        const result = signup(name, email, password);
+        if (result.success) {
+            navigate('/myhomepage');
+        } else {
+            setError(result.error || 'Sign up failed.');
+        }
     };
 
     return (
@@ -134,6 +138,11 @@ const Signup = () => {
                     }}>
                         {t.signUp}
                     </button>
+                    {error && (
+                        <div style={{ color: '#ff6b6b', fontSize: '0.9rem', textAlign: 'center', padding: '8px 15px', background: 'rgba(255,107,107,0.1)', borderRadius: '12px' }}>
+                            {error}
+                        </div>
+                    )}
                 </form>
 
                 <div style={{ marginTop: '30px', color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>
