@@ -10,7 +10,7 @@ const MyHomePage = () => {
 
     // Redirect to onboarding if they haven't taken the survey
     useEffect(() => {
-        if (user && user.hasCompletedSurvey === false) {
+        if (user && !user.hasCompletedSurvey) {
             navigate('/onboarding-survey');
         }
     }, [user, navigate]);
@@ -85,7 +85,7 @@ const MyHomePage = () => {
         }}>
             
             {/* Top Section: AI Analysis Results */}
-            {user?.surveyResults && (
+            {(!user || user.surveyResults) && (
                 <div style={{
                     background: 'rgba(30, 30, 30, 0.6)',
                     borderRadius: '24px',
@@ -123,7 +123,10 @@ const MyHomePage = () => {
                                     fontWeight: '600',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s',
-                                    fontFamily: 'Outfit, sans-serif'
+                                    fontFamily: 'Outfit, sans-serif',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '5px'
                                 }}
                                 onMouseOver={(e) => {
                                     e.currentTarget.style.background = 'rgba(64,224,208,0.1)';
@@ -142,7 +145,7 @@ const MyHomePage = () => {
                             whiteSpace: 'pre-wrap',
                             letterSpacing: '0.3px'
                         }}>
-                            {renderMarkdown(user.surveyResults)}
+                            {user?.surveyResults ? renderMarkdown(user.surveyResults) : "Analyzing your profile..."}
                         </div>
                     </div>
                 </div>
@@ -159,8 +162,8 @@ const MyHomePage = () => {
                 </h3>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-                    gap: '20px',
+                    gridTemplateColumns: 'repeat(5, 1fr)',
+                    gap: '15px',
                     width: '100%'
                 }}>
                     {features.map((feat, index) => (

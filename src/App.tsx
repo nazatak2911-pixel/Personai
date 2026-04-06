@@ -24,8 +24,7 @@ import {
   MyNetwork, 
   MyCV as MyCVPlaceholder, 
   MySimulations, 
-  MyInternships, 
-  MyPersonai 
+  MyInternships 
 } from './pages/MyFeatureContainers';
 import { 
   MyAboutUs, 
@@ -70,7 +69,7 @@ function App() {
               <Route path="mycv" element={<MyCVPlaceholder />} />
               <Route path="mysimulations" element={<MySimulations />} />
               <Route path="myinternships" element={<MyInternships />} />
-              <Route path="mypersonai" element={<MyPersonai />} />
+              <Route path="mypersonai" element={<ChatPage />} />
               <Route path="myabout" element={<MyAboutUs />} />
               <Route path="mycontact" element={<MyContact />} />
               <Route path="myfaq" element={<MyFaq />} />
