@@ -38,18 +38,19 @@ async function callOpenRouter(
   modelIndex = 0
 ): Promise<string> {
   const rawApiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-  if (!rawApiKey) throw new Error('NO_OPENROUTER_KEY');
-  
-  // Clean the key (completely strip any quotes and extra whitespace)
-  const apiKey = rawApiKey.replace(/["'“”]/g, '').trim();
+  const apiKey = (rawApiKey || '').replace(/["'“”]/g, '').trim();
+  const url = 'https://openrouter.ai/api/v1/chat/completions';
+
+  if (!apiKey) {
+    throw new Error('NO_KEY_FOUND_IN_VITE');
+  }
 
   if (modelIndex >= OPENROUTER_MODELS.length) {
     throw new Error('ALL_OPENROUTER_MODELS_EXHAUSTED');
   }
 
   const model = OPENROUTER_MODELS[modelIndex];
-
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
@@ -64,31 +65,26 @@ async function callOpenRouter(
     }),
   });
 
-  if (response.status === 429 || response.status === 503) {
-    console.warn(`OpenRouter model ${model} unavailable (Status ${response.status}), trying next...`);
-    return callOpenRouter(messages, modelIndex + 1);
-  }
-
   if (!response.ok) {
     const err = await response.text();
-    console.error(`OpenRouter Error Detail: Status ${response.status}`, err);
-    throw new Error(`OPENROUTER_FAIL_${response.status}`);
+    throw new Error(`OPENROUTER_ERROR_${response.status}_KEY_${apiKey.substring(0, 7)}`);
   }
 
   const data = await response.json();
-  const content = data?.choices?.[0]?.message?.content;
-  if (!content) throw new Error('Empty response from OpenRouter');
-  return content.trim();
+  return data?.choices?.[0]?.message?.content?.trim() || 'No response';
 }
 
 async function callGemini(messages: ChatMessage[]): Promise<string> {
   const rawApiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  if (!rawApiKey) throw new Error('NO_GEMINI_KEY');
+  const apiKey = (rawApiKey || '').replace(/["'“”]/g, '').trim();
   
-  // Clean the key (completely strip any quotes and extra whitespace)
-  const apiKey = rawApiKey.replace(/["'“”]/g, '').trim();
+  // Using v1beta for better model compatibility
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
-  // Convert messages to Gemini format
+  if (!apiKey) {
+    throw new Error('NO_KEY_FOUND_IN_VITE');
+  }
+
   const geminiContents = messages.map((m) => ({
     role: m.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: m.role === 'system' ? `[System Instructions]: ${m.content}` : m.content }],
@@ -96,39 +92,25 @@ async function callGemini(messages: ChatMessage[]): Promise<string> {
 
   const contents = [
     { role: 'user', parts: [{ text: `[System Instructions]: ${SYSTEM_PROMPT}` }] },
-    { role: 'model', parts: [{ text: 'Understood. I am PERSONAI, your AI career mentor. How can I help you today?' }] },
+    { role: 'model', parts: [{ text: 'Understood.' }] },
     ...geminiContents,
   ];
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents,
-        generationConfig: {
-          maxOutputTokens: 512,
-          temperature: 0.75,
-        },
-      }),
-    }
-  );
-
-  if (response.status === 429) {
-    throw new Error('GEMINI_RATE_LIMITED');
-  }
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents,
+      generationConfig: { maxOutputTokens: 512, temperature: 0.75 },
+    }),
+  });
 
   if (!response.ok) {
-    const err = await response.text();
-    console.error(`Gemini Error Detail: Status ${response.status}`, err);
-    throw new Error(`GEMINI_FAIL_${response.status}`);
+    throw new Error(`GEMINI_ERROR_${response.status}_KEY_${apiKey.substring(0, 7)}`);
   }
 
   const data = await response.json();
-  const content = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!content) throw new Error('Empty response from Gemini');
-  return content.trim();
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 'No response';
 }
 
 export async function sendMessage(messages: ChatMessage[]): Promise<string> {
@@ -136,26 +118,20 @@ export async function sendMessage(messages: ChatMessage[]): Promise<string> {
 
   try {
     return await callOpenRouter(messages);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    if (!msg.includes('NO_OPENROUTER_KEY')) {
-      errors.push(msg);
-    }
+  } catch (e: any) {
+    errors.push(e.message || 'OpenRouter Unknown');
   }
 
   try {
     return await callGemini(messages);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    if (!msg.includes('NO_GEMINI_KEY')) {
-      errors.push(msg);
-    }
+  } catch (e: any) {
+    errors.push(e.message || 'Gemini Unknown');
   }
 
-  // Debugging message
-  if (errors.length > 0) {
-    return `I'm having trouble connecting. Error details: ${errors.join(' | ')}. Please check your API keys or restart the dev server.`;
-  }
-
-  return "I'm not configured yet. Please add your API keys to the .env file and restart the development server.";
+  return `Connection Failed. 
+  Details: ${errors.join(' | ')}.
+  
+  💡 QUICK FIX:
+  1. If it says KEY_... followed by nothing, your keys aren't being read. 
+  2. Restart your terminal with "node_modules\\.bin\\vite" to reload the .env file!`;
 }
