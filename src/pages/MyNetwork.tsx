@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { moderateContent } from '../services/llm';
+import { useLanguage } from '../context/LanguageContext';
+import { moderateContent, sendMessage } from '../services/llm';
 
 export interface NetworkStory {
     id: string;
@@ -33,6 +34,7 @@ export interface ContactRequest {
 
 const MyNetwork = () => {
     const { user } = useAuth();
+    const { language } = useLanguage();
 
     const [stories, setStories] = useState<NetworkStory[]>([]);
     const [requests, setRequests] = useState<ContactRequest[]>([]);
@@ -48,6 +50,8 @@ const MyNetwork = () => {
     // Inline chat state
     const [openChatId, setOpenChatId] = useState<string | null>(null);
     const [chatInput, setChatInput] = useState('');
+    const [isTranslating, setIsTranslating] = useState<string | null>(null);
+    const [translations, setTranslations] = useState<Record<string, string>>({});
 
     const [formState, setFormState] = useState({
         career: '', age: 20, gender: 'Male', traits: '', story: '', avatarBase64: ''
@@ -196,6 +200,21 @@ const MyNetwork = () => {
 
     const getActiveChat = (id: string) => requests.find(r => r.id === id);
 
+    const translateStory = async (storyId: string, content: string) => {
+        setIsTranslating(storyId);
+        try {
+            const prompt = `Translate the following professional story into the language with code "${language}". 
+            Original text: "${content}"
+            Respond ONLY with the translated text, no other commentary.`;
+            const result = await sendMessage([{ role: 'user', content: prompt }]);
+            setTranslations(prev => ({ ...prev, [storyId]: result }));
+        } catch (err) {
+            console.error("Translation failed:", err);
+            alert("Translation failed.");
+        }
+        setIsTranslating(null);
+    };
+
     // === STYLES ===
     const cardStyle: React.CSSProperties = {
         background: 'rgba(25,25,25,0.8)',
@@ -276,8 +295,26 @@ const MyNetwork = () => {
                                 )}
                             </div>
                             <div style={{ textAlign: 'center', padding: '0 12px' }}>
-                                <div style={{ fontWeight: '700', fontSize: '1rem' }}>{story.authorName}</div>
-                                <div style={{ color: '#40e0d0', fontSize: '0.85rem' }}>{story.career}</div>
+                                <div style={{ justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontSize: '1.2rem', fontWeight: '800', color: '#40e0d0', margin: 0 }}>{story.authorName}</div>
+                                        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>{story.career}</div>
+                                    </div>
+                                    <button 
+                                        onClick={() => translateStory(story.id, story.story)}
+                                        disabled={isTranslating === story.id}
+                                        style={{ background: 'rgba(64, 224, 208, 0.1)', border: '1px solid #40e0d0', color: '#40e0d0', padding: '4px 10px', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}
+                                    >
+                                        {isTranslating === story.id ? '⌛...' : '🌐 Translate'}
+                                    </button>
+                                </div>
+                                <p style={{ 
+                                    fontSize: '1rem', lineHeight: '1.6', color: '#eee', 
+                                    marginBottom: '20px', fontStyle: 'italic',
+                                    maxHeight: '120px', overflow: 'hidden', textOverflow: 'ellipsis'
+                                }}>
+                                    "{translations[story.id] || story.story}"
+                                </p>
                                 <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', marginTop: '4px' }}>{story.age} · {story.gender}</div>
                             </div>
                         </div>

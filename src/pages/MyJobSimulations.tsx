@@ -12,47 +12,48 @@ interface SimulationCase {
   icon: string;
 }
 
-const CASES: SimulationCase[] = [
-  {
-    id: 'doctor',
-    role: 'Medical Doctor',
-    situation: 'A 45-year-old patient presents with recurring migraines and occasional loss of peripheral vision. Initial tests were inconclusive.',
-    character: 'Patient (Mr. Henderson)',
-    visualLabel: 'fMRI Scan Results',
-    initialMessage: "Doctor, these headaches are becoming unbearable. I've started seeing shadows out of the corner of my eye. What's happening to me?",
-    icon: '🩺'
-  },
-  {
-    id: 'architect',
-    role: 'Architect',
-    situation: 'A client wants to build a modern, high-tech glass villa on a cliff edge with high wind loads and strict environmental regulations.',
-    character: 'Client (Sarah)',
-    visualLabel: 'Site Topography & Wind Map',
-    initialMessage: "I want the whole house to be glass for the view, but the city says we need to be 'green' and the wind up here is crazy. Can we actually build this?",
-    icon: '🏗️'
-  },
-  {
-    id: 'developer',
-    role: 'Software Engineer',
-    situation: 'The company\'s primary API is suffering from a massive performance degradation. 30% of requests are timing out, and the database CPU is at 99%.',
-    character: 'CTO (Mark)',
-    visualLabel: 'System Monitor (Grafana)',
-    initialMessage: "The site is dying. Every second it's down, we lose $500. Have you checked the read replicas or is it a bad deployment? Fix it now!",
-    icon: '💻'
-  },
-  {
-    id: 'lawyer',
-    role: 'Criminal Lawyer',
-    situation: 'Your client is accused of a white-collar crime. A key witness just changed their testimony, and the prosecution is offering a plea deal.',
-    character: 'Client (James)',
-    visualLabel: 'Witness Deposition Document',
-    initialMessage: "They gave me a plea deal, but I'm innocent. If I take it, my career is over. If we go to trial and lose, I'm looking at 10 years. What do we do?",
-    icon: '⚖️'
-  }
-];
-
 const MyJobSimulations = () => {
   const { t } = useLanguage();
+
+  const CASES: SimulationCase[] = [
+    {
+      id: 'doctor',
+      role: t.jobSimulations + ' - Doctor',
+      situation: t.doctorHistory,
+      character: 'Patient (Mr. Henderson)',
+      visualLabel: 'fMRI Scan Results',
+      initialMessage: "Doctor, these headaches are becoming unbearable. I've started seeing shadows out of the corner of my eye. What's happening to me?",
+      icon: '🩺'
+    },
+    {
+      id: 'architect',
+      role: t.jobSimulations + ' - Architect',
+      situation: t.architectBrief,
+      character: 'Client (Sarah)',
+      visualLabel: 'Site Topography & Wind Map',
+      initialMessage: "I want the whole house to be glass for the view, but the city says we need to be 'green' and the wind up here is crazy. Can we actually build this?",
+      icon: '🏗️'
+    },
+    {
+      id: 'developer',
+      role: t.jobSimulations + ' - Software Engineer',
+      situation: t.developerReport,
+      character: 'CTO (Mark)',
+      visualLabel: 'System Monitor (Grafana)',
+      initialMessage: "The site is dying. Every second it's down, we lose $500. Have you checked the read replicas or is it a bad deployment? Fix it now!",
+      icon: '💻'
+    },
+    {
+      id: 'lawyer',
+      role: t.jobSimulations + ' - Lawyer',
+      situation: t.lawyerDetails,
+      character: 'Client (James)',
+      visualLabel: 'Witness Deposition Document',
+      initialMessage: "They gave me a plea deal, but I'm innocent. If I take it, my career is over. If we go to trial and lose, I'm looking at 10 years. What do we do?",
+      icon: '⚖️'
+    }
+  ];
+
   const [selectedCase, setSelectedCase] = useState<SimulationCase | null>(null);
   const [userAction, setUserAction] = useState('');
   const [evaluation, setEvaluation] = useState<string | null>(null);
@@ -107,10 +108,12 @@ const MyJobSimulations = () => {
   if (!selectedCase) {
     return (
       <div style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '40px', color: '#fff' }}>
-        <h1 style={{ fontSize: '3rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '30px' }}>
+        <h1 style={{ fontSize: '3rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '10px' }}>
           {t.jobSimulations}
         </h1>
-        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.2rem', marginBottom: '40px' }}>Select a professional field to begin your immersive case simulation.</p>
+        <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9rem', marginBottom: '30px', fontStyle: 'italic' }}>
+          {t.simDisclaimer}
+        </p>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
           {CASES.map(c => (
@@ -122,9 +125,9 @@ const MyJobSimulations = () => {
               onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.transform = 'none'; }}
             >
               <div style={{ fontSize: '3rem' }}>{c.icon}</div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#40e0d0', margin: 0 }}>{c.role}</h2>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#40e0d0', margin: 0 }}>{c.role.split(' - ')[1]}</h2>
               <button style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '10px 24px', borderRadius: '50px', fontWeight: '700', cursor: 'pointer', marginTop: '10px' }}>
-                Start Simulation
+                {t.tryNow}
               </button>
             </div>
           ))}
@@ -132,6 +135,7 @@ const MyJobSimulations = () => {
       </div>
     );
   }
+
 
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '40px', color: '#fff', position: 'relative' }}>

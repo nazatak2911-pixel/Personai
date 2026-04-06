@@ -42,6 +42,11 @@ export interface Translations {
   numberHeader: string;
   placeholderDesc: string;
   privacyPolicyContent: string;
+  simDisclaimer: string;
+  doctorHistory: string;
+  architectBrief: string;
+  developerReport: string;
+  lawyerDetails: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -80,7 +85,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "Email",
     "numberHeader": "Number",
     "placeholderDesc": "This page is currently under construction. Please check back later!",
-    "privacyPolicyContent": "This Privacy Policy explains how our artificial intelligence application collects, uses, stores, and protects information when used by minors. We are committed to protecting the privacy, safety, and rights of children and ensuring all data is handled ethically."
+    "privacyPolicyContent": "This Privacy Policy explains how our artificial intelligence application collects, uses, stores, and protects information when used by minors. We are committed to protecting the privacy, safety, and rights of children and ensuring all data is handled ethically.",
+    "simDisclaimer": "These are currently available simulations. Our team is working on adding more professional fields and interactive scenarios soon.",
+    "doctorHistory": "Detailed History: Mr. Henderson has a history of mild hypertension. No recent travel. Digital artist (high screen time). Peripheral vision loss is sporadic but increasing.",
+    "architectBrief": "Detailed Brief: Site on a 45-degree slope. Local laws require 40% renewable energy. Client insists on glass but is worried about heating costs.",
+    "developerReport": "Incident Report: Database latency spiked at 02:00 AM. Error logs show 'Too many connections'. New deployment happened 15 minutes prior.",
+    "lawyerDetails": "Case Details: Plea deal is 2 years. Witness claims to have seen James at the scene, but initial statement was uncertain due to darkness."
   },
   "tr": {
     "logIn": "Giriş Yap",
@@ -117,7 +127,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "E-posta",
     "numberHeader": "Numara",
     "placeholderDesc": "Bu sayfa şu anda yapım aşamasındadır. Lütfen daha sonra tekrar kontrol edin!",
-    "privacyPolicyContent": "Bu Gizlilik Politikası, reşit olmayan kişiler tarafından kullanıldığında yapay zeka uygulamamızın bilgileri nasıl topladığını, kullandığını, sakladığını ve koruduğunu açıklar. Çocukların gizliliğini, güvenliğini ve haklarını korumaya ve tüm verilerin etik olarak ele alınmasını sağlamaya kararlıyız."
+    "privacyPolicyContent": "Bu Gizlilik Politikası, reşit olmayan kişiler tarafından kullanıldığında yapay zeka uygulamamızın bilgileri nasıl topladığını, kullandığını, sakladığını ve koruduğunu açıklar. Çocukların gizliliğini, güvenliğini ve haklarını korumaya ve tüm verilerin etik olarak ele alınmasını sağlamaya kararlıyız.",
+    "simDisclaimer": "Bunlar şu an kullanılabilir simülasyonlardır. Ekibimiz yakında daha fazla profesyonel alan ve interaktif senaryolar eklemek için çalışıyor.",
+    "doctorHistory": "Detaylı Geçmiş: Bay Henderson'ın hafif hipertansiyon öyküsü var. Yakın zamanda seyahat etmemiş. Dijital sanatçı. Yan görüş kaybı düzensiz ama artıyor.",
+    "architectBrief": "Detaylı Özet: Saha 45 derecelik bir eğimde. Yerel yasalar %40 yenilenebilir enerji gerektiriyor. Müşteri cam ısrarı yapıyor ama ısıtma maliyetlerinden korkuyor.",
+    "developerReport": "Olay Raporu: Veritabanı gecikmesi saat 02:00'de pik yaptı. Hata günlükleri 'Çok fazla bağlantı' gösteriyor. Pikten 15 dakika önce yeni dağıtım yapıldı.",
+    "lawyerDetails": "Vaka Detayları: Savcılık anlaşması 2 yıl. Tanık, James'i olay yerinde gördüğünü iddia ediyor ancak ilk ifadesi karanlık nedeniyle belirsizdi."
   },
   "it": {
     "logIn": "Accedi",
@@ -154,7 +169,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "Email",
     "numberHeader": "Numero",
     "placeholderDesc": "Questa pagina è attualmente in costruzione. Torna a controllare più tardi!",
-    "privacyPolicyContent": "La presente Informativa sulla privacy spiega in che modo la nostra applicazione di intelligenza artificiale raccoglie, utilizza e protegge le informazioni per i minori."
+    "privacyPolicyContent": "La presente Informativa sulla privacy spiega in che modo la nostra applicazione di intelligenza artificiale raccoglie, utilizza e protegge le informazioni per i minori.",
+    "simDisclaimer": "Queste sono le simulazioni attualmente disponibili. Il nostro team sta lavorando per aggiungere presto altri campi professionali.",
+    "doctorHistory": "Storia dettagliata: Il signor Henderson ha una storia di lieve ipertensione. Nessun viaggio recente. Perdita della visione periferica sporadica.",
+    "architectBrief": "Brief dettagliato: Sito su un pendio di 45 gradi. Il cliente insiste sul vetro ma è preoccupato per i costi di riscaldamento.",
+    "developerReport": "Rapporto sull'incidente: La latenza del database è aumentata alle 02:00. I log mostrano 'Troppe connessioni'.",
+    "lawyerDetails": "Dettagli del caso: Il patteggiamento è di 2 anni. Il testimone afferma di aver visto James, ma la dichiarazione iniziale era incerta."
   },
   "de": {
     "logIn": "Anmelden",
@@ -191,7 +211,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "E-Mail",
     "numberHeader": "Nummer",
     "placeholderDesc": "Diese Seite befindet sich im Aufbau. Bitte schauen Sie später wieder vorbei!",
-    "privacyPolicyContent": "Diese Datenschutzrichtlinie erklärt, wie unsere KI-Anwendung Informationen von Minderjährigen sammelt, nutzt und schützt."
+    "privacyPolicyContent": "Diese Datenschutzrichtlinie erklärt, wie unsere KI-Anwendung Informationen von Minderjährigen sammelt, nutzt und schützt.",
+    "simDisclaimer": "Dies sind aktuell verfügbare Simulationen. Unser Team arbeitet daran, bald weitere Berufsfelder hinzuzufügen.",
+    "doctorHistory": "Detaillierte Anamnese: Herr Henderson leidet an leichtem Bluthochdruck. Kein Reiseverlauf. Sporadischer Verlust des peripheren Sehens.",
+    "architectBrief": "Detailliertes Briefing: Grundstück mit 45 Grad Neigung. Kunde besteht auf Glas, sorgt sich aber um Heizkosten.",
+    "developerReport": "Vorfallbericht: Datenbank-Latenz stieg um 02:00 Uhr an. Logs zeigen 'Zu viele Verbindungen'.",
+    "lawyerDetails": "Falldetails: Das Plädoyer-Angebot beträgt 2 Jahre. Zeuge behauptet, James gesehen zu haben, war aber anfangs unsicher."
   },
   "es": {
     "logIn": "Iniciar Sesión",
@@ -228,7 +253,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "Correo",
     "numberHeader": "Número",
     "placeholderDesc": "Esta página está actualmente en construcción. ¡Por favor, vuelva más tarde!",
-    "privacyPolicyContent": "Esta Política de privacidad explica cómo nuestra aplicación de IA recopila y protege la información de los menores."
+    "privacyPolicyContent": "Esta Política de privacidad explica cómo nuestra aplicación de IA recopila y protege la información de los menores.",
+    "simDisclaimer": "Estas son simulaciones disponibles actualmente. Nuestro equipo está trabajando para añadir más campos profesionales pronto.",
+    "doctorHistory": "Historia detallada: El Sr. Henderson tiene antecedentes de hipertensión leve. Pérdida de visión periférica esporádica pero creciente.",
+    "architectBrief": "Breve detallado: Sitio en una pendiente de 45 grados. El cliente insiste en el vidrio pero le preocupan los costes de calefacción.",
+    "developerReport": "Informe de incidentes: La latencia de la base de datos aumentó a las 02:00 AM. Los registros muestran 'Demasiadas conexiones'.",
+    "lawyerDetails": "Detalles del caso: El acuerdo de culpabilidad es de 2 años. El testigo afirma haber visto a James, pero la declaración inicial era incierta."
   },
   "uz": {
     "logIn": "Kirish",
@@ -265,7 +295,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "Elektron pochta",
     "numberHeader": "Raqam",
     "placeholderDesc": "Ushbu sahifa hozirda qurilmoqda. Iltimos, keyinroq qayta tekshiring!",
-    "privacyPolicyContent": "Ushbu maxfiylik siyosati bizning ilovamiz ma'lumotlarni qanday to'plashi va himoya qilishini tushuntiradi."
+    "privacyPolicyContent": "Ushbu maxfiylik siyosati bizning ilovamiz ma'lumotlarni qanday to'plashi va himoya qilishini tushuntiradi.",
+    "simDisclaimer": "Bular hozirda mavjud simulyatsiyalar. Bizning jamoamiz yaqinda yangi sohalarni qo'shish ustida ishlamoqda.",
+    "doctorHistory": "Batafsil tarix: Janob Hendersonda engil gipertoniya bor. Periferik ko'rish qobiliyatini yo'qotish ortib bormoqda.",
+    "architectBrief": "Batafsil ma'lumot: Joy 45 darajali nishabda. Mijoz oynali devorlarni xohlaydi, lekin isitish xarajatlaridan xavotirda.",
+    "developerReport": "Hodisa hisoboti: Ma'lumotlar bazasi kechikishi soat 02:00 da oshdi. Tizimda 'Ulanishlar juda ko'p' xatosi.",
+    "lawyerDetails": "Ish tafsilotlari: Kelishuv 2 yil. Guvoh Jeymsni ko'rganini aytmoqda, lekin avvalgi ko'rsatmasi noaniq edi."
   },
   "fr": {
     "logIn": "Connexion",
@@ -302,7 +337,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "Email",
     "numberHeader": "Numéro",
     "placeholderDesc": "Cette page est en cours de construction. Revenez plus tard !",
-    "privacyPolicyContent": "Cette politique de confidentialité explique comment notre application IA collecte et protège les informations des mineurs."
+    "privacyPolicyContent": "Cette politique de confidentialité explique comment notre application IA collecte et protège les informations des mineurs.",
+    "simDisclaimer": "Ce sont les simulations actuellement disponibles. Notre équipe travaille pour ajouter d'autres domaines bientôt.",
+    "doctorHistory": "Histoire détaillée : M. Henderson a des antécédents d'hypertension légère. Perte de vision périphérique sporadique.",
+    "architectBrief": "Brief détaillé : Terrain sur une pente de 45 degrés. Le client insiste sur le verre mais s'inquiète des coûts de chauffage.",
+    "developerReport": "Rapport d'incident : La latence de la base de datos a bondi à 02h00. Les journaux indiquent 'Trop de connexions'.",
+    "lawyerDetails": "Détails de l'affaire : Le plaidoyer est de 2 ans. Le témoin prétend avoir vu James, mais la déclaration initiale était incertaine."
   },
   "bg": {
     "logIn": "Вход",
@@ -339,7 +379,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "Имейл",
     "numberHeader": "Номер",
     "placeholderDesc": "Тази страница в момента се изгражда. Моля, проверете отново по-късно!",
-    "privacyPolicyContent": "Тази Политика обяснява как нашето AI приложение събира и защитава информацията."
+    "privacyPolicyContent": "Тази Политика обяснява как нашето AI приложение събира и защитава информацията.",
+    "simDisclaimer": "Това са наличните в момента симулации. Нашият екип работи по добавянето на още професионални области скоро.",
+    "doctorHistory": "Подробна история: Г-н Хендерсън има история на лека хипертония. Загубата на периферно зрение се засилва.",
+    "architectBrief": "Подробен брифинг: Обект на 45-градусов наклон. Клиентът настоява за стъкло, но се притеснява от разходите за отопление.",
+    "developerReport": "Доклад за инцидент: Закъснението на базата данни скочи в 02:00 ч. Логовете показват 'Твърде много връзки'.",
+    "lawyerDetails": "Подробности за случая: Сделката е 2 години. Свидетелят твърди, че е видял Джеймс, но първоначалното изявление беше несигурно."
   },
   "ru": {
     "logIn": "Войти",
@@ -376,7 +421,12 @@ export const translations: Record<Language, Translations> = {
     "emailHeader": "Эл. почта",
     "numberHeader": "Номер",
     "placeholderDesc": "Эта страница находится в разработке. Пожалуйста, зайдите позже!",
-    "privacyPolicyContent": "Эта политика объясняет, как наше ИИ-приложение собирает и защищает информацию несовершеннолетних."
+    "privacyPolicyContent": "Эта политика объясняет, как наше ИИ-приложение собирает и защищает информацию несовершеннолетних.",
+    "simDisclaimer": "Это доступные на данный момент симуляции. Наша команда работает над добавлением новых областей в ближайшее время.",
+    "doctorHistory": "Подробная история: У мистера Хендерсона легкая гипертония. Потеря периферического зрения носит спорадический характер.",
+    "architectBrief": "Подробный бриф: Участок на склоне 45 градусов. Клиент настаивает на стекле, но обеспокоен затратами на отопление.",
+    "developerReport": "Отчет об инциденте: Задержка БД подскочила в 02:00. Логи показывают 'Слишком много соединений'.",
+    "lawyerDetails": "Детали дела: Сделка о признании вины составляет 2 года. Свидетель утверждает, что видел Джеймса, но первые показания были сбивчивыми."
   }
 };
 
