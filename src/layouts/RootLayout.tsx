@@ -36,13 +36,15 @@ export default function RootLayout() {
   };
 
   const toggleSidebar = (e: React.MouseEvent) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (isMobile) {
-      setIsSidebarOpen(!isSidebarOpen);
-      setDashboardSidebarOpen(!isSidebarOpen);
+      const newState = !isSidebarOpen;
+      setIsSidebarOpen(newState);
+      setDashboardSidebarOpen(newState);
     } else {
-      setDashboardSidebarOpen(!dashboardSidebarOpen);
-      setIsSidebarOpen(!dashboardSidebarOpen);
+      const newState = !dashboardSidebarOpen;
+      setDashboardSidebarOpen(newState);
+      setIsSidebarOpen(newState);
     }
   };
 
@@ -65,18 +67,18 @@ export default function RootLayout() {
       <nav className="top-nav">
         {/* Left: Brand + Language Switcher */}
         <div className="nav-left-group">
-          <Link
-            to={isDashboard ? "/myhomepage" : "/"}
-            style={{ textDecoration: 'none' }}
-            className="nav-left"
+          <div
+            className="nav-left brand-trigger-box"
             id="brand-trigger"
             onClick={toggleSidebar}
+            role="button"
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
           >
             <span className="brand-name" style={{ position: 'relative' }}>
               PERSONA<span className="turquoise-text">I</span>
               <span className="demo-badge">demo</span>
             </span>
-          </Link>
+          </div>
           <LanguageSwitcher />
         </div>
 
