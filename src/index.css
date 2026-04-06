@@ -208,6 +208,14 @@ body {
     padding-left: var(--sidebar-width);
 }
 
+/* Ensure sidebar is fully on top for mobile */
+@media (max-width: 1024px) {
+    .sidebar {
+        z-index: 1000;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+    }
+}
+
 /* Big Vertical Text */
 .vertical-text-wrapper {
     display: flex;
@@ -289,7 +297,7 @@ body {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     :root {
         --sidebar-width: 260px;
     }
@@ -300,6 +308,7 @@ body {
 
     .main-content.shifted {
         transform: translateX(var(--sidebar-width));
+        padding-left: 0;
     }
 
     .vertical-text-wrapper {

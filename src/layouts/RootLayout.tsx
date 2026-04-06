@@ -19,7 +19,8 @@ export default function RootLayout() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      // Increased to 1024 to catch landscape phones and tablets
+      setIsMobile(window.innerWidth <= 1024);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -44,8 +45,16 @@ export default function RootLayout() {
   };
 
   const closeSidebarOnDocumentClick = () => {
-    if (isMobile && isSidebarOpen && !isDashboard) {
+    if (isMobile && (isSidebarOpen || (isDashboard && dashboardSidebarOpen))) {
       setIsSidebarOpen(false);
+      setDashboardSidebarOpen(false);
+    }
+  };
+
+  const handleNavClick = () => {
+    if (isMobile) {
+      setIsSidebarOpen(false);
+      setDashboardSidebarOpen(false);
     }
   };
 
@@ -123,25 +132,25 @@ export default function RootLayout() {
             <li>
               <Link 
                 to={isLoggedIn ? "/myhomepage" : "/"} 
-                onClick={() => isMobile && setIsSidebarOpen(false)}
+                onClick={handleNavClick}
               >
                 {t.homePage}
               </Link>
             </li>
             <li>
-              <Link to="/mypersonai" onClick={() => isMobile && setIsSidebarOpen(false)}>
+              <Link to="/mypersonai" onClick={handleNavClick}>
                 <span className="white-text">PERSONA</span><span className="turquoise-text">I</span>
               </Link>
             </li>
-            <li><Link to="/mynetwork" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.buildNetwork}</Link></li>
-            <li><Link to="/mycv" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.myCV}</Link></li>
-            <li><Link to="/mysimulations" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.jobSimulations}</Link></li>
-            <li><Link to="/myinternships" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.internshipOpportunities}</Link></li>
-            <li><Link to="/myabout" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.aboutUs}</Link></li>
-            <li><Link to="/mycontact" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.contact}</Link></li>
-            <li><Link to="/myfaq" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.howToUse}</Link></li>
-            <li><Link to="/mydemo" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.demo}</Link></li>
-            <li><Link to="/myprivacy-policy" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.privacyPolicy}</Link></li>
+            <li><Link to="/mynetwork" onClick={handleNavClick}>{t.buildNetwork}</Link></li>
+            <li><Link to="/mycv" onClick={handleNavClick}>{t.myCV}</Link></li>
+            <li><Link to="/mysimulations" onClick={handleNavClick}>{t.jobSimulations}</Link></li>
+            <li><Link to="/myinternships" onClick={handleNavClick}>{t.internshipOpportunities}</Link></li>
+            <li><Link to="/myabout" onClick={handleNavClick}>{t.aboutUs}</Link></li>
+            <li><Link to="/mycontact" onClick={handleNavClick}>{t.contact}</Link></li>
+            <li><Link to="/myfaq" onClick={handleNavClick}>{t.howToUse}</Link></li>
+            <li><Link to="/mydemo" onClick={handleNavClick}>{t.demo}</Link></li>
+            <li><Link to="/myprivacy-policy" onClick={handleNavClick}>{t.privacyPolicy}</Link></li>
           </ul>
         </aside>
 
