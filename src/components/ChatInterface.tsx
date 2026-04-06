@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { sendMessage, ChatMessage } from '../services/llm';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ChatInterfaceProps {
   initialPrompt?: string;
@@ -29,6 +30,7 @@ const TypingIndicator = () => (
 
 export default function ChatInterface({ initialPrompt, contextTitle, skipIntro }: ChatInterfaceProps) {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -89,7 +91,7 @@ If they ask for specific career paths, factor in their test results. Treat them 
       setMessages(updatedMessages);
       localStorage.setItem(storageKey, JSON.stringify(updatedMessages));
     } catch {
-      const errorMsg = [...currentMessages, { role: 'assistant' as const, content: "I'm having trouble connecting right now. Please try again in a moment!" }];
+      const errorMsg = [...currentMessages, { role: 'assistant' as const, content: t.noResponse }];
       setMessages(errorMsg);
     } finally {
       setIsLoading(false);
@@ -118,10 +120,10 @@ If they ask for specific career paths, factor in their test results. Treat them 
   };
 
   const suggestedPrompts = [
-    "What career suits someone who loves both tech and people?",
-    "How do I write a CV with no work experience?",
-    "What should I expect in a marketing internship?",
-    "I'm 16 and passionate about art. What are my career options?",
+    t.suggestedPrompt1,
+    t.suggestedPrompt2,
+    t.suggestedPrompt3,
+    t.suggestedPrompt4,
   ];
 
   // Filter out system messages so the user doesn't see their own hidden profile payload
@@ -164,15 +166,15 @@ If they ask for specific career paths, factor in their test results. Treat them 
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>👋</div>
               <h3 style={{ color: '#40e0d0', fontSize: '1.2rem', fontWeight: '700', marginBottom: '6px', textTransform: 'uppercase' }}>
-                Welcome back, {user?.name || 'Trainee'}
+                {t.welcomeBack}, {user?.name || t.trainee}
               </h3>
               <p style={{ color: '#b0b0b0', fontSize: '0.9rem', lineHeight: '1.6', maxWidth: '320px' }}>
-                I'm already up to speed on your personalized profile. Ask me anything about your career path based on our analysis.
+                {t.personaiDesc}
               </p>
             </div>
             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <p style={{ color: '#888', fontSize: '0.8rem', textAlign: 'center', marginBottom: '4px' }}>
-                Try asking:
+                {t.tryAsking}:
               </p>
               {suggestedPrompts.map((prompt, i) => (
                 <button key={i}
@@ -251,7 +253,7 @@ If they ask for specific career paths, factor in their test results. Treat them 
             e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Ask me anything..."
+          placeholder={t.askMeAnything}
           disabled={isLoading}
           rows={1}
           style={{

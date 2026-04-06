@@ -1,7 +1,9 @@
+import { useLanguage } from '../context/LanguageContext';
 import ChatInterface from '../components/ChatInterface';
 import { useNavigate } from 'react-router-dom';
 
 const ChatPage = () => {
+    const { t } = useLanguage();
     const navigate = useNavigate();
 
     return (
@@ -43,7 +45,7 @@ const ChatPage = () => {
                             fontWeight: '600',
                         }}
                     >
-                        ← Back to Feature
+                        {t.backToFeature}
                     </button>
                 </div>
                 <div style={{

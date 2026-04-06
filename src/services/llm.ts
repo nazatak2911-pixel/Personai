@@ -109,8 +109,9 @@ No other text, just the JSON.`;
 }
 
 // AI CV Enhancement
-export async function enhanceCVWithAI(currentCV: string, request: string, targetPosition: string): Promise<string> {
+export async function enhanceCVWithAI(currentCV: string, request: string, targetPosition: string, language: string = 'en'): Promise<string> {
   const prompt = `You are an expert CV writer. The user has a CV and wants to enhance it with AI.
+  PLEASE RESPOND IN THIS LANGUAGE: ${language}
 
 Current CV summary/content:
 ${currentCV || '(No CV yet — this is a new CV)'}
@@ -125,8 +126,9 @@ Write a professional, polished enhancement/addition for their CV based on their 
 }
 
 // AI Simulation Evaluation
-export async function evaluateSimulationResponse(simulationType: string, situation: string, userAction: string): Promise<string> {
+export async function evaluateSimulationResponse(simulationType: string, situation: string, userAction: string, language: string = 'en'): Promise<string> {
   const prompt = `You are an expert mentor in the field of ${simulationType}.
+  PLEASE PROVIDE THE EVALUATION AND FEEDBACK IN THIS LANGUAGE: ${language}
 
 Situation:
 "${situation}"
@@ -141,5 +143,44 @@ Keep it encouraging but professional. Use bullet points for feedback.`;
   const messages: ChatMessage[] = [{ role: 'user', content: prompt }];
   return await sendMessage(messages);
 }
+export interface SimulationCase {
+  title: string;
+  situation: string;
+  professionalContext: string;
+  initialMessage: string;
+  visualDescription: string;
+}
 
+export async function generateSimulationCase(type: string, language: string = 'en'): Promise<SimulationCase> {
+  const prompt = `Generate a high-fidelity, professional simulation case for the field of: ${type}.
+  ALL CONTENT WITHIN THE JSON MUST BE IN THIS LANGUAGE: ${language}
+  
+  The scenario should be realistic, challenging, and require professional judgment.
+  
+  Respond with ONLY a JSON object in this format:
+  {
+    "title": "Case Title",
+    "situation": "Detailed description of the problem/situation.",
+    "professionalContext": "Technical data, medical history, or legal precedents relevant to the case.",
+    "initialMessage": "What the person in the simulation says to you first.",
+    "visualDescription": "A vivid description of the environment for a visual simulation feed."
+  }
+  
+  No other text, just the JSON.`;
 
+  try {
+    const result = await sendMessage([{ role: 'user', content: prompt }]);
+    const clean = result.trim().replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  } catch (e) {
+    console.error("Failed to generate simulation case:", e);
+    // Fallback case in case of AI failure (Default to English but user will likely retry)
+    return {
+      title: "Field Emergency",
+      situation: "A sudden complication has arisen requiring your immediate attention.",
+      professionalContext: "Standard operating procedures are in effect. All systems nominal but under stress.",
+      initialMessage: "We need your decision now, the situation is escalating!",
+      visualDescription: "A high-pressure professional environment with multiple indicators flashing."
+    };
+  }
+}

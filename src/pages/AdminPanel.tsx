@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const ADMIN_PASSWORD = 'PERSONAI_ADMIN_2024';
 
@@ -29,6 +30,7 @@ const saveBanned = (banned: string[]) => {
 };
 
 const AdminPanel = () => {
+  const { t } = useLanguage();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
@@ -41,7 +43,7 @@ const AdminPanel = () => {
       setFlags(loadFlags());
       setBanned(loadBanned());
     } else {
-      setAuthError('Incorrect password.');
+      setAuthError(t.incorrectPassword);
     }
   };
 
@@ -81,19 +83,19 @@ const AdminPanel = () => {
       <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
         <div style={{ background: 'rgba(20,20,20,0.9)', border: '1px solid rgba(255,50,50,0.3)', borderRadius: '24px', padding: '50px 40px', width: '400px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div style={{ fontSize: '2.5rem' }}>🔒</div>
-          <h1 style={{ color: '#ff6b6b', fontSize: '1.8rem', fontWeight: '800', textTransform: 'uppercase' }}>CoFounder Panel</h1>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>Restricted access — authorized personnel only.</p>
+          <h1 style={{ color: '#ff6b6b', fontSize: '1.8rem', fontWeight: '800', textTransform: 'uppercase' }}>{t.adminPanelTitle}</h1>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>{t.restrictedAccess}</p>
           <input
             type="password"
             value={passwordInput}
             onChange={e => setPasswordInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            placeholder="Enter admin password..."
+            placeholder={t.enterAdminPassword}
             style={{ padding: '12px 16px', borderRadius: '12px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', outline: 'none', fontSize: '1rem', textAlign: 'center' }}
           />
           {authError && <p style={{ color: '#ff6b6b', fontSize: '0.9rem' }}>{authError}</p>}
           <button onClick={handleLogin} style={{ background: 'linear-gradient(135deg,#ff6b6b,#ee5a24)', border: 'none', color: '#fff', padding: '12px', borderRadius: '12px', cursor: 'pointer', fontWeight: '700', fontSize: '1rem' }}>
-            Access Panel
+            {t.accessPanel}
           </button>
         </div>
       </div>
@@ -111,16 +113,16 @@ const AdminPanel = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <span style={{ fontSize: '2rem' }}>🛡️</span>
           <div>
-            <h1 style={{ color: '#ff6b6b', fontSize: '2rem', fontWeight: '800', margin: 0 }}>CoFounder Admin Panel</h1>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', margin: 0 }}>Moderation & Account Management</p>
+            <h1 style={{ color: '#ff6b6b', fontSize: '2rem', fontWeight: '800', margin: 0 }}>PERSONA<span style={{ color: '#ffffff' }}>I</span> {t.adminPanelTitle.split(' ').slice(1).join(' ')}</h1>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', margin: 0 }}>{t.adminPanelSubtitle}</p>
           </div>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <button onClick={refreshData} style={{ background: 'rgba(64,224,208,0.1)', border: '1px solid rgba(64,224,208,0.3)', color: '#40e0d0', padding: '8px 18px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>
-            🔄 Refresh
+            🔄 {t.refresh}
           </button>
           <button onClick={() => setIsAuthenticated(false)} style={{ background: 'rgba(255,107,107,0.1)', border: '1px solid rgba(255,107,107,0.3)', color: '#ff6b6b', padding: '8px 18px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>
-            🔒 Lock
+            🔒 {t.lock}
           </button>
         </div>
       </div>
@@ -128,9 +130,9 @@ const AdminPanel = () => {
       {/* Stats Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
         {[
-          { label: 'Flagged Accounts', value: flags.length, color: '#f59e0b', icon: '⚠️' },
-          { label: 'Banned Accounts', value: banned.length, color: '#ff6b6b', icon: '🚫' },
-          { label: 'Total Accounts', value: JSON.parse(localStorage.getItem('persona_accounts') || '[]').length, color: '#40e0d0', icon: '👤' },
+          { label: t.flaggedAccounts, value: flags.length, color: '#f59e0b', icon: '⚠️' },
+          { label: t.bannedAccounts, value: banned.length, color: '#ff6b6b', icon: '🚫' },
+          { label: t.totalAccounts, value: JSON.parse(localStorage.getItem('persona_accounts') || '[]').length, color: '#40e0d0', icon: '👤' },
         ].map((stat, i) => (
           <div key={i} style={{ background: 'rgba(25,25,25,0.8)', borderRadius: '16px', padding: '24px', border: `1px solid ${stat.color}33` }}>
             <div style={{ fontSize: '2rem' }}>{stat.icon}</div>
@@ -142,10 +144,10 @@ const AdminPanel = () => {
 
       {/* Flagged Accounts */}
       <div>
-        <h2 style={{ fontSize: '1.4rem', color: '#f59e0b', marginBottom: '16px', fontWeight: '700' }}>⚠️ Flagged Accounts</h2>
+        <h2 style={{ fontSize: '1.4rem', color: '#f59e0b', marginBottom: '16px', fontWeight: '700' }}>⚠️ {t.flaggedAccounts}</h2>
         {flags.length === 0 ? (
           <div style={{ background: 'rgba(25,25,25,0.5)', borderRadius: '16px', padding: '30px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>
-            No flagged accounts. All clear! ✅
+            {t.noFlags}
           </div>
         ) : (
           flags.map((flag, i) => (
@@ -163,10 +165,10 @@ const AdminPanel = () => {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flexShrink: 0 }}>
                   <button onClick={() => dismissFlag(flag.email)} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '7px 16px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>
-                    Dismiss
+                    {t.dismiss}
                   </button>
                   <button onClick={() => banAccount(flag.email)} style={{ background: 'rgba(255,107,107,0.2)', border: '1px solid rgba(255,107,107,0.4)', color: '#ff6b6b', padding: '7px 16px', borderRadius: '20px', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem' }}>
-                    🚫 Ban
+                    🚫 {t.ban}
                   </button>
                 </div>
               </div>
@@ -177,10 +179,10 @@ const AdminPanel = () => {
 
       {/* Banned Accounts */}
       <div>
-        <h2 style={{ fontSize: '1.4rem', color: '#ff6b6b', marginBottom: '16px', fontWeight: '700' }}>🚫 Banned Accounts</h2>
+        <h2 style={{ fontSize: '1.4rem', color: '#ff6b6b', marginBottom: '16px', fontWeight: '700' }}>🚫 {t.bannedAccounts}</h2>
         {banned.length === 0 ? (
           <div style={{ background: 'rgba(25,25,25,0.5)', borderRadius: '16px', padding: '30px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>
-            No banned accounts.
+            {t.noBanned}
           </div>
         ) : (
           banned.map((email, i) => {
@@ -192,7 +194,7 @@ const AdminPanel = () => {
                   <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>{email}</div>
                 </div>
                 <button onClick={() => unban(email)} style={{ background: 'rgba(64,224,208,0.15)', border: '1px solid rgba(64,224,208,0.3)', color: '#40e0d0', padding: '7px 16px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>
-                  ✅ Unban
+                  ✅ {t.unban}
                 </button>
               </div>
             );

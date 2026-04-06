@@ -109,7 +109,7 @@ const MyInternships = () => {
     return (
         <div style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '40px', color: '#fff', position: 'relative' }}>
             <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.9rem', marginBottom: '10px', fontStyle: 'italic' }}>
-                Note: These are not real postings; this is a demonstration of how the website will look and function.
+                {t.appNote}
             </p>
             <h1 style={{ fontSize: '3rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '30px' }}>
                 {t.internshipOpportunities}
@@ -119,7 +119,7 @@ const MyInternships = () => {
             <div style={{ ...glassStyle, padding: '20px', display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap' }}>
                 <input 
                     type="text" 
-                    placeholder="Search by company, role or skills..." 
+                    placeholder={t.searchPlaceholder} 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{ flex: 1, minWidth: '300px', padding: '14px 20px', borderRadius: '50px', background: 'rgba(0,0,0,0.3)', border: '1px solid #40e0d0', color: '#fff', fontSize: '1rem', outline: 'none' }}
@@ -138,10 +138,10 @@ const MyInternships = () => {
                 
                 {/* FILTERS SIDEBAR */}
                 <div style={{ ...glassStyle, padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <h3 style={{ fontSize: '1.2rem', color: '#40e0d0', fontWeight: '700' }}>Filters</h3>
+                    <h3 style={{ fontSize: '1.2rem', color: '#40e0d0', fontWeight: '700' }}>{t.filters}</h3>
                     
                     <div>
-                        <label style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', display: 'block', marginBottom: '10px' }}>Career Field</label>
+                        <label style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', display: 'block', marginBottom: '10px' }}>{t.careerField}</label>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             {['All', 'Tech', 'Marketing', 'Design', 'Finance'].map(f => (
                                 <button key={f} 
@@ -160,7 +160,7 @@ const MyInternships = () => {
                     </div>
 
                     <div>
-                        <label style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', display: 'block', marginBottom: '10px' }}>Work Type</label>
+                        <label style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', display: 'block', marginBottom: '10px' }}>{t.workType}</label>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                             {['All', 'Remote', 'Hybrid', 'On-site'].map(w => (
                                 <button key={w} 
@@ -211,7 +211,7 @@ const MyInternships = () => {
                                     onClick={() => handleApply(listing)}
                                     style={{ background: 'linear-gradient(135deg,#40e0d0,#2a9d8f)', color: '#000', border: 'none', padding: '10px 24px', borderRadius: '50px', fontWeight: '700', cursor: 'pointer' }}
                                 >
-                                    Apply Now
+                                    {t.tryNow}
                                 </button>
                             </div>
                         </div>
@@ -227,7 +227,7 @@ const MyInternships = () => {
                 zIndex: 100
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h5 style={{ margin: 0, fontSize: '1rem', color: '#40e0d0', fontWeight: '700', textTransform: 'uppercase' }}>Application Results</h5>
+                    <h5 style={{ margin: 0, fontSize: '1rem', color: '#40e0d0', fontWeight: '700', textTransform: 'uppercase' }}>{t.appResults}</h5>
                     <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '10px' }}>{applications.length}</span>
                 </div>
                 
@@ -263,16 +263,16 @@ const MyInternships = () => {
                         {appSuccess ? (
                             <div style={{ color: '#40e0d0' }}>
                                 <div style={{ fontSize: '4rem', marginBottom: '20px' }}>✅</div>
-                                <h2 style={{ fontSize: '2rem' }}>Application Sent!</h2>
+                                <h2 style={{ fontSize: '2rem' }}>{t.appSuccess}</h2>
                                 <p>Good luck at {selectedInternship.company}!</p>
                             </div>
                         ) : (
                             <>
-                                <h2 style={{ color: '#40e0d0', margin: 0 }}>Apply to {selectedInternship.company}</h2>
+                                <h2 style={{ color: '#40e0d0', margin: 0 }}>{t.applyTo} {selectedInternship.company}</h2>
                                 <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0 }}>You are applying for the <strong style={{ color: '#fff' }}>{selectedInternship.role}</strong> position.</p>
                                 
                                 <div style={{ textAlign: 'left', marginTop: '20px' }}>
-                                    <label style={{ fontSize: '0.85rem', color: '#40e0d0', fontWeight: '700', textTransform: 'uppercase', display: 'block', marginBottom: '10px' }}>Upload CV (PDF/DOCX) *</label>
+                                    <label style={{ fontSize: '0.85rem', color: '#40e0d0', fontWeight: '700', textTransform: 'uppercase', display: 'block', marginBottom: '10px' }}>{t.uploadCV}</label>
                                     <div style={{ padding: '30px', border: '2px dashed rgba(64, 224, 208, 0.4)', borderRadius: '16px', textAlign: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.03)' }}>
                                         <input 
                                             type="file" 
@@ -301,7 +301,7 @@ const MyInternships = () => {
                                         disabled={!cvFile}
                                         style={{ flex: 1, background: cvFile ? 'linear-gradient(135deg,#40e0d0,#2a9d8f)' : '#555', color: cvFile ? '#000' : '#888', border: 'none', padding: '14px', borderRadius: '14px', fontWeight: '700', cursor: cvFile ? 'pointer' : 'not-allowed' }}
                                     >
-                                        Submit Application
+                                        {t.submitApp}
                                     </button>
                                 </div>
                             </>

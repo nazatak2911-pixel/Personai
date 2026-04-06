@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import ContactInbox from '../components/ContactInbox';
 
 export default function RootLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -73,7 +74,7 @@ export default function RootLayout() {
           {isLoggedIn ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <span style={{ color: '#ffffff', fontWeight: '500', fontSize: '0.9rem' }}>
-                Welcome, <span style={{ color: '#40e0d0' }}>{user?.name}</span>
+                {t.welcomeNormal}, <span style={{ color: '#40e0d0' }}>{user?.name}</span>
               </span>
               <button 
                 className="nav-btn login-btn" 
@@ -85,14 +86,14 @@ export default function RootLayout() {
                 }}
                 style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}
               >
-                Logout
+                {t.logout}
               </button>
             </div>
           ) : (
             <>
               {isDashboard && (
                 <button className="nav-btn" onClick={() => navigate('/')} style={{ background: 'transparent', color: '#fff', border: 'none', fontWeight: '500', marginRight: '10px' }}>
-                  Main Home
+                  {t.mainHome}
                 </button>
               )}
               <button className="nav-btn login-btn" onClick={() => navigate('/login')}>{t.logIn}</button>
@@ -152,6 +153,9 @@ export default function RootLayout() {
           <Outlet />
         </main>
       </div>
+
+      {/* Floating Global Components */}
+      <ContactInbox />
     </div>
   );
 }

@@ -107,7 +107,7 @@ const Internships = () => {
                         e.currentTarget.style.transform = 'none';
                     }}
                     >
-                        Try Now
+                        {t.tryNow}
                     </button>
                 </div>
             </div>

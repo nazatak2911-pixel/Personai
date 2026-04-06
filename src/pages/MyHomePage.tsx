@@ -28,7 +28,7 @@ const MyHomePage = () => {
 
     const handleChangeName = () => {
         if (!user) return;
-        const newName = window.prompt("Enter your new name:", user.name);
+        const newName = window.prompt(t.enterNewName, user.name);
         if (newName && newName.trim().length > 0) {
             updateName(newName.trim());
         }
@@ -52,10 +52,10 @@ const MyHomePage = () => {
                 overflow: 'hidden'
             }}>
                 <h1 style={{ fontSize: '3rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '10px' }}>
-                    Welcome Trainee
+                    {t.welcomeTrainee}
                 </h1>
                 <h2 style={{ fontSize: '1.5rem', color: 'rgba(255,255,255,0.7)', fontWeight: '400', marginBottom: '30px' }}>
-                    You are not signed in.
+                    {t.notSignedIn}
                 </h2>
                 <div style={{ display: 'flex', gap: '20px' }}>
                     <button onClick={() => navigate('/login')} style={{
@@ -129,7 +129,7 @@ const MyHomePage = () => {
                             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                 <span style={{ fontSize: '2.5rem' }}>🧠</span>
                                 <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#fff', textTransform: 'uppercase', letterSpacing: '-0.5px', margin: 0 }}>
-                                    Your AI Profile
+                                    {t.yourAIProfile}
                                 </h2>
                             </div>
                         </div>
@@ -166,21 +166,21 @@ const MyHomePage = () => {
                                 fontSize: 'clamp(2rem, 3.5vw, 2.5rem)', fontWeight: '800', color: '#40e0d0',
                                 textTransform: 'uppercase', letterSpacing: '-1px', margin: 0, textAlign: 'right'
                             }}>
-                                WELCOME, <span style={{ color: '#ffffff' }}>{user.name}</span>
+                                {t.welcomeCaps}, <span style={{ color: '#ffffff' }}>{user.name}</span>
                             </h1>
                             <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
                                 <button onClick={handleChangeName} style={{
                                     background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.5)',
                                     fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline'
                                 }}>
-                                    Change Name
+                                    {t.changeName}
                                 </button>
                                 <button onClick={() => navigate('/onboarding-survey')} style={{
                                     background: 'transparent', border: '1px solid #40e0d0', color: '#40e0d0',
                                     padding: '4px 12px', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '600',
                                     cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center'
                                 }}>
-                                    ↻ Retake
+                                    ↻ {t.retake}
                                 </button>
                             </div>
                         </div>
@@ -191,7 +191,7 @@ const MyHomePage = () => {
                             border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column'
                         }}>
                             <h3 style={{ fontSize: '1.2rem', color: '#40e0d0', marginBottom: '25px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>
-                                Inclination Summary
+                                {t.inclinationSummary}
                             </h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
                                 {Object.entries(scores).map(([trait, score]) => (
@@ -223,7 +223,7 @@ const MyHomePage = () => {
                 marginBottom: '10px'
             }}>
                 <h3 style={{ fontSize: '1.4rem', color: '#40e0d0', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                    Explore Modules
+                    {t.exploreModules}
                 </h3>
                 <div style={{
                     display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '15px', width: '100%'

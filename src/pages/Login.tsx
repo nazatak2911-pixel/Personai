@@ -51,18 +51,18 @@ const Login = () => {
                     LOG I<span style={{ color: '#ffffff' }}>N</span>
                 </h1>
                 <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '35px' }}>
-                    Welcome back to the future of career mentoring.
+                    {t.loginWelcome}
                 </p>
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <div style={{ textAlign: 'left' }}>
-                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>EMAIL</label>
+                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>{t.email.toUpperCase()}</label>
                         <input 
                             type="email" 
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="your@email.com"
+                            placeholder={t.emailPlaceholder}
                             style={{
                                 width: '100%',
                                 background: 'rgba(255,255,255,0.05)',
@@ -77,13 +77,13 @@ const Login = () => {
                         />
                     </div>
                     <div style={{ textAlign: 'left' }}>
-                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>PASSWORD</label>
+                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>{t.password.toUpperCase()}</label>
                         <input 
                             type="password" 
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
+                            placeholder={t.passwordPlaceholder}
                             style={{
                                 width: '100%',
                                 background: 'rgba(255,255,255,0.05)',
@@ -121,7 +121,7 @@ const Login = () => {
                 </form>
 
                 <div style={{ marginTop: '30px', color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>
-                    Don't have an account? <Link to="/signup" style={{ color: '#40e0d0', textDecoration: 'none', fontWeight: '600' }}>{t.signUp}</Link>
+                    {t.dontHaveAccount} <Link to="/signup" style={{ color: '#40e0d0', textDecoration: 'none', fontWeight: '600' }}>{t.signUp}</Link>
                 </div>
             </div>
         </div>

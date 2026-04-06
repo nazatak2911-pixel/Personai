@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLanguage, languageLabels, Language } from '../context/LanguageContext';
 
 export default function LanguageSwitcher() {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +31,7 @@ export default function LanguageSwitcher() {
       <button
         className={`lang-trigger ${isOpen ? 'active' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
-        title="Select language"
+        title={t.selectLanguage}
         id="lang-trigger-btn"
       >
         {/* Globe SVG Icon */}

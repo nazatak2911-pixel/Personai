@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useAuth, CVData } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { enhanceCVWithAI } from '../services/llm';
 
 const emptyCV: CVData = {
@@ -18,6 +19,7 @@ const emptyCV: CVData = {
 };
 
 const MyCVDashboard = () => {
+  const { t, language } = useLanguage();
   const { user, saveCV } = useAuth();
   const [cv, setCv] = useState<CVData>(() => user?.cvData || emptyCV);
   const [aiRequest, setAiRequest] = useState('');
@@ -42,7 +44,7 @@ const MyCVDashboard = () => {
 
   const handleSave = () => {
     saveCV(cv);
-    setSaveMsg('CV saved! ✅');
+    setSaveMsg(t.cvSaved);
     setTimeout(() => setSaveMsg(''), 3000);
   };
 
@@ -50,7 +52,7 @@ const MyCVDashboard = () => {
     if (!aiRequest.trim()) return;
     setAiLoading(true);
     try {
-      const enhanced = await enhanceCVWithAI(cv.summary, aiRequest, aiPosition);
+      const enhanced = await enhanceCVWithAI(cv.summary, aiRequest, aiPosition, language);
       setCv(prev => ({ ...prev, aiEnhancement: enhanced }));
     } catch { /* skip */ }
     setAiLoading(false);
@@ -95,21 +97,21 @@ const MyCVDashboard = () => {
         <div class="header">
           ${cv.photoBase64 ? `<img class="photo" src="${cv.photoBase64}" />` : `<div class="photo-placeholder">👤</div>`}
           <div>
-            <h1>${cv.fullName || 'Full Name'}</h1>
-            <div class="title">${cv.title || 'Professional Title'}</div>
+            <h1>${cv.fullName || t.fullName}</h1>
+            <div class="title">${cv.title || t.professionalTitle}</div>
             <div class="contacts">${[cv.email, cv.phone, cv.linkedin].filter(Boolean).join(' · ')}</div>
           </div>
         </div>
 
         ${cv.summary || cv.aiEnhancement ? `
         <div class="section">
-          <div class="section-title">Professional Summary</div>
+          <div class="section-title">${t.professionalSummary}</div>
           <p>${(cv.summary + (cv.aiEnhancement ? '\n\n' + cv.aiEnhancement : '')).replace(/\n/g, '<br>')}</p>
         </div>` : ''}
 
         ${cv.experience.some(e => e.company) ? `
         <div class="section">
-          <div class="section-title">Work Experience</div>
+          <div class="section-title">${t.workExperience}</div>
           ${cv.experience.filter(e => e.company).map(e => `
             <div class="entry">
               <div class="entry-head"><span>${e.role}</span><span>${e.duration}</span></div>
@@ -121,7 +123,7 @@ const MyCVDashboard = () => {
 
         ${cv.education.some(e => e.school) ? `
         <div class="section">
-          <div class="section-title">Education</div>
+          <div class="section-title">${t.education}</div>
           ${cv.education.filter(e => e.school).map(e => `
             <div class="entry">
               <div class="entry-head"><span>${e.school}</span><span>${e.year}</span></div>
@@ -132,13 +134,13 @@ const MyCVDashboard = () => {
 
         ${cv.skills ? `
         <div class="section">
-          <div class="section-title">Skills</div>
+          <div class="section-title">${t.skills}</div>
           <div class="tags">${cv.skills.split(',').map(s => `<span class="tag">${s.trim()}</span>`).join('')}</div>
         </div>` : ''}
 
         ${cv.languages ? `
         <div class="section">
-          <div class="section-title">Languages</div>
+          <div class="section-title">${t.languages}</div>
           <p>${cv.languages}</p>
         </div>` : ''}
       </body>
@@ -159,14 +161,14 @@ const MyCVDashboard = () => {
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '40px', background: 'transparent', color: '#fff' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', margin: 0 }}>My CV</h1>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', margin: 0 }}>{t.myCV}</h1>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           {saveMsg && <span style={{ padding: '10px 18px', color: '#40e0d0', fontSize: '0.9rem', alignSelf: 'center' }}>{saveMsg}</span>}
           <button onClick={handleSave} style={{ background: 'rgba(64,224,208,0.15)', border: '1px solid #40e0d0', color: '#40e0d0', padding: '10px 22px', borderRadius: '50px', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>
-            💾 Save CV
+            💾 {t.saveCV}
           </button>
           <button onClick={handleDownloadPDF} style={{ background: 'linear-gradient(135deg,#40e0d0,#2a9d8f)', color: '#1a1a1a', border: 'none', padding: '10px 22px', borderRadius: '50px', cursor: 'pointer', fontWeight: '700', fontSize: '0.9rem' }}>
-            📄 Download PDF
+            📄 {t.downloadPDF}
           </button>
         </div>
       </div>
@@ -175,7 +177,7 @@ const MyCVDashboard = () => {
 
         {/* ===== LEFT: MANUAL CV BUILDER ===== */}
         <div style={{ background: 'rgba(25,25,25,0.7)', borderRadius: '24px', padding: '30px', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div style={sectionTitle}>📋 Your CV</div>
+          <div style={sectionTitle}>📋 {t.myCV}</div>
 
           {/* Photo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -183,14 +185,19 @@ const MyCVDashboard = () => {
               {!cv.photoBase64 && '👤'}
             </div>
             <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Profile Photo</label>
+              <label style={labelStyle}>{t.profilePhoto}</label>
               <input type="file" accept="image/*" onChange={handlePhotoUpload} style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }} />
             </div>
           </div>
 
           {/* Basic Info */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-            {[['fullName', 'Full Name', 'John Doe'], ['title', 'Job Title', 'Software Engineer'], ['email', 'Email', 'john@email.com'], ['phone', 'Phone', '+1 234 567 8900'], ['linkedin', 'LinkedIn URL', 'linkedin.com/in/johndoe']].map(([field, label, ph]) => (
+            {[
+              ['fullName', t.fullName, t.fullNamePlaceholder], 
+              ['title', t.professionalTitle, t.professionalTitlePlaceholder], 
+              ['phone', t.phoneNumber, '+1 234 567 8900'], 
+              ['linkedin', t.linkedInURL, 'linkedin.com/in/johndoe']
+            ].map(([field, label, ph]) => (
               <div key={field} style={{ gridColumn: field === 'linkedin' ? '1 / -1' : 'auto' }}>
                 <label style={labelStyle}>{label}</label>
                 <input value={(cv as any)[field]} onChange={e => update(field as keyof CVData, e.target.value)} placeholder={ph} style={inputStyle} />
@@ -200,48 +207,48 @@ const MyCVDashboard = () => {
 
           {/* Summary */}
           <div>
-            <label style={labelStyle}>Professional Summary</label>
-            <textarea value={cv.summary} onChange={e => update('summary', e.target.value)} rows={4} placeholder="Write your professional summary..." style={{ ...inputStyle, resize: 'vertical' }} />
+            <label style={labelStyle}>{t.professionalSummary}</label>
+            <textarea value={cv.summary} onChange={e => update('summary', e.target.value)} rows={4} placeholder="..." style={{ ...inputStyle, resize: 'vertical' }} />
           </div>
 
           {/* Experience */}
           <div>
-            <label style={sectionTitle}>Work Experience</label>
+            <label style={sectionTitle}>{t.workExperience}</label>
             {cv.experience.map((exp, i) => (
               <div key={i} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '14px', marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                  <input value={exp.company} onChange={e => { const arr = [...cv.experience]; arr[i].company = e.target.value; update('experience', arr); }} placeholder="Company" style={inputStyle} />
-                  <input value={exp.role} onChange={e => { const arr = [...cv.experience]; arr[i].role = e.target.value; update('experience', arr); }} placeholder="Role / Title" style={inputStyle} />
-                  <input value={exp.duration} onChange={e => { const arr = [...cv.experience]; arr[i].duration = e.target.value; update('experience', arr); }} placeholder="Duration (e.g. 2022-2024)" style={inputStyle} />
+                  <input value={exp.company} onChange={e => { const arr = [...cv.experience]; arr[i].company = e.target.value; update('experience', arr); }} placeholder={t.company} style={inputStyle} />
+                  <input value={exp.role} onChange={e => { const arr = [...cv.experience]; arr[i].role = e.target.value; update('experience', arr); }} placeholder={t.roleTitle} style={inputStyle} />
+                  <input value={exp.duration} onChange={e => { const arr = [...cv.experience]; arr[i].duration = e.target.value; update('experience', arr); }} placeholder={`${t.duration} (e.g. 2022-2024)`} style={inputStyle} />
                 </div>
-                <textarea value={exp.description} onChange={e => { const arr = [...cv.experience]; arr[i].description = e.target.value; update('experience', arr); }} placeholder="Description..." rows={2} style={{ ...inputStyle, resize: 'vertical' }} />
+                <textarea value={exp.description} onChange={e => { const arr = [...cv.experience]; arr[i].description = e.target.value; update('experience', arr); }} placeholder={`${t.description}...`} rows={2} style={{ ...inputStyle, resize: 'vertical' }} />
               </div>
             ))}
-            <button onClick={addExperience} style={{ background: 'transparent', border: '1px dashed rgba(64,224,208,0.4)', color: '#40e0d0', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', width: '100%', fontSize: '0.85rem' }}>+ Add Experience</button>
+            <button onClick={addExperience} style={{ background: 'transparent', border: '1px dashed rgba(64,224,208,0.4)', color: '#40e0d0', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', width: '100%', fontSize: '0.85rem' }}>+ {t.workExperience}</button>
           </div>
 
           {/* Education */}
           <div>
-            <label style={sectionTitle}>Education</label>
+            <label style={sectionTitle}>{t.education}</label>
             {cv.education.map((edu, i) => (
               <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 100px', gap: '8px', marginBottom: '8px' }}>
-                <input value={edu.school} onChange={e => { const arr = [...cv.education]; arr[i].school = e.target.value; update('education', arr); }} placeholder="School" style={inputStyle} />
-                <input value={edu.degree} onChange={e => { const arr = [...cv.education]; arr[i].degree = e.target.value; update('education', arr); }} placeholder="Degree" style={inputStyle} />
-                <input value={edu.year} onChange={e => { const arr = [...cv.education]; arr[i].year = e.target.value; update('education', arr); }} placeholder="Year" style={inputStyle} />
+                <input value={edu.school} onChange={e => { const arr = [...cv.education]; arr[i].school = e.target.value; update('education', arr); }} placeholder={t.school} style={inputStyle} />
+                <input value={edu.degree} onChange={e => { const arr = [...cv.education]; arr[i].degree = e.target.value; update('education', arr); }} placeholder={t.degree} style={inputStyle} />
+                <input value={edu.year} onChange={e => { const arr = [...cv.education]; arr[i].year = e.target.value; update('education', arr); }} placeholder={t.yearLabel} style={inputStyle} />
               </div>
             ))}
-            <button onClick={addEducation} style={{ background: 'transparent', border: '1px dashed rgba(64,224,208,0.4)', color: '#40e0d0', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', width: '100%', fontSize: '0.85rem' }}>+ Add Education</button>
+            <button onClick={addEducation} style={{ background: 'transparent', border: '1px dashed rgba(64,224,208,0.4)', color: '#40e0d0', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', width: '100%', fontSize: '0.85rem' }}>+ {t.education}</button>
           </div>
 
           {/* Skills & Languages */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
-              <label style={labelStyle}>Skills (comma-separated)</label>
-              <input value={cv.skills} onChange={e => update('skills', e.target.value)} placeholder="React, Python, Leadership..." style={inputStyle} />
+              <label style={labelStyle}>{t.skills}</label>
+              <input value={cv.skills} onChange={e => update('skills', e.target.value)} placeholder={t.skillsPlaceholder} style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Languages</label>
-              <input value={cv.languages} onChange={e => update('languages', e.target.value)} placeholder="English (Native), Spanish (B2)..." style={inputStyle} />
+              <label style={labelStyle}>{t.languages}</label>
+              <input value={cv.languages} onChange={e => update('languages', e.target.value)} placeholder={t.langsPlaceholder} style={inputStyle} />
             </div>
           </div>
         </div>
@@ -249,18 +256,18 @@ const MyCVDashboard = () => {
         {/* ===== RIGHT: AI ENHANCER ===== */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ background: 'rgba(25,25,25,0.7)', borderRadius: '24px', padding: '30px', border: '1px solid rgba(64,224,208,0.2)', display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            <div style={sectionTitle}>🤖 AI CV Enhancer</div>
+            <div style={sectionTitle}>🤖 {t.aiEnhancer}</div>
             <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', lineHeight: '1.6', marginTop: '-8px' }}>
-              Tell the AI what you want to add or improve, and what position you're applying for. The AI will write a professional enhancement for your CV.
+              {t.myCVDesc}
             </p>
             <div>
-              <label style={labelStyle}>What to add / improve</label>
-              <textarea value={aiRequest} onChange={e => setAiRequest(e.target.value)} rows={4} placeholder="e.g. 'I led a team of 5 developers on an e-commerce project and want to highlight leadership'"
+              <label style={labelStyle}>{t.howToUse}</label>
+              <textarea value={aiRequest} onChange={e => setAiRequest(e.target.value)} rows={4} placeholder="..."
                 style={{ ...inputStyle, resize: 'vertical' }} />
             </div>
             <div>
-              <label style={labelStyle}>Target Position</label>
-              <input value={aiPosition} onChange={e => setAiPosition(e.target.value)} placeholder="e.g. Senior Product Manager at Google" style={inputStyle} />
+              <label style={labelStyle}>{t.targetPosition}</label>
+              <input value={aiPosition} onChange={e => setAiPosition(e.target.value)} placeholder="..." style={inputStyle} />
             </div>
             <button onClick={handleAIEnhance} disabled={aiLoading || !aiRequest.trim()} style={{
               background: aiLoading ? 'rgba(64,224,208,0.2)' : 'linear-gradient(135deg,#40e0d0,#2a9d8f)',
@@ -268,16 +275,16 @@ const MyCVDashboard = () => {
               padding: '12px', borderRadius: '12px', cursor: aiLoading ? 'not-allowed' : 'pointer',
               fontWeight: '700', fontSize: '1rem', transition: 'all 0.2s'
             }}>
-              {aiLoading ? '✨ Enhancing...' : '✨ Enhance with AI'}
+              {aiLoading ? `✨ ${t.enhancing}` : `✨ ${t.enhanceWithAI}`}
             </button>
 
             {cv.aiEnhancement && (
               <div style={{ background: 'rgba(64,224,208,0.06)', border: '1px solid rgba(64,224,208,0.2)', borderRadius: '14px', padding: '16px' }}>
                 <div style={{ fontSize: '0.8rem', color: '#40e0d0', fontWeight: '700', marginBottom: '10px', textTransform: 'uppercase' }}>AI Suggestion:</div>
                 <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{cv.aiEnhancement}</p>
-                <button onClick={applyAIEnhancement} style={{ marginTop: '12px', background: '#40e0d0', border: 'none', color: '#000', padding: '8px 20px', borderRadius: '20px', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem' }}>
-                  ✅ Apply to CV
-                </button>
+                  <button onClick={applyAIEnhancement} style={{ marginTop: '12px', background: '#40e0d0', border: 'none', color: '#000', padding: '8px 20px', borderRadius: '20px', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem' }}>
+                    ✅ {t.applyToCV}
+                  </button>
               </div>
             )}
           </div>
@@ -285,7 +292,7 @@ const MyCVDashboard = () => {
           {/* Live Preview Hint */}
           <div style={{ background: 'rgba(25,25,25,0.5)', borderRadius: '16px', padding: '20px', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', textAlign: 'center', lineHeight: '1.6' }}>
-              💡 Click <strong style={{ color: '#40e0d0' }}>Download PDF</strong> at the top to generate a clean, professional PDF of your CV ready to share with employers.
+              💡 Click <strong style={{ color: '#40e0d0' }}>{t.downloadPDF}</strong> at the top to generate a clean, professional PDF of your CV ready to share with employers.
             </div>
           </div>
         </div>

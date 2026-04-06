@@ -24,7 +24,7 @@ const Faq = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '-1px'
             }}>
-                How to Use
+                {t.howToUseTitle}
             </h1>
 
             <div style={{

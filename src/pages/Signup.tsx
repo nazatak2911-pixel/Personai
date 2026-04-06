@@ -55,60 +55,60 @@ const Signup = () => {
                     SIGN U<span style={{ color: '#ffffff' }}>P</span>
                 </h1>
                 <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '35px' }}>
-                    Join the pioneers of AI-driven career growth.
+                    {t.signupWelcome}
                 </p>
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                    <div style={{ textAlign: 'left' }}>
-                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>FULL NAME</label>
+                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>{t.fullName.toUpperCase()}</label>
                         <input 
                             type="text" 
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="John Doe"
-                            style={{
-                                width: '100%',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(64, 224, 208, 0.1)',
-                                borderRadius: '16px',
-                                padding: '16px 20px',
-                                color: '#ffffff',
-                                fontSize: '1rem',
-                                outline: 'none',
-                                transition: 'all 0.3s ease'
-                            }}
-                        />
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>EMAIL</label>
-                        <input 
-                            type="email" 
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="your@email.com"
-                            style={{
-                                width: '100%',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(64, 224, 208, 0.1)',
-                                borderRadius: '16px',
-                                padding: '16px 20px',
-                                color: '#ffffff',
-                                fontSize: '1rem',
-                                outline: 'none',
-                                transition: 'all 0.3s ease'
-                            }}
-                        />
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                        <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>PASSWORD</label>
-                        <input 
-                            type="password" 
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
+                            placeholder={t.fullNamePlaceholder}
+                        style={{
+                            width: '100%',
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(64, 224, 208, 0.1)',
+                            borderRadius: '16px',
+                            padding: '16px 20px',
+                            color: '#ffffff',
+                            fontSize: '1rem',
+                            outline: 'none',
+                            transition: 'all 0.3s ease'
+                        }}
+                    />
+                </div>
+                <div style={{ textAlign: 'left' }}>
+                    <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>{t.email.toUpperCase()}</label>
+                    <input 
+                        type="email" 
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={t.emailPlaceholder}
+                        style={{
+                            width: '100%',
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(64, 224, 208, 0.1)',
+                            borderRadius: '16px',
+                            padding: '16px 20px',
+                            color: '#ffffff',
+                            fontSize: '1rem',
+                            outline: 'none',
+                            transition: 'all 0.3s ease'
+                        }}
+                    />
+                </div>
+                <div style={{ textAlign: 'left' }}>
+                    <label style={{ color: '#40e0d0', fontSize: '0.85rem', fontWeight: '600', marginLeft: '15px', marginBottom: '8px', display: 'block' }}>{t.password.toUpperCase()}</label>
+                    <input 
+                        type="password" 
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder={t.passwordPlaceholder}
                             style={{
                                 width: '100%',
                                 background: 'rgba(255,255,255,0.05)',
@@ -146,7 +146,7 @@ const Signup = () => {
                 </form>
 
                 <div style={{ marginTop: '30px', color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>
-                    Already have an account? <Link to="/login" style={{ color: '#40e0d0', textDecoration: 'none', fontWeight: '600' }}>{t.logIn}</Link>
+                    {t.alreadyHaveAccount} <Link to="/login" style={{ color: '#40e0d0', textDecoration: 'none', fontWeight: '600' }}>{t.logIn}</Link>
                 </div>
             </div>
         </div>

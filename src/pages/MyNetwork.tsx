@@ -34,7 +34,7 @@ export interface ContactRequest {
 
 const MyNetwork = () => {
     const { user } = useAuth();
-    const { language } = useLanguage();
+    const { t, language } = useLanguage();
 
     const [stories, setStories] = useState<NetworkStory[]>([]);
     const [requests, setRequests] = useState<ContactRequest[]>([]);
@@ -142,7 +142,7 @@ const MyNetwork = () => {
         const modResult = await moderateContent(contactIntroText);
         if (!modResult.safe) {
             flagAccount(user.email, user.name, modResult.reason || 'Offensive contact request', contactIntroText);
-            alert(`❌ Request blocked: ${modResult.reason || 'Inappropriate content'}. Your account has been flagged.`);
+            alert(`❌ ${t.rejected}: ${modResult.reason || t.inappropriateContent}.`);
             return;
         }
 
@@ -184,7 +184,7 @@ const MyNetwork = () => {
         const modResult = await moderateContent(chatInput);
         if (!modResult.safe) {
             flagAccount(user.email, user.name, modResult.reason || 'Inappropriate chat message', chatInput);
-            alert(`❌ Message blocked: ${modResult.reason || 'Inappropriate content'}. Your account has been flagged.`);
+            alert(`❌ ${t.rejected}: ${modResult.reason || t.inappropriateContent}.`);
             return;
         }
 
@@ -210,7 +210,7 @@ const MyNetwork = () => {
             setTranslations(prev => ({ ...prev, [storyId]: result }));
         } catch (err) {
             console.error("Translation failed:", err);
-            alert("Translation failed.");
+            alert(t.translationFailed);
         }
         setIsTranslating(null);
     };
@@ -242,16 +242,16 @@ const MyNetwork = () => {
             {/* TOP BAR */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                 <h1 style={{ fontSize: '2rem', color: '#40e0d0', margin: 0, fontWeight: '800', textTransform: 'uppercase' }}>
-                    Build Network
+                    {t.buildNetwork}
                 </h1>
                 <div style={{ display: 'flex', gap: '12px', flex: 1, justifyContent: 'center' }}>
                     <input
-                        type="text" placeholder="🔍  Search stories..."
+                        type="text" placeholder={`🔍 ${t.searchPlaceholder}`}
                         value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
                         style={{ padding: '10px 20px', borderRadius: '50px', border: '1px solid rgba(64,224,208,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', width: '220px', outline: 'none' }}
                     />
                     <input
-                        type="text" placeholder="Filter by career..."
+                        type="text" placeholder={`${t.careerField}...`}
                         value={filterCareer} onChange={e => setFilterCareer(e.target.value)}
                         style={{ padding: '10px 20px', borderRadius: '50px', border: '1px solid rgba(64,224,208,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', width: '180px', outline: 'none' }}
                     />
@@ -260,14 +260,14 @@ const MyNetwork = () => {
                     onClick={() => { if (!user) return alert("Sign in required."); setIsSharingModalOpen(true); }}
                     style={{ background: 'linear-gradient(135deg,#40e0d0,#2a9d8f)', color: '#1a1a1a', padding: '12px 24px', borderRadius: '50px', border: 'none', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}
                 >
-                    + Share Your Story
+                    + {t.shareStory}
                 </button>
             </div>
 
             {/* STORIES GRID */}
             {filteredStories.length === 0 ? (
                 <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.4)', padding: '60px 0', fontSize: '1.1rem' }}>
-                    No stories yet. Be the first to share yours! ✨
+                    {t.noStories}
                 </div>
             ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
@@ -305,7 +305,7 @@ const MyNetwork = () => {
                                         disabled={isTranslating === story.id}
                                         style={{ background: 'rgba(64, 224, 208, 0.1)', border: '1px solid #40e0d0', color: '#40e0d0', padding: '4px 10px', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}
                                     >
-                                        {isTranslating === story.id ? '⌛...' : '🌐 Translate'}
+                                        {isTranslating === story.id ? '⌛...' : `🌐 ${t.translate}`}
                                     </button>
                                 </div>
                                 <p style={{ 
@@ -328,7 +328,7 @@ const MyNetwork = () => {
 
                     {/* INCOMING */}
                     <div>
-                        <h2 style={{ fontSize: '1.3rem', color: '#40e0d0', marginBottom: '16px', fontWeight: '700' }}>📥 Incoming Requests</h2>
+                        <h2 style={{ fontSize: '1.3rem', color: '#40e0d0', marginBottom: '16px', fontWeight: '700' }}>📥 {t.incomingRequests}</h2>
                         {myIncomingRequests.length === 0 ? (
                             <div style={{ ...cardStyle, textAlign: 'center', color: 'rgba(255,255,255,0.35)', padding: '30px' }}>No requests yet.</div>
                         ) : (
@@ -342,16 +342,16 @@ const MyNetwork = () => {
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flexShrink: 0 }}>
                                             {r.status === 'pending' && (
                                                 <>
-                                                    <button onClick={() => acceptRequest(r.id)} style={{ background: '#40e0d0', border: 'none', padding: '6px 14px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem' }}>Accept</button>
-                                                    <button onClick={() => rejectRequest(r.id)} style={{ background: 'rgba(255,100,100,0.15)', border: '1px solid rgba(255,100,100,0.3)', color: '#ff6b6b', padding: '6px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>Reject</button>
+                                                    <button onClick={() => acceptRequest(r.id)} style={{ background: '#40e0d0', border: 'none', padding: '6px 14px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem' }}>{t.accepted}</button>
+                                                    <button onClick={() => rejectRequest(r.id)} style={{ background: 'rgba(255,100,100,0.15)', border: '1px solid rgba(255,100,100,0.3)', color: '#ff6b6b', padding: '6px 14px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>{t.rejected}</button>
                                                 </>
                                             )}
                                             {r.status === 'rejected' && (
-                                                <span style={{ color: '#ff6b6b', fontSize: '0.8rem' }}>Rejected</span>
+                                                <span style={{ color: '#ff6b6b', fontSize: '0.8rem' }}>{t.rejected}</span>
                                             )}
                                             {r.status === 'accepted' && (
                                                 <button onClick={() => setOpenChatId(openChatId === r.id ? null : r.id)} style={{ background: '#2a9d8f', border: 'none', padding: '6px 14px', borderRadius: '20px', cursor: 'pointer', color: '#fff', fontWeight: 'bold', fontSize: '0.85rem' }}>
-                                                    {openChatId === r.id ? 'Close Chat' : 'Open Chat 💬'}
+                                                    {openChatId === r.id ? t.closeChat : t.openChat}
                                                 </button>
                                             )}
                                         </div>
@@ -363,18 +363,18 @@ const MyNetwork = () => {
                                         return (
                                             <div style={{ marginTop: '14px', background: 'rgba(0,0,0,0.3)', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(64,224,208,0.15)' }}>
                                                 <div style={{ padding: '10px 14px', background: 'rgba(64,224,208,0.08)', fontSize: '0.8rem', color: '#40e0d0', fontWeight: '600' }}>
-                                                    Chat with {r.fromName}
+                                                    {t.chatWith} {r.fromName}
                                                 </div>
                                                 <div style={{ height: '200px', overflowY: 'auto', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                                     {(!chat || chat.messages.length === 0) && (
-                                                        <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem', margin: 'auto' }}>Say hi! 👋</div>
+                                                        <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem', margin: 'auto' }}>{t.sayHi}</div>
                                                     )}
                                                     {chat?.messages.map((m, i) => (
                                                         <div key={i} style={chatBubble(m.senderEmail === user.email)}>{m.text}</div>
                                                     ))}
                                                 </div>
                                                 <div style={{ display: 'flex', gap: '8px', padding: '10px', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                                                    <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendChatMessage(r.id)} placeholder="Type a message..." style={{ flex: 1, padding: '8px 14px', borderRadius: '30px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none', fontSize: '0.9rem' }} />
+                                                    <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendChatMessage(r.id)} placeholder={t.typeMessage} style={{ flex: 1, padding: '8px 14px', borderRadius: '30px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none', fontSize: '0.9rem' }} />
                                                     <button onClick={() => sendChatMessage(r.id)} style={{ background: '#40e0d0', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', color: '#000', fontWeight: '700', flexShrink: 0 }}>➤</button>
                                                 </div>
                                             </div>
@@ -387,9 +387,9 @@ const MyNetwork = () => {
 
                     {/* OUTGOING */}
                     <div>
-                        <h2 style={{ fontSize: '1.3rem', color: '#40e0d0', marginBottom: '16px', fontWeight: '700' }}>📤 Outgoing Requests</h2>
+                        <h2 style={{ fontSize: '1.3rem', color: '#40e0d0', marginBottom: '16px', fontWeight: '700' }}>📤 {t.outgoingRequests}</h2>
                         {myOutgoingRequests.length === 0 ? (
-                            <div style={{ ...cardStyle, textAlign: 'center', color: 'rgba(255,255,255,0.35)', padding: '30px' }}>No requests sent yet.</div>
+                            <div style={{ ...cardStyle, textAlign: 'center', color: 'rgba(255,255,255,0.35)', padding: '30px' }}>{t.noRequestsYet}</div>
                         ) : (
                             myOutgoingRequests.map(r => (
                                 <div key={r.id} style={cardStyle}>
@@ -397,12 +397,12 @@ const MyNetwork = () => {
                                         <div style={{ flex: 1 }}>
                                             <div style={{ fontWeight: '700', fontSize: '1.05rem' }}>To: {r.toName}</div>
                                             <div style={{ color: r.status === 'accepted' ? '#40e0d0' : r.status === 'rejected' ? '#ff6b6b' : 'rgba(255,255,255,0.4)', fontSize: '0.85rem', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                                                {r.status === 'pending' ? '⏳ Waiting...' : r.status === 'accepted' ? '✅ Accepted' : '❌ Rejected'}
+                                                {r.status === 'pending' ? `⏳ ${t.waiting}` : r.status === 'accepted' ? `✅ ${t.accepted}` : `❌ ${t.rejected}`}
                                             </div>
                                         </div>
                                         {r.status === 'accepted' && (
                                             <button onClick={() => setOpenChatId(openChatId === r.id ? null : r.id)} style={{ background: '#2a9d8f', border: 'none', padding: '6px 14px', borderRadius: '20px', cursor: 'pointer', color: '#fff', fontWeight: 'bold', fontSize: '0.85rem', flexShrink: 0 }}>
-                                                {openChatId === r.id ? 'Close Chat' : 'Open Chat 💬'}
+                                                {openChatId === r.id ? t.closeChat : t.openChat}
                                             </button>
                                         )}
                                     </div>
@@ -413,18 +413,18 @@ const MyNetwork = () => {
                                         return (
                                             <div style={{ marginTop: '14px', background: 'rgba(0,0,0,0.3)', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(64,224,208,0.15)' }}>
                                                 <div style={{ padding: '10px 14px', background: 'rgba(64,224,208,0.08)', fontSize: '0.8rem', color: '#40e0d0', fontWeight: '600' }}>
-                                                    Chat with {r.toName}
+                                                    {t.chatWith} {r.toName}
                                                 </div>
                                                 <div style={{ height: '200px', overflowY: 'auto', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                                     {(!chat || chat.messages.length === 0) && (
-                                                        <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem', margin: 'auto' }}>Start the conversation! 🚀</div>
+                                                        <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem', margin: 'auto' }}>{t.sayHi}</div>
                                                     )}
                                                     {chat?.messages.map((m, i) => (
                                                         <div key={i} style={chatBubble(m.senderEmail === user.email)}>{m.text}</div>
                                                     ))}
                                                 </div>
                                                 <div style={{ display: 'flex', gap: '8px', padding: '10px', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                                                    <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendChatMessage(r.id)} placeholder="Type a message..." style={{ flex: 1, padding: '8px 14px', borderRadius: '30px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none', fontSize: '0.9rem' }} />
+                                                    <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendChatMessage(r.id)} placeholder={t.typeMessage} style={{ flex: 1, padding: '8px 14px', borderRadius: '30px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none', fontSize: '0.9rem' }} />
                                                     <button onClick={() => sendChatMessage(r.id)} style={{ background: '#40e0d0', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', color: '#000', fontWeight: '700', flexShrink: 0 }}>➤</button>
                                                 </div>
                                             </div>
@@ -444,26 +444,26 @@ const MyNetwork = () => {
             {isSharingModalOpen && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}>
                     <div style={{ background: '#1c1c1c', padding: '40px', borderRadius: '24px', width: '580px', maxWidth: '100%', display: 'flex', flexDirection: 'column', gap: '15px', maxHeight: '90vh', overflowY: 'auto' }}>
-                        <h2 style={{ color: '#40e0d0', margin: 0, fontWeight: '800' }}>Share Your Story</h2>
-                        <label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>Profile Picture</label>
+                        <h2 style={{ color: '#40e0d0', margin: 0, fontWeight: '800' }}>{t.shareStory}</h2>
+                        <label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>{t.profilePicture}</label>
                         <input type="file" accept="image/*" onChange={handleFileChange} style={{ color: '#fff' }} />
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <input type="text" placeholder="Career / Title *" value={formState.career} onChange={e => setFormState({ ...formState, career: e.target.value })} style={{ flex: 1, padding: '10px 15px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
-                            <input type="number" placeholder="Age" value={formState.age} onChange={e => setFormState({ ...formState, age: Number(e.target.value) })} style={{ width: '80px', padding: '10px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
+                            <input type="text" placeholder={`${t.careerField} *`} value={formState.career} onChange={e => setFormState({ ...formState, career: e.target.value })} style={{ flex: 1, padding: '10px 15px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
+                            <input type="number" placeholder={t.age} value={formState.age} onChange={e => setFormState({ ...formState, age: Number(e.target.value) })} style={{ width: '80px', padding: '10px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
                             <select value={formState.gender} onChange={e => setFormState({ ...formState, gender: e.target.value })} style={{ padding: '10px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }}>
-                                <option>Male</option><option>Female</option><option>Other</option>
+                                <option value="Male">{t.male}</option><option value="Female">{t.female}</option><option value="Other">{t.other}</option>
                             </select>
                         </div>
-                        <input type="text" placeholder="Personal Traits (e.g. Creative, Detail-oriented)" value={formState.traits} onChange={e => setFormState({ ...formState, traits: e.target.value })} style={{ padding: '10px 15px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
+                        <input type="text" placeholder={t.traitsPlaceholder} value={formState.traits} onChange={e => setFormState({ ...formState, traits: e.target.value })} style={{ padding: '10px 15px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
                         <div>
-                            <textarea placeholder="Tell your story... (Max 500 words)" value={formState.story} onChange={e => setFormState({ ...formState, story: e.target.value })} rows={7} style={{ width: '100%', padding: '12px 15px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', resize: 'vertical', outline: 'none', fontFamily: 'Outfit, sans-serif' }} />
+                            <textarea placeholder={t.storyPlaceholder} value={formState.story} onChange={e => setFormState({ ...formState, story: e.target.value })} rows={7} style={{ width: '100%', padding: '12px 15px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', resize: 'vertical', outline: 'none', fontFamily: 'Outfit, sans-serif' }} />
                             <div style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', textAlign: 'right' }}>
                                 {formState.story.trim().split(/\s+/).filter(Boolean).length} / 500 words
                             </div>
                         </div>
                         <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                             <button onClick={() => setIsSharingModalOpen(false)} style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', padding: '10px 22px', borderRadius: '20px', cursor: 'pointer' }}>Cancel</button>
-                            <button onClick={handleShareStory} style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '10px 22px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}>Publish</button>
+                            <button onClick={handleShareStory} style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '10px 22px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}>{t.publish}</button>
                         </div>
                     </div>
                 </div>
@@ -495,7 +495,7 @@ const MyNetwork = () => {
                             <button onClick={() => setActiveStory(null)} style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', padding: '12px 24px', borderRadius: '50px', cursor: 'pointer' }}>Close</button>
                             {user && user.email !== activeStory.authorEmail && (
                                 <button onClick={() => setIsContactingModalOpen(true)} style={{ background: 'linear-gradient(135deg,#40e0d0,#2a9d8f)', color: '#1a1a1a', border: 'none', padding: '12px 24px', borderRadius: '50px', cursor: 'pointer', fontWeight: 'bold' }}>
-                                    Try to Contact 🤝
+                                    {t.connect} 🤝
                                 </button>
                             )}
                         </div>
@@ -507,17 +507,17 @@ const MyNetwork = () => {
             {isContactingModalOpen && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}>
                     <div style={{ background: '#1c1c1c', padding: '40px', borderRadius: '24px', width: '560px', maxWidth: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <h2 style={{ color: '#40e0d0', margin: 0, fontWeight: '800' }}>Send Contact Request</h2>
+                        <h2 style={{ color: '#40e0d0', margin: 0, fontWeight: '800' }}>{t.connect}</h2>
                         <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0, fontSize: '0.9rem' }}>
                             Write a short introduction to <strong style={{ color: '#fff' }}>{activeStory?.authorName}</strong>. Why do you want to connect? (Min. 50 words)
                         </p>
-                        <textarea value={contactIntroText} onChange={e => setContactIntroText(e.target.value)} rows={8} style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', resize: 'vertical', fontFamily: 'Outfit, sans-serif', outline: 'none', fontSize: '0.95rem' }} placeholder="Introduce yourself and explain why you'd like to connect..." />
+                        <textarea value={contactIntroText} onChange={e => setContactIntroText(e.target.value)} rows={8} style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', resize: 'vertical', fontFamily: 'Outfit, sans-serif', outline: 'none', fontSize: '0.95rem' }} placeholder={t.introConnectPlaceholder} />
                         <div style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', textAlign: 'right', marginTop: '-8px' }}>
                             {contactIntroText.trim().split(/\s+/).filter(Boolean).length} words
                         </div>
                         <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-                            <button onClick={() => setIsContactingModalOpen(false)} style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', padding: '10px 22px', borderRadius: '20px', cursor: 'pointer' }}>Cancel</button>
-                            <button onClick={sendContactRequest} style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '10px 22px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}>Send Request</button>
+                            <button onClick={() => setIsContactingModalOpen(false)} style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', padding: '10px 22px', borderRadius: '20px', cursor: 'pointer' }}>{t.cancel}</button>
+                            <button onClick={sendContactRequest} style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '10px 22px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}>{t.send}</button>
                         </div>
                     </div>
                 </div>

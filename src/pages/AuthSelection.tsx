@@ -8,21 +8,21 @@ const AuthSelection = () => {
     const options = [
         {
             title: t.logIn,
-            desc: "Access your personalized career journey.",
+            desc: t.loginDesc,
             path: "/login",
             icon: "🔑",
             color: "#40e0d0"
         },
         {
             title: t.signUp,
-            desc: "Create an account to save your progress.",
+            desc: t.signupDesc,
             path: "/signup",
             icon: "✨",
             color: "#ffffff"
         },
         {
-            title: "Continue without account",
-            desc: "Try the AI Chatbot immediately as a guest.",
+            title: t.guestTitle,
+            desc: t.guestDesc,
             path: "/myhomepage",
             icon: "👤",
             color: "rgba(255,255,255,0.7)"
@@ -55,14 +55,14 @@ const AuthSelection = () => {
                     letterSpacing: '-1px',
                     marginBottom: '10px'
                 }}>
-                    GET STARTE<span style={{ color: '#ffffff' }}>D</span>
+                    {t.getStartedTitle.slice(0, -1)}<span style={{ color: '#ffffff' }}>{t.getStartedTitle.slice(-1)}</span>
                 </h1>
                 <p style={{
                     fontSize: '1.2rem',
                     color: 'rgba(255,255,255,0.7)',
                     lineHeight: '1.6'
                 }}>
-                    Choose how you want to interact with PERSONAI today.
+                    {t.chooseAuthDesc}
                 </p>
             </div>
 
@@ -133,7 +133,7 @@ const AuthSelection = () => {
                     fontSize: '0.9rem'
                 }}
             >
-                Back to Feature Details
+                {t.backToFeatures}
             </button>
         </div>
     );
