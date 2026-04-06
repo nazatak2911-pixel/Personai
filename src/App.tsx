@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './index.css';
+import './index.css'; // v1.1.0-final-moderation-sync
 
 import { LanguageProvider } from './context/LanguageContext';
 import RootLayout from './layouts/RootLayout';
