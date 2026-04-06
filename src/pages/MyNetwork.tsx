@@ -32,75 +32,6 @@ export interface ContactRequest {
     messages: ChatMessage[];
 }
 
-const GLOBAL_COMMUNITY_STORIES: NetworkStory[] = [
-    {
-        id: 'global-1',
-        authorEmail: 'elena.rossi@example.com',
-        authorName: 'Elena Rossi',
-        career: 'Architect',
-        age: 32,
-        gender: 'Female',
-        traits: 'Creative, Detail-oriented',
-        story: 'I spent the last 5 years designing sustainable housing in Milan. My goal is to merge modern aesthetics with eco-friendly materials.',
-        avatarBase64: null
-    },
-    {
-        id: 'global-2',
-        authorEmail: 'm.chen@example.com',
-        authorName: 'Michael Chen',
-        career: 'Data Scientist',
-        age: 28,
-        gender: 'Male',
-        traits: 'Analytical, Curious',
-        story: 'Passionate about using machine learning to solve real-world problems. Currently working on healthcare predictive models.',
-        avatarBase64: null
-    },
-    {
-        id: 'global-3',
-        authorEmail: 'sarah.j@example.com',
-        authorName: 'Sarah Jenkins',
-        career: 'Marketing Director',
-        age: 41,
-        gender: 'Female',
-        traits: 'Leader, Communicator',
-        story: 'Helping brands find their voice in crowded spaces. I love mentoring young professionals entering the marketing world.',
-        avatarBase64: null
-    },
-    {
-        id: 'global-4',
-        authorEmail: 'omar.f@example.com',
-        authorName: 'Omar Farooq',
-        career: 'Software Engineer',
-        age: 25,
-        gender: 'Male',
-        traits: 'Logical, Problem-solver',
-        story: 'Building robust scalable backend systems. Always eager to learn new technologies and collaborate on open source.',
-        avatarBase64: null
-    },
-    {
-        id: 'global-5',
-        authorEmail: 'isabella.m@example.com',
-        authorName: 'Isabella Martinez',
-        career: 'UX Designer',
-        age: 29,
-        gender: 'Female',
-        traits: 'Empathetic, Creative',
-        story: 'Designing user interfaces that are not only beautiful but highly accessible. Creating experiences for everyone.',
-        avatarBase64: null
-    },
-    {
-        id: 'global-6',
-        authorEmail: 'david.k@example.com',
-        authorName: 'David Kim',
-        career: 'Financial Analyst',
-        age: 35,
-        gender: 'Male',
-        traits: 'Strategic, Methodical',
-        story: 'Navigating complex markets to optimize growth. Strongly believe in continuous learning and adapting to economic shifts.',
-        avatarBase64: null
-    }
-];
-
 const MyNetwork = () => {
     const { user } = useAuth();
     const { t, language } = useLanguage();
@@ -128,21 +59,9 @@ const MyNetwork = () => {
 
     useEffect(() => {
         const storedStories = localStorage.getItem('network_stories');
-        let parsedStories: NetworkStory[] = [];
         if (storedStories) {
-            parsedStories = JSON.parse(storedStories);
+            setStories(JSON.parse(storedStories));
         }
-        
-        // Merge global stories, avoiding duplicates
-        const combined = [...parsedStories];
-        GLOBAL_COMMUNITY_STORIES.forEach(gs => {
-            if (!combined.some(s => s.id === gs.id)) {
-                combined.push(gs);
-            }
-        });
-        
-        setStories(combined);
-        localStorage.setItem('network_stories', JSON.stringify(combined));
 
         const storedRequests = localStorage.getItem('network_requests');
         if (storedRequests) setRequests(JSON.parse(storedRequests));
@@ -385,7 +304,7 @@ const MyNetwork = () => {
                             onMouseOver={e => { e.currentTarget.style.borderColor = '#40e0d0'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                             onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'none'; }}
                         >
-                            {user && user.email === story.authorEmail && !story.id.startsWith('global-') && (
+                            {user && user.email === story.authorEmail && (
                                 <button
                                     onClick={(e) => deleteStory(e, story.id)}
                                     style={{
