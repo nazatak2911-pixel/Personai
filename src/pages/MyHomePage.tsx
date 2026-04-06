@@ -11,7 +11,7 @@ const MyHomePage = () => {
         {
             title: "PERSONAI",
             desc: t.personaiDesc,
-            path: "/chat",
+            path: "/mypersonai",
             icon: "🤖",
             color: "#40e0d0",
             image: "/person-image.jpeg"
@@ -19,7 +19,7 @@ const MyHomePage = () => {
         {
             title: t.buildNetwork,
             desc: t.networkDesc,
-            path: "/network",
+            path: "/mynetwork",
             icon: "🌐",
             color: "#ffffff",
             image: "/network-image.jpeg"
@@ -27,7 +27,7 @@ const MyHomePage = () => {
         {
             title: t.myCV,
             desc: t.myCVDesc,
-            path: "/cv",
+            path: "/mycv",
             icon: "📄",
             color: "#40e0d0",
             image: "/cv-image.jpeg"
@@ -35,7 +35,7 @@ const MyHomePage = () => {
         {
             title: t.jobSimulations,
             desc: t.jobSimDesc,
-            path: "/simulations",
+            path: "/mysimulations",
             icon: "⚡",
             color: "#ffffff",
             image: "/job-image.jpeg"
@@ -43,7 +43,7 @@ const MyHomePage = () => {
         {
             title: t.internshipOpportunities,
             desc: t.internshipsDesc,
-            path: "/internships",
+            path: "/myinternships",
             icon: "🎓",
             color: "#40e0d0",
             image: "/intern.jpg"
@@ -52,6 +52,8 @@ const MyHomePage = () => {
 
     return (
         <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
             width: '100%',
             height: '100%',
             padding: '40px',

@@ -13,7 +13,7 @@ export default function RootLayout() {
   const { t } = useLanguage();
   const { user, isLoggedIn, logout } = useAuth();
   
-  const isDashboard = location.pathname === '/myhomepage';
+  const isDashboard = location.pathname.startsWith('/my');
   const effectiveSidebarOpen = isDashboard ? true : isSidebarOpen;
 
   useEffect(() => {
@@ -107,23 +107,23 @@ export default function RootLayout() {
           onClick={(e) => e.stopPropagation()}
         >
           <ul className="sidebar-menu">
-            {!isLanding && (
-              <li><Link to="/" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.homePage}</Link></li>
-            )}
-            <li><Link to="/network" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.buildNetwork}</Link></li>
-            <li><Link to="/cv" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.myCV}</Link></li>
-            <li><Link to="/simulations" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.jobSimulations}</Link></li>
-            <li><Link to="/internships" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.internshipOpportunities}</Link></li>
-            <li><Link to="/about" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.aboutUs}</Link></li>
-            <li><Link to="/contact" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.contact}</Link></li>
-            <li><Link to="/faq" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.howToUse}</Link></li>
-            <li><Link to="/demo" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.demo}</Link></li>
-            <li><Link to="/privacy-policy" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.privacyPolicy}</Link></li>
             <li>
-              <Link to="/personi" onClick={() => isMobile && setIsSidebarOpen(false)}>
+              <Link to="/mypersonai" onClick={() => isMobile && setIsSidebarOpen(false)}>
                 <span className="white-text">PERSONA</span><span className="turquoise-text">I</span>
               </Link>
             </li>
+            {!isLanding && (
+              <li><Link to="/" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.homePage}</Link></li>
+            )}
+            <li><Link to="/mynetwork" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.buildNetwork}</Link></li>
+            <li><Link to="/mycv" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.myCV}</Link></li>
+            <li><Link to="/mysimulations" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.jobSimulations}</Link></li>
+            <li><Link to="/myinternships" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.internshipOpportunities}</Link></li>
+            <li><Link to="/myabout" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.aboutUs}</Link></li>
+            <li><Link to="/mycontact" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.contact}</Link></li>
+            <li><Link to="/myfaq" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.howToUse}</Link></li>
+            <li><Link to="/mydemo" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.demo}</Link></li>
+            <li><Link to="/myprivacy-policy" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.privacyPolicy}</Link></li>
           </ul>
         </aside>
 

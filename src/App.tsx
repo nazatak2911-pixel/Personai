@@ -15,10 +15,24 @@ import JobSimulations from './pages/JobSimulations';
 import PersonaiFeature from './pages/PersonaiFeature';
 import AuthSelection from './pages/AuthSelection';
 import ChatPage from './pages/ChatPage';
-import Demo from './pages/Demo';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import MyHomePage from './pages/MyHomePage';
+import Demo from './pages/Demo';
+import { 
+  MyNetwork, 
+  MyCV as MyCVPlaceholder, 
+  MySimulations, 
+  MyInternships, 
+  MyPersonai 
+} from './pages/MyFeatureContainers';
+import { 
+  MyAboutUs, 
+  MyContact, 
+  MyFaq, 
+  MyPrivacy, 
+  MyDemo 
+} from './pages/MyContentContainers';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -39,7 +53,7 @@ function App() {
               <Route path="simulations" element={<JobSimulations />} />
               <Route path="internships" element={<Internships />} />
               
-              {/* Newly added feature routes */}
+              {/* Public feature routes */}
               <Route path="demo" element={<Demo />} />
               <Route path="privacy-policy" element={<Privacy />} />
               <Route path="personi" element={<PersonaiFeature />} />
@@ -47,7 +61,19 @@ function App() {
               <Route path="chat" element={<ChatPage />} />
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<Signup />} />
+              
+              {/* Authenticated "My" environment routes */}
               <Route path="myhomepage" element={<MyHomePage />} />
+              <Route path="mynetwork" element={<MyNetwork />} />
+              <Route path="mycv" element={<MyCVPlaceholder />} />
+              <Route path="mysimulations" element={<MySimulations />} />
+              <Route path="myinternships" element={<MyInternships />} />
+              <Route path="mypersonai" element={<MyPersonai />} />
+              <Route path="myabout" element={<MyAboutUs />} />
+              <Route path="mycontact" element={<MyContact />} />
+              <Route path="myfaq" element={<MyFaq />} />
+              <Route path="myprivacy-policy" element={<MyPrivacy />} />
+              <Route path="mydemo" element={<MyDemo />} />
             </Route>
           </Routes>
         </BrowserRouter>
