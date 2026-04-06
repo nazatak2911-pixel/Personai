@@ -9,7 +9,6 @@ export default function RootLayout() {
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isLanding = location.pathname === '/';
   const { t } = useLanguage();
   const { user, isLoggedIn, logout } = useAuth();
   
@@ -108,13 +107,18 @@ export default function RootLayout() {
         >
           <ul className="sidebar-menu">
             <li>
+              <Link 
+                to={isLoggedIn ? "/myhomepage" : "/"} 
+                onClick={() => isMobile && setIsSidebarOpen(false)}
+              >
+                {t.homePage}
+              </Link>
+            </li>
+            <li>
               <Link to="/mypersonai" onClick={() => isMobile && setIsSidebarOpen(false)}>
                 <span className="white-text">PERSONA</span><span className="turquoise-text">I</span>
               </Link>
             </li>
-            {!isLanding && (
-              <li><Link to="/" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.homePage}</Link></li>
-            )}
             <li><Link to="/mynetwork" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.buildNetwork}</Link></li>
             <li><Link to="/mycv" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.myCV}</Link></li>
             <li><Link to="/mysimulations" onClick={() => isMobile && setIsSidebarOpen(false)}>{t.jobSimulations}</Link></li>
