@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { moderateContent, sendMessage } from '../services/llm';
+import { supabase } from '../services/supabase';
 
 export interface NetworkStory {
     id: string;
@@ -58,40 +59,27 @@ const MyNetwork = () => {
     });
 
     useEffect(() => {
-        const storedStories = localStorage.getItem('network_stories');
-        if (storedStories) {
-            setStories(JSON.parse(storedStories));
-        }
+        const fetchRemoteData = async () => {
+            const { data: storiesData } = await supabase.from('network_stories').select('*').order('created_at', { ascending: false });
+            if (storiesData) setStories(storiesData);
 
-        const storedRequests = localStorage.getItem('network_requests');
-        if (storedRequests) setRequests(JSON.parse(storedRequests));
+            const { data: reqData } = await supabase.from('network_requests').select('*');
+            if (reqData) {
+                // Filter out rejected requests so they don't show up again
+                const activeRequests = reqData.filter((r: any) => r.status !== 'rejected');
+                setRequests(activeRequests);
+            }
+        };
+        fetchRemoteData();
     }, []);
 
-    const saveStories = (newStories: NetworkStory[]) => {
-        setStories(newStories);
-        localStorage.setItem('network_stories', JSON.stringify(newStories));
-    };
-
-    const deleteStory = (e: React.MouseEvent, id: string) => {
+    const deleteStory = async (e: React.MouseEvent, id: string) => {
         e.stopPropagation();
         if (window.confirm('Are you sure you want to delete this story?')) {
-            const updatedStories = stories.filter(s => s.id !== id);
-            
-            const stored = localStorage.getItem('network_stories');
-            if (stored) {
-                const parsed = JSON.parse(stored);
-                const newStored = parsed.filter((s: NetworkStory) => s.id !== id);
-                localStorage.setItem('network_stories', JSON.stringify(newStored));
-            }
-            
-            setStories(updatedStories);
+            setStories(prev => prev.filter(s => s.id !== id));
+            await supabase.from('network_stories').delete().eq('id', id);
             if (activeStory?.id === id) setActiveStory(null);
         }
-    };
-
-    const saveRequests = (newRequests: ContactRequest[]) => {
-        setRequests(newRequests);
-        localStorage.setItem('network_requests', JSON.stringify(newRequests));
     };
 
     const flagAccount = (email: string, name: string, reason: string, content: string) => {
@@ -148,8 +136,10 @@ const MyNetwork = () => {
             avatarBase64: formState.avatarBase64 || null
         };
 
-        const existingFilter = stories.filter(s => s.authorEmail !== user.email);
-        saveStories([newStory, ...existingFilter]);
+        setStories(prev => [newStory, ...prev.filter(s => s.authorEmail !== user.email)]);
+        
+        await supabase.from('network_stories').delete().eq('authorEmail', user.email);
+        await supabase.from('network_stories').insert([newStory]);
         setIsSharingModalOpen(false);
     };
 
@@ -180,21 +170,23 @@ const MyNetwork = () => {
             status: 'pending',
             messages: []
         };
-        saveRequests([...requests, req]);
+        setRequests(prev => [...prev, req]);
+        await supabase.from('network_requests').insert([req]);
+        
         setIsContactingModalOpen(false);
         setActiveStory(null);
         setContactIntroText('');
         alert('Contact request sent!');
     };
 
-    const acceptRequest = (reqId: string) => {
-        const updated = requests.map(r => r.id === reqId ? { ...r, status: 'accepted' as const } : r);
-        saveRequests(updated);
+    const acceptRequest = async (reqId: string) => {
+        setRequests(prev => prev.map(r => r.id === reqId ? { ...r, status: 'accepted' as const } : r));
+        await supabase.from('network_requests').update({ status: 'accepted' }).eq('id', reqId);
     };
 
-    const rejectRequest = (reqId: string) => {
-        const updated = requests.map(r => r.id === reqId ? { ...r, status: 'rejected' as const } : r);
-        saveRequests(updated);
+    const rejectRequest = async (reqId: string) => {
+        setRequests(prev => prev.filter(r => r.id !== reqId)); // Hide immediately
+        await supabase.from('network_requests').update({ status: 'rejected' }).eq('id', reqId);
     };
 
     const sendChatMessage = async (reqId: string) => {
@@ -208,13 +200,20 @@ const MyNetwork = () => {
             return;
         }
 
-        const updated = requests.map(r => {
-            if (r.id === reqId) {
-                return { ...r, messages: [...r.messages, { senderEmail: user.email, text: chatInput, timestamp: Date.now() }] };
-            }
+        const newMessage = { senderEmail: user.email, text: chatInput, timestamp: Date.now() };
+        
+        setRequests(prev => prev.map(r => {
+            if (r.id === reqId) return { ...r, messages: [...r.messages, newMessage] };
             return r;
-        });
-        saveRequests(updated);
+        }));
+
+        const targetReq = requests.find(r => r.id === reqId);
+        if (targetReq) {
+            await supabase.from('network_requests').update({ 
+                messages: [...targetReq.messages, newMessage] 
+            }).eq('id', reqId);
+        }
+
         setChatInput('');
     };
 
