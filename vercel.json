@@ -6,7 +6,7 @@
     },
     {
       "source": "/api/gemini",
-      "destination": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+      "destination": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash%3AgenerateContent"
     },
     {
       "source": "/(.*)",
