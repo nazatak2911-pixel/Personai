@@ -13,6 +13,8 @@ import MyCV from './pages/MyCV';
 import BuildNetwork from './pages/BuildNetwork';
 import JobSimulations from './pages/JobSimulations';
 import PersonaiFeature from './pages/PersonaiFeature';
+import AuthSelection from './pages/AuthSelection';
+import ChatPage from './pages/ChatPage';
 import Demo from './pages/Demo';
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
             <Route path="demo" element={<Demo />} />
             <Route path="privacy-policy" element={<Privacy />} />
             <Route path="personi" element={<PersonaiFeature />} />
+            <Route path="auth-selection" element={<AuthSelection />} />
+            <Route path="chat" element={<ChatPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

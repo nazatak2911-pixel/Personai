@@ -1,61 +1,138 @@
 import { useNavigate } from 'react-router-dom';
-import ChatInterface from '../components/ChatInterface';
+import { useLanguage } from '../context/LanguageContext';
 
 const PersonaiFeature = () => {
+    const { t } = useLanguage();
     const navigate = useNavigate();
-
+    
     return (
         <div style={{
             width: '100%',
             height: '100%',
+            padding: '60px 40px',
+            overflowY: 'auto',
+            color: '#ffffff',
+            background: 'transparent',
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'hidden',
-            background: 'transparent',
+            gap: '30px'
         }}>
-            {/* Header */}
-            <div style={{
-                padding: '20px 30px 0 30px',
-                flexShrink: 0,
+            <h1 style={{
+                fontSize: '4rem',
+                fontWeight: '800',
+                color: '#40e0d0',
+                textAlign: 'left',
+                marginBottom: '10px',
+                textTransform: 'uppercase',
+                letterSpacing: '-1px'
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                    <h1 style={{
-                        fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                        fontWeight: '800',
-                        color: '#40e0d0',
-                        textTransform: 'uppercase',
-                        letterSpacing: '-1px',
-                        lineHeight: 1,
+                PERSONA<span style={{ color: '#ffffff' }}>I</span>
+            </h1>
+
+            <div style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: '550px',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
+            }}>
+                {/* Background Image Setup */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: 'url(/personai-image.jpeg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    zIndex: 0
+                }} />
+                
+                {/* Dark & Cyan Gradient Overlay for the Cyan Tint */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(135deg, rgba(64, 224, 208, 0.4) 0%, rgba(30, 30, 30, 0.9) 100%)',
+                    zIndex: 1,
+                    mixBlendMode: 'normal'
+                }} />
+
+                {/* Sub Box / Text Overlay Content */}
+                <div style={{
+                    position: 'relative',
+                    zIndex: 2,
+                    background: 'rgba(30, 30, 30, 0.4)',
+                    border: '1px solid rgba(64, 224, 208, 0.2)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    borderRadius: '16px',
+                    padding: '40px 50px',
+                    maxWidth: '85%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '25px',
+                    textAlign: 'center',
+                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.4)',
+                    marginTop: '-40px'
+                }}>
+                    <p style={{
+                        fontSize: '1.4rem',
+                        lineHeight: '1.8',
+                        color: '#f0f0f0',
+                        fontWeight: '400',
+                        letterSpacing: '0.5px'
                     }}>
-                        PERSONA<span style={{ color: '#ffffff' }}>I</span>
-                    </h1>
-                    <button
-                        onClick={() => navigate(-1)}
+                        {t.personaiDesc}
+                    </p>
+                    
+                    <p style={{
+                        fontSize: '1.1rem',
+                        lineHeight: '1.7',
+                        color: 'rgba(255,255,255,0.7)',
+                        fontWeight: '300',
+                        fontStyle: 'italic',
+                        maxWidth: '800px'
+                    }}>
+                        {t.howToUseDesc}
+                    </p>
+                    
+                    {/* Try Now Button */}
+                    <button 
+                        onClick={() => navigate('/auth-selection')}
                         style={{
-                            background: 'rgba(64,224,208,0.08)',
-                            border: '1px solid rgba(64,224,208,0.25)',
-                            borderRadius: '50px',
-                            color: '#40e0d0',
-                            padding: '8px 18px',
-                            fontSize: '0.85rem',
-                            cursor: 'pointer',
-                            fontFamily: 'Outfit, sans-serif',
-                            fontWeight: '600',
-                        }}
+                        marginTop: '5px',
+                        padding: '12px 36px',
+                        background: '#40e0d0',
+                        color: '#000000',
+                        border: 'none',
+                        borderRadius: '50px',
+                        fontSize: '1.1rem',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        boxShadow: '0 5px 15px rgba(64, 224, 208, 0.4)',
+                        transition: 'all 0.3s ease'
+                    }}
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.background = '#ffffff';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.background = '#40e0d0';
+                        e.currentTarget.style.transform = 'none';
+                    }}
                     >
-                        ← Back
+                        {t.tryNow}
                     </button>
                 </div>
-                <div style={{
-                    height: '1px',
-                    background: 'linear-gradient(to right, rgba(64,224,208,0.4), transparent)',
-                    marginBottom: '0',
-                }} />
-            </div>
-
-            {/* Chat fills remaining space */}
-            <div style={{ flex: 1, overflow: 'hidden' }}>
-                <ChatInterface />
             </div>
         </div>
     );
