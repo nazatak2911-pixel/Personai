@@ -124,3 +124,22 @@ Write a professional, polished enhancement/addition for their CV based on their 
   return await sendMessage(messages);
 }
 
+// AI Simulation Evaluation
+export async function evaluateSimulationResponse(simulationType: string, situation: string, userAction: string): Promise<string> {
+  const prompt = `You are an expert mentor in the field of ${simulationType}.
+
+Situation:
+"${situation}"
+
+User's Action/Decision:
+"${userAction}"
+
+Evaluate the user's decision based on professional standards. 
+Provide a "Performance Rating" out of 10, then give constructive feedback on what they did well and what they should have done differently. 
+Keep it encouraging but professional. Use bullet points for feedback.`;
+
+  const messages: ChatMessage[] = [{ role: 'user', content: prompt }];
+  return await sendMessage(messages);
+}
+
+

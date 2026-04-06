@@ -24,9 +24,7 @@ import MyNetwork from './pages/MyNetwork';
 import MyCVDashboard from './pages/MyCVDashboard';
 import AdminPanel from './pages/AdminPanel';
 import MyInternships from './pages/MyInternships';
-import { 
-  MySimulations 
-} from './pages/MyFeatureContainers';
+import MyJobSimulations from './pages/MyJobSimulations';
 import { 
   MyAboutUs, 
   MyContact, 
@@ -69,7 +67,7 @@ function App() {
               <Route path="myhomepage" element={<MyHomePage />} />
               <Route path="mynetwork" element={<MyNetwork />} />
               <Route path="mycv" element={<MyCVDashboard />} />
-              <Route path="mysimulations" element={<MySimulations />} />
+              <Route path="mysimulations" element={<MyJobSimulations />} />
               <Route path="myinternships" element={<MyInternships />} />
               <Route path="mypersonai" element={<ChatPage />} />
               <Route path="myabout" element={<MyAboutUs />} />
