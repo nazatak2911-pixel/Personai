@@ -54,7 +54,7 @@ export default function RootLayout() {
         {/* Left: Brand + Language Switcher */}
         <div className="nav-left-group">
           <Link
-            to="/"
+            to={isDashboard ? "/myhomepage" : "/"}
             style={{ textDecoration: 'none' }}
             className="nav-left"
             id="brand-trigger"
@@ -77,7 +77,12 @@ export default function RootLayout() {
               </span>
               <button 
                 className="nav-btn login-btn" 
-                onClick={logout}
+                onClick={() => {
+                  logout();
+                  setDashboardSidebarOpen(false);
+                  setIsSidebarOpen(false);
+                  navigate('/');
+                }}
                 style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}
               >
                 Logout
@@ -85,6 +90,11 @@ export default function RootLayout() {
             </div>
           ) : (
             <>
+              {isDashboard && (
+                <button className="nav-btn" onClick={() => navigate('/')} style={{ background: 'transparent', color: '#fff', border: 'none', fontWeight: '500', marginRight: '10px' }}>
+                  Main Home
+                </button>
+              )}
               <button className="nav-btn login-btn" onClick={() => navigate('/login')}>{t.logIn}</button>
               <button className="nav-btn signup-btn" onClick={() => navigate('/signup')}>{t.signUp}</button>
             </>
