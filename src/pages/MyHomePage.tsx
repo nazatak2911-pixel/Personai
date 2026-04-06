@@ -101,11 +101,39 @@ const MyHomePage = () => {
                         zIndex: 0, pointerEvents: 'none'
                     }}/>
                     <div style={{ position: 'relative', zIndex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-                            <span style={{ fontSize: '2.5rem' }}>🧠</span>
-                            <h2 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#fff', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
-                                Your AI Career Profile
-                            </h2>
+                        <div style={{ 
+                            display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                            marginBottom: '20px', flexWrap: 'wrap', gap: '15px' 
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <span style={{ fontSize: '2.5rem' }}>🧠</span>
+                                <h2 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#fff', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
+                                    Your AI Career Profile
+                                </h2>
+                            </div>
+                            <button
+                                onClick={() => navigate('/onboarding-survey')}
+                                style={{
+                                    background: 'transparent',
+                                    border: '1px solid #40e0d0',
+                                    color: '#40e0d0',
+                                    padding: '10px 20px',
+                                    borderRadius: '50px',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    fontFamily: 'Outfit, sans-serif'
+                                }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.background = 'rgba(64,224,208,0.1)';
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.background = 'transparent';
+                                }}
+                            >
+                                ↻ Retake Test
+                            </button>
                         </div>
                         <div style={{
                             fontSize: '1.1rem',
@@ -120,8 +148,9 @@ const MyHomePage = () => {
                 </div>
             )}
 
-            {/* Bottom Section: Squeezed Features Grid */}
-            <div>
+            {/* Bottom Section: Squeezed Features Grid (Pushed to bottom) */}
+            <div style={{ marginTop: 'auto' }}>
+                <div style={{ height: '30px' }} /> {/* A small buffer if content gets close */}
                 <h3 style={{ 
                     fontSize: '1.4rem', color: '#40e0d0', fontWeight: '600', 
                     marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' 
