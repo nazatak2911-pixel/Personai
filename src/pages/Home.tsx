@@ -23,6 +23,78 @@ export default function Home() {
         </h1>
         <div className="hero-image-container">
           <img src="/hero-image.png" alt="PersonaAI Vision" className="hero-image" />
+          {/* Overlay buttons on the hero image */}
+          <div style={{
+            position: 'absolute',
+            bottom: '28px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
+            zIndex: 10,
+          }}>
+            <button
+              onClick={() => navigate('/about')}
+              style={{
+                background: 'rgba(30,30,30,0.65)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                color: '#ffffff',
+                padding: '10px 22px',
+                borderRadius: '50px',
+                fontSize: '0.9rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(64,224,208,0.2)'; e.currentTarget.style.borderColor = '#40e0d0'; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(30,30,30,0.65)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'; }}
+            >
+              {t.aboutUs}
+            </button>
+            <button
+              onClick={() => navigate('/contact')}
+              style={{
+                background: 'rgba(30,30,30,0.65)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                color: '#ffffff',
+                padding: '10px 22px',
+                borderRadius: '50px',
+                fontSize: '0.9rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(64,224,208,0.2)'; e.currentTarget.style.borderColor = '#40e0d0'; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(30,30,30,0.65)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'; }}
+            >
+              {t.contact}
+            </button>
+            <button
+              onClick={() => navigate('/auth-selection')}
+              style={{
+                background: 'linear-gradient(135deg, #40e0d0 0%, #2cb8aa 100%)',
+                border: 'none',
+                color: '#1a1a1a',
+                padding: '11px 28px',
+                borderRadius: '50px',
+                fontSize: '0.95rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(64,224,208,0.45)',
+                transition: 'all 0.25s ease',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(64,224,208,0.6)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(64,224,208,0.45)'; }}
+            >
+              🚀 {t.tryNow}
+            </button>
+          </div>
         </div>
       </div>
 

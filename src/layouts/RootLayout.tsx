@@ -12,7 +12,8 @@ export default function RootLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, isGuest, logout } = useAuth();
+  const isAuthed = isLoggedIn || isGuest;
   
   const isDashboard = location.pathname.startsWith('/my');
   const effectiveSidebarOpen = isDashboard ? dashboardSidebarOpen : isSidebarOpen;
@@ -82,66 +83,37 @@ export default function RootLayout() {
           <LanguageSwitcher />
         </div>
 
-        {/* Center/Right: Nav links + Auth buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
-          {/* Nav links - only when not logged in */}
-          {!isLoggedIn && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginRight: '20px' }}>
-              <button
-                className="nav-btn"
-                onClick={() => navigate('/about')}
-                style={{ fontSize: '0.92rem', padding: '8px 14px', opacity: 0.85 }}
+        {/* Right: Auth buttons / User Profile */}
+        <div className="nav-right">
+          {isLoggedIn ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <span style={{ color: '#ffffff', fontWeight: '500', fontSize: '0.9rem' }}>
+                {t.welcomeNormal}, <span style={{ color: '#40e0d0' }}>{user?.name}</span>
+              </span>
+              <button 
+                className="nav-btn login-btn" 
+                onClick={() => {
+                  logout();
+                  setDashboardSidebarOpen(false);
+                  setIsSidebarOpen(false);
+                  navigate('/');
+                }}
+                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}
               >
-                {t.aboutUs}
-              </button>
-              <button
-                className="nav-btn"
-                onClick={() => navigate('/contact')}
-                style={{ fontSize: '0.92rem', padding: '8px 14px', opacity: 0.85 }}
-              >
-                {t.contact}
-              </button>
-              <button
-                className="nav-btn signup-btn"
-                onClick={() => navigate('/auth-selection')}
-                style={{ fontSize: '0.92rem', padding: '9px 22px', background: '#40e0d0', color: '#1a1a1a', borderRadius: '50px', fontWeight: '700' }}
-              >
-                {t.tryNow} →
+                {t.logout}
               </button>
             </div>
-          )}
-
-          <div className="nav-right">
-            {isLoggedIn ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <span style={{ color: '#ffffff', fontWeight: '500', fontSize: '0.9rem' }}>
-                  {t.welcomeNormal}, <span style={{ color: '#40e0d0' }}>{user?.name}</span>
-                </span>
-                <button 
-                  className="nav-btn login-btn" 
-                  onClick={() => {
-                    logout();
-                    setDashboardSidebarOpen(false);
-                    setIsSidebarOpen(false);
-                    navigate('/');
-                  }}
-                  style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}
-                >
-                  {t.logout}
+          ) : (
+            <>
+              {isDashboard && (
+                <button className="nav-btn" onClick={() => navigate('/')} style={{ background: 'transparent', color: '#fff', border: 'none', fontWeight: '500', marginRight: '10px' }}>
+                  {t.mainHome}
                 </button>
-              </div>
-            ) : (
-              <>
-                {isDashboard && (
-                  <button className="nav-btn" onClick={() => navigate('/')} style={{ background: 'transparent', color: '#fff', border: 'none', fontWeight: '500', marginRight: '10px' }}>
-                    {t.mainHome}
-                  </button>
-                )}
-                <button className="nav-btn login-btn" onClick={() => navigate('/login')}>{t.logIn}</button>
-                <button className="nav-btn signup-btn" onClick={() => navigate('/signup')}>{t.signUp}</button>
-              </>
-            )}
-          </div>
+              )}
+              <button className="nav-btn login-btn" onClick={() => navigate('/login')}>{t.logIn}</button>
+              <button className="nav-btn signup-btn" onClick={() => navigate('/signup')}>{t.signUp}</button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -164,26 +136,26 @@ export default function RootLayout() {
           <ul className="sidebar-menu">
             <li>
               <Link 
-                to={isLoggedIn ? "/myhomepage" : "/"} 
+                to={isAuthed ? "/myhomepage" : "/"} 
                 onClick={handleNavClick}
               >
                 {t.homePage}
               </Link>
             </li>
             <li>
-              <Link to="/mypersonai" onClick={handleNavClick}>
+              <Link to={isAuthed ? "/mypersonai" : "/personi"} onClick={handleNavClick}>
                 <span className="white-text">PERSONA</span><span className="turquoise-text">I</span>
               </Link>
             </li>
-            <li><Link to="/mynetwork" onClick={handleNavClick}>{t.buildNetwork}</Link></li>
-            <li><Link to="/mycv" onClick={handleNavClick}>{t.myCV}</Link></li>
-            <li><Link to="/mysimulations" onClick={handleNavClick}>{t.jobSimulations}</Link></li>
-            <li><Link to="/myinternships" onClick={handleNavClick}>{t.internshipOpportunities}</Link></li>
-            <li><Link to="/myabout" onClick={handleNavClick}>{t.aboutUs}</Link></li>
-            <li><Link to="/mycontact" onClick={handleNavClick}>{t.contact}</Link></li>
-            <li><Link to="/myfaq" onClick={handleNavClick}>{t.howToUse}</Link></li>
-            <li><Link to="/mydemo" onClick={handleNavClick}>{t.demo}</Link></li>
-            <li><Link to="/myprivacy-policy" onClick={handleNavClick}>{t.privacyPolicy}</Link></li>
+            <li><Link to={isAuthed ? "/mynetwork" : "/network"} onClick={handleNavClick}>{t.buildNetwork}</Link></li>
+            <li><Link to={isAuthed ? "/mycv" : "/cv"} onClick={handleNavClick}>{t.myCV}</Link></li>
+            <li><Link to={isAuthed ? "/mysimulations" : "/simulations"} onClick={handleNavClick}>{t.jobSimulations}</Link></li>
+            <li><Link to={isAuthed ? "/myinternships" : "/internships"} onClick={handleNavClick}>{t.internshipOpportunities}</Link></li>
+            <li><Link to={isAuthed ? "/myabout" : "/about"} onClick={handleNavClick}>{t.aboutUs}</Link></li>
+            <li><Link to={isAuthed ? "/mycontact" : "/contact"} onClick={handleNavClick}>{t.contact}</Link></li>
+            <li><Link to={isAuthed ? "/myfaq" : "/faq"} onClick={handleNavClick}>{t.howToUse}</Link></li>
+            <li><Link to={isAuthed ? "/mydemo" : "/demo"} onClick={handleNavClick}>{t.demo}</Link></li>
+            <li><Link to={isAuthed ? "/myprivacy-policy" : "/privacy-policy"} onClick={handleNavClick}>{t.privacyPolicy}</Link></li>
           </ul>
         </aside>
 
