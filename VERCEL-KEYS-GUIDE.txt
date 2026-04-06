@@ -1,0 +1,32 @@
+PERSONNA AI - HOW TO ENABLE THE CHATBOT ON YOUR LIVE WEBSITE (VERCEL)
+================================================================
+
+Currently, your chatbot works on your LOCAL computer because of the .env file.
+But for the LIVE website (the GitHub link) to work, you must tell Vercel your keys.
+
+Follow these 3 simple steps:
+
+1. GO TO VERCEL DASHBOARD:
+   - Go to https://vercel.com/dashboard
+   - Click on your "PersonnaAI" project.
+
+2. OPEN SETTINGS:
+   - Click on the "Settings" tab at the top.
+   - Click on "Environment Variables" in the left sidebar.
+
+3. ADD YOUR KEYS:
+   - Add the first one:
+     - Key: VITE_OPENROUTER_API_KEY
+     - Value: (Paste your sk-or-v1-... key here)
+     - Click "Add".
+   - Add the second one:
+     - Key: VITE_GEMINI_API_KEY
+     - Value: (Paste your AIzaSyB... key here)
+     - Click "Add".
+
+4. REDEPLOY:
+   - Go to the "Deployments" tab at the top.
+   - Click the three dots (...) next to your latest deployment.
+   - Click "Redeploy".
+
+THAT'S IT! Your live website will now have a working AI bot! 🚀📱✨
