@@ -142,10 +142,11 @@ Here are their answers:
 
   return (
     <div style={{
-      width: '100%', minHeight: '100vh', background: '#2e2e2e', color: '#fff', 
-      padding: '40px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center'
+      width: '100%', height: '100%', background: 'transparent', color: '#fff', 
+      padding: '40px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center',
+      overflowY: 'auto'
     }}>
-      <div style={{ maxWidth: '800px', width: '100%' }}>
+      <div style={{ maxWidth: '800px', width: '100%', margin: 'auto' }}>
         
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
