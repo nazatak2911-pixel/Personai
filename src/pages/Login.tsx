@@ -14,7 +14,7 @@ const Login = () => {
         e.preventDefault();
         // Simulating logic
         login(email, "Murat"); // Placeholder name
-        navigate('/personi');
+        navigate('/myhomepage');
     };
 
     return (

@@ -18,6 +18,7 @@ import ChatPage from './pages/ChatPage';
 import Demo from './pages/Demo';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import MyHomePage from './pages/MyHomePage';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
               <Route path="chat" element={<ChatPage />} />
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<Signup />} />
+              <Route path="myhomepage" element={<MyHomePage />} />
             </Route>
           </Routes>
         </BrowserRouter>

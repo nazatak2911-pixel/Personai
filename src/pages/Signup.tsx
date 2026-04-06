@@ -15,7 +15,7 @@ const Signup = () => {
         e.preventDefault();
         // Simulating logic
         signup(name, email);
-        navigate('/personi');
+        navigate('/myhomepage');
     };
 
     return (

@@ -12,6 +12,9 @@ export default function RootLayout() {
   const isLanding = location.pathname === '/';
   const { t } = useLanguage();
   const { user, isLoggedIn, logout } = useAuth();
+  
+  const isDashboard = location.pathname === '/myhomepage';
+  const effectiveSidebarOpen = isDashboard ? true : isSidebarOpen;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -23,11 +26,11 @@ export default function RootLayout() {
   }, []);
 
   const openSidebar = () => {
-    if (!isMobile) setIsSidebarOpen(true);
+    if (!isMobile && !isDashboard) setIsSidebarOpen(true);
   };
 
   const closeSidebar = () => {
-    if (!isMobile) setIsSidebarOpen(false);
+    if (!isMobile && !isDashboard) setIsSidebarOpen(false);
   };
 
   const toggleSidebar = (e: React.MouseEvent) => {
@@ -38,7 +41,7 @@ export default function RootLayout() {
   };
 
   const closeSidebarOnDocumentClick = () => {
-    if (isMobile && isSidebarOpen) {
+    if (isMobile && isSidebarOpen && !isDashboard) {
       setIsSidebarOpen(false);
     }
   };
@@ -89,7 +92,7 @@ export default function RootLayout() {
 
       <div className="app-container">
         {/* Invisible trigger area on left side */}
-        {!isMobile && (
+        {!isMobile && !isDashboard && (
           <div
             className="sidebar-trigger-area"
             id="trigger-area"
@@ -98,7 +101,7 @@ export default function RootLayout() {
         )}
 
         <aside
-          className={`sidebar ${isSidebarOpen ? 'open' : ''}`}
+          className={`sidebar ${effectiveSidebarOpen ? 'open' : ''} ${isDashboard ? 'permanent' : ''}`}
           id="sidebar"
           onMouseLeave={closeSidebar}
           onClick={(e) => e.stopPropagation()}
@@ -125,7 +128,7 @@ export default function RootLayout() {
         </aside>
 
         <main
-          className={`main-content ${isSidebarOpen ? 'shifted' : ''}`}
+          className={`main-content ${effectiveSidebarOpen ? 'shifted' : ''}`}
           id="main-content"
           onMouseEnter={closeSidebar}
         >

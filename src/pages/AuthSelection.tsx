@@ -23,7 +23,7 @@ const AuthSelection = () => {
         {
             title: "Continue without account",
             desc: "Try the AI Chatbot immediately as a guest.",
-            path: "/chat",
+            path: "/myhomepage",
             icon: "👤",
             color: "rgba(255,255,255,0.7)"
         }
