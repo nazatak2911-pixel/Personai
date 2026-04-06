@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { evaluateSimulationResponse } from '../services/llm';
+import { evaluateSimulationResponse, sendMessage } from '../services/llm';
 
 interface SimulationCase {
   id: string;
@@ -15,103 +15,57 @@ interface SimulationCase {
 const MyJobSimulations = () => {
   const { t } = useLanguage();
 
-  const ALL_CASES: SimulationCase[] = [
-    {
-      id: 'doctor_1',
-      role: t.jobSimulations + ' - Doctor (V1)',
-      situation: t.doctorHistory,
-      character: 'Patient (Mr. Henderson)',
-      visualLabel: 'fMRI Scan Results',
-      initialMessage: "Doctor, these headaches are becoming unbearable. I've started seeing shadows out of the corner of my eye. What's happening to me?",
-      icon: '🩺'
-    },
-    {
-      id: 'doctor_2',
-      role: t.jobSimulations + ' - Doctor (V2)',
-      situation: t.doctorHistoryV2,
-      character: 'Patient (Mrs. Gable)',
-      visualLabel: 'Chest X-Ray / CT',
-      initialMessage: t.doctorInitialV2,
-      icon: '🩺'
-    },
-    {
-      id: 'architect_1',
-      role: t.jobSimulations + ' - Architect (V1)',
-      situation: t.architectBrief,
-      character: 'Client (Sarah)',
-      visualLabel: 'Site Topography & Wind Map',
-      initialMessage: "I want the whole house to be glass for the view, but the city says we need to be 'green' and the wind up here is crazy. Can we actually build this?",
-      icon: '🏗️'
-    },
-    {
-      id: 'architect_2',
-      role: t.jobSimulations + ' - Architect (V2)',
-      situation: t.architectBriefV2,
-      character: 'Client (Warehouse Project)',
-      visualLabel: 'Structural Load Map',
-      initialMessage: t.architectInitialV2,
-      icon: '🏗️'
-    },
-    {
-      id: 'developer_1',
-      role: t.jobSimulations + ' - Software Engineer (V1)',
-      situation: t.developerReport,
-      character: 'CTO (Mark)',
-      visualLabel: 'System Monitor (Grafana)',
-      initialMessage: "The site is dying. Every second it's down, we lose $500. Have you checked the read replicas or is it a bad deployment? Fix it now!",
-      icon: '💻'
-    },
-    {
-      id: 'developer_2',
-      role: t.jobSimulations + ' - Software Engineer (V2)',
-      situation: t.developerReportV2,
-      character: 'DevOps Lead',
-      visualLabel: 'CloudWatch / Redis Metrics',
-      initialMessage: t.developerInitialV2,
-      icon: '💻'
-    },
-    {
-      id: 'lawyer_1',
-      role: t.jobSimulations + ' - Lawyer (V1)',
-      situation: t.lawyerDetails,
-      character: 'Client (James)',
-      visualLabel: 'Witness Deposition Document',
-      initialMessage: "They gave me a plea deal, but I'm innocent. If I take it, my career is over. If we go to trial and lose, I'm looking at 10 years. What do we do?",
-      icon: '⚖️'
-    },
-    {
-      id: 'lawyer_2',
-      role: t.jobSimulations + ' - Lawyer (V2)',
-      situation: t.lawyerDetailsV2,
-      character: 'Client (Alex)',
-      visualLabel: 'Corporate IP Contract',
-      initialMessage: t.lawyerInitialV2,
-      icon: '⚖️'
-    }
-  ];
-
-  const [shuffledCases, setShuffledCases] = useState<SimulationCase[]>([]);
   const [selectedCase, setSelectedCase] = useState<SimulationCase | null>(null);
   const [userAction, setUserAction] = useState('');
   const [evaluation, setEvaluation] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [currentProfession, setCurrentProfession] = useState<string | null>(null);
 
-  useEffect(() => {
-    const shuffle = [...ALL_CASES].sort(() => Math.random() - 0.5);
-    setShuffledCases(shuffle);
-  }, [t]); // Reshuffle when language changes to keep it fresh
-
-  const startSimulation = (c: SimulationCase) => {
-    setSelectedCase(c);
+  const generateCase = async (profession: string) => {
+    setIsGenerating(true);
+    setCurrentProfession(profession);
     setEvaluation(null);
     setUserAction('');
+
+    const prompt = `Generate a highly detailed and professional job simulation case for the role of ${profession} in the language with code "${t.logIn === 'Giriş Yap' ? 'tr' : 'en'}".
+    The case should be complex and include technical details (e.g., if doctor: vitals, lab results; if developer: error logs, system metrics).
+    
+    Respond ONLY with a JSON object in this exact format (no other text, no markdown code blocks like \`\`\`json):
+    {
+      "role": "${profession}",
+      "situation": "Extremely detailed professional context and situation background (vitals, technical data, constraints).",
+      "character": "The name or title of the person the user is interacting with.",
+      "visualLabel": "A short title for what a visual feed would show (e.g., 'fMRI Scan' or 'Cloud Metrics').",
+      "initialMessage": "The very first sentence this character says to the user to start the interaction."
+    }`;
+
+    try {
+      const response = await sendMessage([{ role: 'user', content: prompt }]);
+      const clean = response.trim().replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+      
+      const newCase: SimulationCase = {
+        id: Date.now().toString(),
+        role: parsed.role,
+        situation: parsed.situation,
+        character: parsed.character,
+        visualLabel: parsed.visualLabel,
+        initialMessage: parsed.initialMessage,
+        icon: profession === 'Doctor' ? '🩺' : profession === 'Architect' ? '🏗️' : profession === 'Software Engineer' ? '💻' : '⚖️'
+      };
+      
+      setSelectedCase(newCase);
+    } catch (err) {
+      console.error("Case generation failed:", err);
+      alert("AI was unable to generate this case. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleNextCase = () => {
-    if (!selectedCase) return;
-    const currentIndex = shuffledCases.findIndex(c => c.id === selectedCase.id);
-    const nextIndex = (currentIndex + 1) % shuffledCases.length;
-    startSimulation(shuffledCases[nextIndex]);
+    if (currentProfession) generateCase(currentProfession);
   };
 
   const handleVRClick = () => {
@@ -165,20 +119,32 @@ const MyJobSimulations = () => {
         </p>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-          {(shuffledCases.length > 0 ? shuffledCases : ALL_CASES).map(c => (
+          {[
+            { id: 'Doctor', icon: '🩺' },
+            { id: 'Architect', icon: '🏗️' },
+            { id: 'Software Engineer', icon: '💻' },
+            { id: 'Lawyer', icon: '⚖️' }
+          ].map(cat => (
             <div 
-              key={c.id} 
-              onClick={() => startSimulation(c)}
-              style={{ ...glassStyle, padding: '30px', cursor: 'pointer', transition: 'all 0.3s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}
-              onMouseOver={e => { e.currentTarget.style.borderColor = '#40e0d0'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
-              onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.transform = 'none'; }}
+              key={cat.id} 
+              onClick={() => !isGenerating && generateCase(cat.id)}
+              style={{ 
+                ...glassStyle, padding: '40px', cursor: isGenerating ? 'wait' : 'pointer', transition: 'all 0.3s', 
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px',
+                opacity: isGenerating ? 0.6 : 1, position: 'relative'
+              }}
+              onMouseOver={e => { if (!isGenerating) { e.currentTarget.style.borderColor = '#40e0d0'; e.currentTarget.style.transform = 'translateY(-5px)'; } }}
+              onMouseOut={e => { if (!isGenerating) { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.transform = 'none'; } }}
             >
-              <div style={{ fontSize: '3rem' }}>{c.icon}</div>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#40e0d0', margin: 0, textAlign: 'center' }}>
-                {c.role.split(' - ')[1]}
-              </h2>
-              <button style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '10px 24px', borderRadius: '50px', fontWeight: '700', cursor: 'pointer', marginTop: '10px' }}>
-                {t.tryNow}
+              {isGenerating && currentProfession === cat.id && (
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.4)', borderRadius: '24px' }}>
+                  <div style={{ color: '#40e0d0', fontWeight: 'bold' }}>📡 Generating...</div>
+                </div>
+              )}
+              <div style={{ fontSize: '4rem' }}>{cat.icon}</div>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#40e0d0', margin: 0 }}>{cat.id}</h2>
+              <button style={{ background: '#40e0d0', color: '#000', border: 'none', padding: '12px 30px', borderRadius: '50px', fontWeight: '700', cursor: 'pointer', marginTop: '10px' }}>
+                Generate Case
               </button>
             </div>
           ))}
