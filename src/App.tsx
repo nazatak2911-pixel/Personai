@@ -23,9 +23,9 @@ import Demo from './pages/Demo';
 import MyNetwork from './pages/MyNetwork';
 import MyCVDashboard from './pages/MyCVDashboard';
 import AdminPanel from './pages/AdminPanel';
+import MyInternships from './pages/MyInternships';
 import { 
-  MySimulations, 
-  MyInternships 
+  MySimulations 
 } from './pages/MyFeatureContainers';
 import { 
   MyAboutUs, 

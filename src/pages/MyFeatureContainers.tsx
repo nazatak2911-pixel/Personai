@@ -16,11 +16,6 @@ export const MySimulations = () => {
     return <MyPlaceholder title={t.jobSimulations} />;
 };
 
-export const MyInternships = () => {
-    const { t } = useLanguage();
-    return <MyPlaceholder title={t.internshipOpportunities} />;
-};
-
 export const MyPersonai = () => {
     return <MyPlaceholder title="PERSONAI" />;
 };
