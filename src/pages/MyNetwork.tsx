@@ -222,11 +222,23 @@ const MyNetwork = () => {
     const translateStory = async (storyId: string, content: string) => {
         setIsTranslating(storyId);
         try {
-            const prompt = `Translate the following professional story into the language with code "${language}". 
-            Original text: "${content}"
-            Respond ONLY with the translated text, no other commentary.`;
+            const prompt = `You are an expert professional translator. 
+Task: Translate the following text into the language represented by the ISO code "${language}" (e.g. 'tr' -> Turkish, 'en' -> English).
+CRITICAL: Reply ONLY with the translated text. Do not add any introductory words, markdown formatting, quotes, or explanations.
+
+Text to translate:
+"${content}"`;
+            
             const result = await sendMessage([{ role: 'user', content: prompt }]);
-            setTranslations(prev => ({ ...prev, [storyId]: result }));
+            
+            // Clean up potentially hallucinated markdown or quotes
+            let cleanResult = result.trim();
+            cleanResult = cleanResult.replace(/^```[a-zA-Z]*\n?/, '').replace(/\n?```$/, '').trim();
+            if (cleanResult.startsWith('"') && cleanResult.endsWith('"')) {
+                cleanResult = cleanResult.slice(1, -1).trim();
+            }
+
+            setTranslations(prev => ({ ...prev, [storyId]: cleanResult }));
         } catch (err) {
             console.error("Translation failed:", err);
             alert(t.translationFailed);
@@ -334,20 +346,13 @@ const MyNetwork = () => {
                                         <div style={{ fontSize: '1.2rem', fontWeight: '800', color: '#40e0d0', margin: 0 }}>{story.authorName}</div>
                                         <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>{story.career}</div>
                                     </div>
-                                    <button 
-                                        onClick={() => translateStory(story.id, story.story)}
-                                        disabled={isTranslating === story.id}
-                                        style={{ background: 'rgba(64, 224, 208, 0.1)', border: '1px solid #40e0d0', color: '#40e0d0', padding: '4px 10px', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}
-                                    >
-                                        {isTranslating === story.id ? '⌛...' : `🌐 ${t.translate}`}
-                                    </button>
                                 </div>
                                 <p style={{ 
                                     fontSize: '1rem', lineHeight: '1.6', color: '#eee', 
                                     marginBottom: '20px', fontStyle: 'italic',
                                     maxHeight: '120px', overflow: 'hidden', textOverflow: 'ellipsis'
                                 }}>
-                                    "{translations[story.id] || story.story}"
+                                    "{story.story}"
                                 </p>
                                 <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', marginTop: '4px' }}>{story.age} · {story.gender}</div>
                             </div>
@@ -523,9 +528,16 @@ const MyNetwork = () => {
                             </div>
                         </div>
                         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px', lineHeight: '1.8', color: '#e8e8e8', whiteSpace: 'pre-wrap' }}>
-                            {activeStory.story}
+                            {translations[activeStory.id] || activeStory.story}
                         </div>
                         <div style={{ display: 'flex', gap: '15px', justifyContent: 'flex-end', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px' }}>
+                            <button 
+                                onClick={() => translateStory(activeStory.id, activeStory.story)}
+                                disabled={isTranslating === activeStory.id}
+                                style={{ background: 'rgba(64, 224, 208, 0.1)', border: '1px solid #40e0d0', color: '#40e0d0', padding: '12px 24px', borderRadius: '50px', cursor: 'pointer', fontWeight: 'bold' }}
+                            >
+                                {isTranslating === activeStory.id ? '⌛...' : `🌐 ${t.translate}`}
+                            </button>
                             <button onClick={() => setActiveStory(null)} style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', padding: '12px 24px', borderRadius: '50px', cursor: 'pointer' }}>Close</button>
                             {user && user.email !== activeStory.authorEmail && (
                                 <button onClick={() => setIsContactingModalOpen(true)} style={{ background: 'linear-gradient(135deg,#40e0d0,#2a9d8f)', color: '#1a1a1a', border: 'none', padding: '12px 24px', borderRadius: '50px', cursor: 'pointer', fontWeight: 'bold' }}>
