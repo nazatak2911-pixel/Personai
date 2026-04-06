@@ -129,10 +129,18 @@ const MyNetwork = () => {
         setIsSharingModalOpen(false);
     };
 
-    const sendContactRequest = () => {
+    const sendContactRequest = async () => {
         if (!user || !activeStory) return;
         const wordCount = contactIntroText.trim().split(/\s+/).filter(Boolean).length;
-        if (wordCount < 30) return alert('Please write at least 50 words about why you want to connect.');
+        if (wordCount < 30) return alert('Please write at least 30 words about why you want to connect.');
+
+        // AI Moderation
+        const modResult = await moderateContent(contactIntroText);
+        if (!modResult.safe) {
+            flagAccount(user.email, user.name, modResult.reason || 'Offensive contact request', contactIntroText);
+            alert(`❌ Request blocked: ${modResult.reason || 'Inappropriate content'}. Your account has been flagged.`);
+            return;
+        }
 
         // Check if already sent a request to this person
         const alreadySent = requests.some(r => r.fromEmail === user.email && r.toEmail === activeStory.authorEmail);
@@ -165,8 +173,17 @@ const MyNetwork = () => {
         saveRequests(updated);
     };
 
-    const sendChatMessage = (reqId: string) => {
+    const sendChatMessage = async (reqId: string) => {
         if (!chatInput.trim() || !user) return;
+
+        // AI Moderation
+        const modResult = await moderateContent(chatInput);
+        if (!modResult.safe) {
+            flagAccount(user.email, user.name, modResult.reason || 'Inappropriate chat message', chatInput);
+            alert(`❌ Message blocked: ${modResult.reason || 'Inappropriate content'}. Your account has been flagged.`);
+            return;
+        }
+
         const updated = requests.map(r => {
             if (r.id === reqId) {
                 return { ...r, messages: [...r.messages, { senderEmail: user.email, text: chatInput, timestamp: Date.now() }] };
