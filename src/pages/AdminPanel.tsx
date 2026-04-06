@@ -100,13 +100,28 @@ const AdminPanel = () => {
     );
   }
 
+  const refreshData = () => {
+    setFlags(loadFlags());
+    setBanned(loadBanned());
+  };
+
   return (
     <div style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '40px', color: '#fff', background: 'transparent', display: 'flex', flexDirection: 'column', gap: '30px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderBottom: '1px solid rgba(255,100,100,0.3)', paddingBottom: '20px' }}>
-        <span style={{ fontSize: '2rem' }}>🛡️</span>
-        <div>
-          <h1 style={{ color: '#ff6b6b', fontSize: '2rem', fontWeight: '800', margin: 0 }}>CoFounder Admin Panel</h1>
-          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', margin: 0 }}>Moderation & Account Management</p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,100,100,0.3)', paddingBottom: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <span style={{ fontSize: '2rem' }}>🛡️</span>
+          <div>
+            <h1 style={{ color: '#ff6b6b', fontSize: '2rem', fontWeight: '800', margin: 0 }}>CoFounder Admin Panel</h1>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', margin: 0 }}>Moderation & Account Management</p>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button onClick={refreshData} style={{ background: 'rgba(64,224,208,0.1)', border: '1px solid rgba(64,224,208,0.3)', color: '#40e0d0', padding: '8px 18px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>
+            🔄 Refresh
+          </button>
+          <button onClick={() => setIsAuthenticated(false)} style={{ background: 'rgba(255,107,107,0.1)', border: '1px solid rgba(255,107,107,0.3)', color: '#ff6b6b', padding: '8px 18px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem' }}>
+            🔒 Lock
+          </button>
         </div>
       </div>
 
