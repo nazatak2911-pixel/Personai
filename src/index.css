@@ -553,3 +553,31 @@ body {
   pointer-events: none;
   z-index: 4;
 }
+
+/* MyNetwork Grid Responsiveness */
+.network-stories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.network-requests-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 1024px) {
+    .network-stories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .network-stories-grid {
+        grid-template-columns: 1fr;
+    }
+    .network-requests-grid {
+        grid-template-columns: 1fr;
+    }
+}

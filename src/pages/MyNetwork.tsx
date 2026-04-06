@@ -290,7 +290,7 @@ const MyNetwork = () => {
                     {t.noStories}
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+                <div className="network-stories-grid">
                     {filteredStories.map(story => (
                         <div
                             key={story.id}
@@ -359,7 +359,7 @@ const MyNetwork = () => {
 
             {/* CONTACT REQUESTS SECTION */}
             {user && (
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '30px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+                <div className="network-requests-grid" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '30px' }}>
 
                     {/* INCOMING */}
                     <div>
