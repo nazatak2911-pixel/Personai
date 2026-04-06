@@ -29,11 +29,13 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  isGuest: boolean;
   loginError: string | null;
   login: (email: string, password: string) => boolean;
   signup: (name: string, email: string, password: string) => { success: boolean; error?: string };
   updateName: (newName: string) => void;
   logout: () => void;
+  enterAsGuest: () => void;
   completeSurvey: (results: string, affinityScores: Record<string, number>) => void;
   saveCV: (cvData: CVData) => void;
 }
@@ -41,11 +43,13 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoggedIn: false,
+  isGuest: false,
   loginError: null,
   login: () => false,
   signup: () => ({ success: false }),
   updateName: () => {},
   logout: () => {},
+  enterAsGuest: () => {},
   completeSurvey: () => {},
   saveCV: () => {},
 });
@@ -63,6 +67,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
     const savedSession = localStorage.getItem('persona_current_user');
     return savedSession ? JSON.parse(savedSession) : null;
+  });
+
+  const [isGuest, setIsGuest] = useState<boolean>(() => {
+    return sessionStorage.getItem('persona_guest') === 'true';
   });
 
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -106,10 +114,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('persona_current_user', JSON.stringify(updatedUser));
   };
 
+  const enterAsGuest = () => {
+    setIsGuest(true);
+    sessionStorage.setItem('persona_guest', 'true');
+  };
+
   const logout = () => {
     setUser(null);
+    setIsGuest(false);
     setLoginError(null);
     localStorage.removeItem('persona_current_user');
+    sessionStorage.removeItem('persona_guest');
   };
 
   const completeSurvey = (results: string, affinityScores: Record<string, number>) => {
@@ -131,7 +146,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, loginError, login, signup, updateName, logout, completeSurvey, saveCV }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!user, isGuest, loginError, login, signup, updateName, logout, enterAsGuest, completeSurvey, saveCV }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 
 const AuthSelection = () => {
     const { t } = useLanguage();
     const navigate = useNavigate();
+    const { enterAsGuest } = useAuth();
 
     const options = [
         {
@@ -11,21 +13,24 @@ const AuthSelection = () => {
             desc: t.loginDesc,
             path: "/login",
             icon: "🔑",
-            color: "#40e0d0"
+            color: "#40e0d0",
+            isGuest: false
         },
         {
             title: t.signUp,
             desc: t.signupDesc,
             path: "/signup",
             icon: "✨",
-            color: "#ffffff"
+            color: "#ffffff",
+            isGuest: false
         },
         {
             title: t.guestTitle,
             desc: t.guestDesc,
             path: "/myhomepage",
             icon: "👤",
-            color: "rgba(255,255,255,0.7)"
+            color: "rgba(255,255,255,0.7)",
+            isGuest: true
         }
     ];
 
@@ -76,7 +81,10 @@ const AuthSelection = () => {
                 {options.map((opt, index) => (
                     <div 
                         key={index}
-                        onClick={() => navigate(opt.path)}
+                        onClick={() => {
+                            if (opt.isGuest) enterAsGuest();
+                            navigate(opt.path);
+                        }}
                         style={{
                             background: 'rgba(30, 30, 30, 0.4)',
                             border: `1px solid ${opt.color}33`,

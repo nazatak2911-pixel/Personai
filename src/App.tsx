@@ -33,6 +33,7 @@ import {
   MyDemo 
 } from './pages/MyContentContainers';
 import { AuthProvider } from './context/AuthContext';
+import FeatureGuard from './components/FeatureGuard';
 
 function App() {
   return (
@@ -47,17 +48,17 @@ function App() {
               <Route path="faq" element={<Faq />} />
 
               {/* Other routes that can point to a generic placeholder for now */}
-              <Route path="network" element={<BuildNetwork />} />
-              <Route path="cv" element={<MyCV />} />
-              <Route path="simulations" element={<JobSimulations />} />
-              <Route path="internships" element={<Internships />} />
+              <Route path="network" element={<FeatureGuard><BuildNetwork /></FeatureGuard>} />
+              <Route path="cv" element={<FeatureGuard><MyCV /></FeatureGuard>} />
+              <Route path="simulations" element={<FeatureGuard><JobSimulations /></FeatureGuard>} />
+              <Route path="internships" element={<FeatureGuard><Internships /></FeatureGuard>} />
               
-              {/* Public feature routes */}
-              <Route path="demo" element={<Demo />} />
+              {/* Public feature routes - require login or guest */}
+              <Route path="demo" element={<FeatureGuard><Demo /></FeatureGuard>} />
               <Route path="privacy-policy" element={<Privacy />} />
-              <Route path="personi" element={<PersonaiFeature />} />
+              <Route path="personi" element={<FeatureGuard><PersonaiFeature /></FeatureGuard>} />
               <Route path="auth-selection" element={<AuthSelection />} />
-              <Route path="chat" element={<ChatPage />} />
+              <Route path="chat" element={<FeatureGuard><ChatPage /></FeatureGuard>} />
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<Signup />} />
               <Route path="onboarding-survey" element={<OnboardingSurvey />} />

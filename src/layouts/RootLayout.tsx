@@ -82,37 +82,66 @@ export default function RootLayout() {
           <LanguageSwitcher />
         </div>
 
-        {/* Right: Auth buttons / User Profile */}
-        <div className="nav-right">
-          {isLoggedIn ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <span style={{ color: '#ffffff', fontWeight: '500', fontSize: '0.9rem' }}>
-                {t.welcomeNormal}, <span style={{ color: '#40e0d0' }}>{user?.name}</span>
-              </span>
-              <button 
-                className="nav-btn login-btn" 
-                onClick={() => {
-                  logout();
-                  setDashboardSidebarOpen(false);
-                  setIsSidebarOpen(false);
-                  navigate('/');
-                }}
-                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}
+        {/* Center/Right: Nav links + Auth buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+          {/* Nav links - only when not logged in */}
+          {!isLoggedIn && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginRight: '20px' }}>
+              <button
+                className="nav-btn"
+                onClick={() => navigate('/about')}
+                style={{ fontSize: '0.92rem', padding: '8px 14px', opacity: 0.85 }}
               >
-                {t.logout}
+                {t.aboutUs}
+              </button>
+              <button
+                className="nav-btn"
+                onClick={() => navigate('/contact')}
+                style={{ fontSize: '0.92rem', padding: '8px 14px', opacity: 0.85 }}
+              >
+                {t.contact}
+              </button>
+              <button
+                className="nav-btn signup-btn"
+                onClick={() => navigate('/auth-selection')}
+                style={{ fontSize: '0.92rem', padding: '9px 22px', background: '#40e0d0', color: '#1a1a1a', borderRadius: '50px', fontWeight: '700' }}
+              >
+                {t.tryNow} →
               </button>
             </div>
-          ) : (
-            <>
-              {isDashboard && (
-                <button className="nav-btn" onClick={() => navigate('/')} style={{ background: 'transparent', color: '#fff', border: 'none', fontWeight: '500', marginRight: '10px' }}>
-                  {t.mainHome}
-                </button>
-              )}
-              <button className="nav-btn login-btn" onClick={() => navigate('/login')}>{t.logIn}</button>
-              <button className="nav-btn signup-btn" onClick={() => navigate('/signup')}>{t.signUp}</button>
-            </>
           )}
+
+          <div className="nav-right">
+            {isLoggedIn ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <span style={{ color: '#ffffff', fontWeight: '500', fontSize: '0.9rem' }}>
+                  {t.welcomeNormal}, <span style={{ color: '#40e0d0' }}>{user?.name}</span>
+                </span>
+                <button 
+                  className="nav-btn login-btn" 
+                  onClick={() => {
+                    logout();
+                    setDashboardSidebarOpen(false);
+                    setIsSidebarOpen(false);
+                    navigate('/');
+                  }}
+                  style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}
+                >
+                  {t.logout}
+                </button>
+              </div>
+            ) : (
+              <>
+                {isDashboard && (
+                  <button className="nav-btn" onClick={() => navigate('/')} style={{ background: 'transparent', color: '#fff', border: 'none', fontWeight: '500', marginRight: '10px' }}>
+                    {t.mainHome}
+                  </button>
+                )}
+                <button className="nav-btn login-btn" onClick={() => navigate('/login')}>{t.logIn}</button>
+                <button className="nav-btn signup-btn" onClick={() => navigate('/signup')}>{t.signUp}</button>
+              </>
+            )}
+          </div>
         </div>
       </nav>
 
