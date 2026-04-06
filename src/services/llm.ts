@@ -40,8 +40,8 @@ async function callOpenRouter(
   const rawApiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
   if (!rawApiKey) throw new Error('NO_OPENROUTER_KEY');
   
-  // Clean the key (remove standard AND smart quotes and extra whitespace)
-  const apiKey = rawApiKey.trim().replace(/^[“"']|["'”]$/g, '');
+  // Clean the key (completely strip any quotes and extra whitespace)
+  const apiKey = rawApiKey.replace(/["'“”]/g, '').trim();
 
   if (modelIndex >= OPENROUTER_MODELS.length) {
     throw new Error('ALL_OPENROUTER_MODELS_EXHAUSTED');
@@ -85,8 +85,8 @@ async function callGemini(messages: ChatMessage[]): Promise<string> {
   const rawApiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!rawApiKey) throw new Error('NO_GEMINI_KEY');
   
-  // Clean the key (remove standard AND smart quotes and extra whitespace)
-  const apiKey = rawApiKey.trim().replace(/^[“"']|["'”]$/g, '');
+  // Clean the key (completely strip any quotes and extra whitespace)
+  const apiKey = rawApiKey.replace(/["'“”]/g, '').trim();
 
   // Convert messages to Gemini format
   const geminiContents = messages.map((m) => ({
