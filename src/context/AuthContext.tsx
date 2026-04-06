@@ -36,15 +36,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = (email: string, name?: string) => {
     // For local dummy auth, we'll just sign them in with whatever name is in storage or the provided one
-    // We check if a user with this email has existing survey progress (for demo we just assume false unless stored)
+    // In this demo, if ANY user exists locally, we log them into it so they don't lose their survey/network data.
     const existing = localStorage.getItem('persona_user');
     let newUser: User = { name: name || 'Demo User', email, hasCompletedSurvey: false, surveyResults: null, affinityScores: null };
+    
     if (existing) {
-        const parsed = JSON.parse(existing);
-        if (parsed.email === email) {
-            newUser = parsed;
-        }
+        newUser = JSON.parse(existing);
+        // We can optionally update their email to what they just typed
+        newUser.email = email;
     }
+    
     setUser(newUser);
     localStorage.setItem('persona_user', JSON.stringify(newUser));
   };

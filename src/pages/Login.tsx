@@ -13,7 +13,7 @@ const Login = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Simulating logic
-        login(email, "Murat"); // Placeholder name
+        login(email);
         navigate('/myhomepage');
     };
 
