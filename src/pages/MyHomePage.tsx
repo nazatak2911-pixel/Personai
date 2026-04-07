@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 const MyHomePage = () => {
     const { t } = useLanguage();
-    const { user, updateName } = useAuth();
+    const { user, isGuest, updateName } = useAuth();
     const navigate = useNavigate();
 
     // Only redirect if logged in but strongly confirmed they haven't completed the survey
@@ -42,7 +42,58 @@ const MyHomePage = () => {
         { title: t.internshipOpportunities, desc: t.internshipsDesc, path: "/myinternships", icon: "🎓", color: "#40e0d0", image: "/intern.jpg" }
     ];
 
-    // UNATHENTICATED STATE
+    // GUEST STATE — no account but entered as guest
+    if (!user && isGuest) {
+        return (
+            <div style={{
+                maxWidth: '1200px', margin: '0 auto', width: '100%', height: '100%',
+                padding: '40px', display: 'flex', flexDirection: 'column',
+                color: '#ffffff', overflowY: 'auto'
+            }}>
+                <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: '800', color: '#40e0d0', textTransform: 'uppercase', marginBottom: '8px' }}>
+                    {t.welcomeTrainee} 👋
+                </h1>
+                <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.6)', marginBottom: '40px' }}>
+                    {t.guestDesc}
+                </p>
+                <h3 style={{ fontSize: '1.2rem', color: '#40e0d0', fontWeight: '600', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    {t.exploreModules}
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px', width: '100%' }}>
+                    {features.map((feat, index) => (
+                        <div
+                            key={index}
+                            onClick={() => navigate(feat.path)}
+                            style={{
+                                position: 'relative', height: '160px', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer',
+                                display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '15px',
+                                transition: 'all 0.3s ease', boxShadow: '0 5px 15px rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)'
+                            }}
+                            onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'rgba(64,224,208,0.4)'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                        >
+                            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundImage: `url(${feat.image})`, backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0 }} />
+                            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)', zIndex: 1 }} />
+                            <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '1.2rem' }}>{feat.icon}</span>
+                                <h3 style={{ fontSize: '1rem', fontWeight: '700', color: feat.color, margin: 0, textTransform: 'uppercase' }}>{feat.title}</h3>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div style={{ marginTop: '40px', display: 'flex', gap: '16px' }}>
+                    <button onClick={() => navigate('/login')} style={{ background: '#40e0d0', color: '#1a1a1a', padding: '12px 30px', borderRadius: '50px', fontSize: '1rem', fontWeight: '700', border: 'none', cursor: 'pointer' }}>
+                        {t.logIn}
+                    </button>
+                    <button onClick={() => navigate('/signup')} style={{ background: 'transparent', color: '#fff', padding: '12px 30px', borderRadius: '50px', fontSize: '1rem', fontWeight: '600', border: '1px solid rgba(255,255,255,0.3)', cursor: 'pointer' }}>
+                        {t.signUp}
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    // UNAUTHENTICATED STATE — not logged in, not guest
     if (!user) {
         return (
             <div style={{
